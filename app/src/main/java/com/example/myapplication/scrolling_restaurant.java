@@ -2,6 +2,7 @@ package com.example.myapplication;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -30,6 +31,8 @@ public class scrolling_restaurant extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listview);
         listView= (ListView) findViewById(R.id.list_view);
+        Toolbar toolbar = findViewById(R.id.app_bar);
+        setSupportActionBar(toolbar);
         CustomListView customListView = new CustomListView(this,resNames,resDes,imgID);
 
         System.out.println("aaaaaaaaaaas"+customListView+ listView);
