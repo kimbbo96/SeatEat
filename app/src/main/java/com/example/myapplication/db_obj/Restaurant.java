@@ -5,11 +5,11 @@ public class Restaurant {
     private String RESTAURANT_ID;
     private String RESTAURANT_TITLE;
     private String PRODUCT_DESCRIPTION;
-    private String PRODUCT_RATING;
+    private float PRODUCT_RATING;
     private String PRODUCT_IMAGE;
 
     public Restaurant(String RESTAURANT_ID, String RESTAURANT_TITLE, String PRODUCT_DESCRIPTION,
-                      String PRODUCT_RATING, String PRODUCT_IMAGE) {
+                      float PRODUCT_RATING, String PRODUCT_IMAGE) {
         this.RESTAURANT_ID = RESTAURANT_ID;
         this.RESTAURANT_TITLE = RESTAURANT_TITLE;
         this.PRODUCT_DESCRIPTION = PRODUCT_DESCRIPTION;
@@ -33,7 +33,7 @@ public class Restaurant {
         return PRODUCT_DESCRIPTION;
     }
 
-    public String getPRODUCT_RATING() {
+    public float getPRODUCT_RATING() {
         return PRODUCT_RATING;
     }
 

@@ -44,9 +44,11 @@
 
             <RatingBar
                 android:id="@+id/ratingBar"
-                style="@android:style/Widget.Material.Light.RatingBar.Indicator"
+                style="@android:style/Widget.Material.RatingBar.Indicator"
                 android:layout_width="214dp"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:numStars="5"
+                android:stepSize="0.5" />
 
         </LinearLayout>
 
