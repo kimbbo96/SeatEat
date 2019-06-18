@@ -28,12 +28,12 @@ import java.util.List;
 public class menu_rest extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    Restaurant r1 = new Restaurant("1","IV Secolo",
-            "trattoria",(float)6,"image");
+    Restaurant r1 = new Restaurant("1","Trattoria IV Secolo",
+            "Trattoria, Italiano",(float)6,"image");
     Restaurant r2 = new Restaurant("2","Panizzeri",
-            "panineria",(float)4,"image");
-    Restaurant r3 = new Restaurant("3","jinja",
-            "jappo",(float)1.5,"image");
+            "Panineria, Italiano",(float)4,"image");
+    Restaurant r3 = new Restaurant("3","Ristorante Jinja",
+            "Giapponese, Cinese",(float)1.5,"image");
 
 
     String[] resNames = {r1.getRESTAURANT_TITLE(),r2.getRESTAURANT_TITLE(),r3.getRESTAURANT_TITLE()};
