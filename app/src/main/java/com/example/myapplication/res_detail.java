@@ -34,7 +34,9 @@ public class res_detail extends AppCompatActivity {
                 .signature(new ObjectKey(String.valueOf(System.currentTimeMillis())))
                 .fitCenter().into(qrImg);
 
+
         RatingBar ratingBar = findViewById(R.id.ratingBar2);
         ratingBar.setEnabled(false);
+        ratingBar.setRating(rist.getPRODUCT_RATING());
     }
 }
