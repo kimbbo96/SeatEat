@@ -13,14 +13,14 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-public class CustomListView extends ArrayAdapter<String> {
+public class RestListView extends ArrayAdapter<String> {
     private String[] restName;
     private String[] restDesc;
     private Integer[] imgId;
     private Activity context;
     private Float[] rate;
-    public CustomListView(Activity context, String[] resName, String[] restDesc,
-                          Integer[] imgId, Float[] rate) {
+    public RestListView(Activity context, String[] resName, String[] restDesc,
+                        Integer[] imgId, Float[] rate) {
         super(context, R.layout.activity_scrolling_restaurant,resName);
         this.context = context;
         this.imgId = imgId;
@@ -66,6 +66,54 @@ public class CustomListView extends ArrayAdapter<String> {
             System.out.println((rb.getMax()));
             rb.setMax(4);
 
+        }
+    }
+}
+
+class FoodListView extends ArrayAdapter<String> {
+    private String[] foodName;
+    private String[] foodDesc;
+    private Activity context;
+    private Float[] foodPrice;
+    public FoodListView(Activity context, String[] foodName, String[] foodDesc, Float[] foodPrice) {
+        super(context, R.layout.activity_scrolling_restaurant,foodName);
+        this.context = context;
+        this.foodDesc = foodDesc;
+        this.foodName = foodName;
+        this.foodPrice = foodPrice;
+    }
+
+    @NonNull
+    @Override
+    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+        View r = convertView;
+        ViewHolder viewHolder = null;
+        if (r == null)
+        {
+            LayoutInflater layoutInflater = context.getLayoutInflater();
+            r = layoutInflater.inflate(R.layout.activity_food_scrolling,
+                    null,true);
+            viewHolder = new ViewHolder(r);
+            r.setTag(viewHolder);
+        }
+        else {
+            viewHolder = (ViewHolder) r.getTag();
+        }
+        viewHolder.tvw1.setText(foodName[position]);
+        viewHolder.tvw2.setText(foodDesc[position]);
+        viewHolder.rb.setRating(foodPrice[position]);
+
+        return r;
+    }
+    class  ViewHolder{
+        TextView tvw1;
+        TextView tvw2;
+        RatingBar rb;
+        ImageView ivw;
+        ViewHolder(View v){
+            tvw1 = v.findViewById(R.id.resName);
+            tvw2 = v.findViewById(R.id.resDes);
+            ivw = v.findViewById(R.id.price);
         }
     }
 }
