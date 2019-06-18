@@ -3,7 +3,7 @@
     android:id="@+id/tool_bar_simple"
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
-    android:background="?attr/colorPrimaryDark"
+    android:background="@color/colorPrimary"
     android:text="@string/app_name"
 
     android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">

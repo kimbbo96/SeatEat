@@ -35,7 +35,7 @@ public class menu_rest extends AppCompatActivity
 
 
     String[] resNames = {r1.getRESTAURANT_TITLE(),r2.getRESTAURANT_TITLE(),r3.getRESTAURANT_TITLE()};
-    String[] resDes = {r1.getRESTAURANT_DESCRIPTION(),r2.getRESTAURANT_DESCRIPTION(),r3.getRESTAURANT_DESCRIPTION()};
+    String[] resDes = {r1.getRESTAURANT_TYPOLOGY(),r2.getRESTAURANT_TYPOLOGY(),r3.getRESTAURANT_TYPOLOGY()};
     Integer[] imgID = {R.drawable.iv_secolo_logo,R.drawable.panizzeri_logo,R.drawable.jinja_logo};
     Float[] rate = {r1.getPRODUCT_RATING(),r2.getPRODUCT_RATING(),r3.getPRODUCT_RATING()};
 
