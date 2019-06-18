@@ -31,7 +31,7 @@ public class menu_rest extends AppCompatActivity
     Restaurant r2 = new Restaurant("2","Panizzeri",
             "Panineria, Italiano",(float)4,"image");
     Restaurant r3 = new Restaurant("3","Ristorante Jinja",
-            "Giapponese, Cinese",(float)1.5,"image");
+            "Giapponese, Cinese",(float)1,"image");
 
 
     String[] resNames = {r1.getRESTAURANT_TITLE(),r2.getRESTAURANT_TITLE(),r3.getRESTAURANT_TITLE()};
