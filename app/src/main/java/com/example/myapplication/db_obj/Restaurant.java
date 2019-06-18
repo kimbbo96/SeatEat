@@ -1,6 +1,8 @@
 package com.example.myapplication.db_obj;
 
-public class Restaurant {
+import java.io.Serializable;
+
+public class Restaurant implements Serializable {
     private static final String TAG = "===Restaurant===";
     private String RESTAURANT_ID;
     private String RESTAURANT_TITLE;

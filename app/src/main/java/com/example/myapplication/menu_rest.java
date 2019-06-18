@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -20,6 +21,7 @@ import android.widget.Toast;
 
 import com.example.myapplication.db_obj.Restaurant;
 
+import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +34,7 @@ public class menu_rest extends AppCompatActivity
             "panineria",(float)4,"image");
     Restaurant r3 = new Restaurant("3","jinja",
             "jappo",(float)1.5,"image");
+
 
     String[] resNames = {r1.getRESTAURANT_TITLE(),r2.getRESTAURANT_TITLE(),r3.getRESTAURANT_TITLE()};
     String[] resDes = {r1.getPRODUCT_DESCRIPTION(),r2.getPRODUCT_DESCRIPTION(),r3.getPRODUCT_DESCRIPTION()};
@@ -73,12 +76,20 @@ public class menu_rest extends AppCompatActivity
 
         System.out.println("aaaaaaaaaaas"+customListView+ listView);
         listView.setAdapter(customListView);
+        final List<Restaurant> resList = new ArrayList<Restaurant>();
+        resList.add(r1); // prova
+        resList.add(r2);
+        resList.add(r3);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 System.out.println("hai clikkato "+i);
+                Intent intent = new Intent(menu_rest.this,res_detail.class);
+                intent.putExtra("Restaurant",resList.get(i)); // passo l'oggetto ristornate
+                startActivity(intent);
             }
         });
+
     }
 
     @Override
