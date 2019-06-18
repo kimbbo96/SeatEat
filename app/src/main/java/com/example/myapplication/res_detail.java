@@ -4,12 +4,18 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.widget.ImageView;
 import android.view.View;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Button;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.signature.ObjectKey;
 import com.example.myapplication.db_obj.Restaurant;
+
+import android.net.Uri;
+import java.net.URISyntaxException;
 
 public class res_detail extends AppCompatActivity {
 
@@ -36,8 +42,13 @@ public class res_detail extends AppCompatActivity {
          });
 
         nome_res.setText(rist.getRESTAURANT_TITLE());
+
+        ImageView qrImg = findViewById(R.id.imageView3);
+        Glide.with(this).load("https://seateat-be.herokuapp.com/api/newqr")
+                .signature(new ObjectKey(String.valueOf(System.currentTimeMillis())))
+                .fitCenter().into(qrImg);
+
         RatingBar ratingBar = findViewById(R.id.ratingBar2);
         ratingBar.setEnabled(false);
-
     }
 }
