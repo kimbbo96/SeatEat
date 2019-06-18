@@ -27,11 +27,11 @@ public class menu_rest extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     Restaurant r1 = new Restaurant("1","Trattoria IV Secolo",
-            "Trattoria, Italiano",(float)6,"image");
+            "Trattoria, Italiano",(float)6,"image", new Double[] {42.002780, 12.384011});
     Restaurant r2 = new Restaurant("2","Panizzeri",
-            "Panineria, Italiano",(float)4,"image");
+            "Panineria, Italiano",(float)4,"image", new Double[] {41.968043, 12.537057});
     Restaurant r3 = new Restaurant("3","Ristorante Jinja",
-            "Giapponese, Cinese",(float)1,"image");
+            "Giapponese, Cinese",(float)1,"image", new Double[] {41.927775, 12.480815});
 
 
     String[] resNames = {r1.getRESTAURANT_TITLE(),r2.getRESTAURANT_TITLE(),r3.getRESTAURANT_TITLE()};
