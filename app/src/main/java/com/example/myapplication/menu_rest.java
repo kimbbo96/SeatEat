@@ -2,6 +2,7 @@ package com.example.myapplication;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.view.View;
@@ -67,7 +68,7 @@ public class menu_rest extends AppCompatActivity
 
         ///////////////////////////////////
 
-        listView= (ListView) findViewById(R.id.list_view1);
+        listView = (ListView) findViewById(R.id.list_view1);
         System.out.println(listView);
 
         RestListView customListView = new RestListView(this,resNames,resDes,imgID,rate);
@@ -117,9 +118,18 @@ public class menu_rest extends AppCompatActivity
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
+        } else if (id == R.id.action_filter) {
+            return handleFilter();
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private boolean handleFilter() {
+        BottomSheetDialogFragment filtersDialog = new FiltersDialogFragment();
+        filtersDialog.show(getSupportFragmentManager(), "filtersDialog");
+
+        return true;
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
