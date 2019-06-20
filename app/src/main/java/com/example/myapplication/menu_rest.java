@@ -23,6 +23,8 @@ import android.widget.ListView;
 
 import com.example.myapplication.db_obj.Restaurant;
 
+import org.json.JSONArray;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
