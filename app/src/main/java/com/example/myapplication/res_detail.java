@@ -16,6 +16,8 @@ import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.signature.ObjectKey;
 import com.example.myapplication.db_obj.Restaurant;
 
+import java.lang.reflect.Field;
+
 public class res_detail extends AppCompatActivity {
 
     @Override
@@ -29,18 +31,23 @@ public class res_detail extends AppCompatActivity {
         final Restaurant rist = (Restaurant) getIntent().getSerializableExtra("Restaurant");
         System.out.println(rist.getRESTAURANT_TITLE());
         TextView nome_res = findViewById(R.id.res_name);
-
-        Button button = findViewById(R.id.menu_button);
-         button.setOnClickListener(new View.OnClickListener() {
-             public void onClick(View v) {
-                 System.out.println("hai clikkato MENU");
-                 Intent intent = new Intent(res_detail.this,food_rest.class);
-                 intent.putExtra("Restaurant",rist); // passo l'oggetto ristornate
-                 startActivity(intent);
-             }
-         });
-
         nome_res.setText(rist.getRESTAURANT_TITLE());
+
+        TextView tipo_res = findViewById(R.id.res_type);
+        tipo_res.setText(rist.getRESTAURANT_TYPOLOGY());
+
+        ImageView copertina = findViewById(R.id.copertina);
+        String imgName = rist.getRESTAURANT_IMAGE();
+        int id = -1;
+        try {
+            Class res = R.drawable.class;
+            Field field = res.getField(imgName);
+            id = field.getInt(null);
+        }
+        catch (Exception e) {
+            System.out.println("Restaurant image not found: " + imgName + ", " + id + "\n" + e);
+        }
+        copertina.setBackground(getDrawable(id));
 
         ImageView qrImg = findViewById(R.id.imageView3);
         RequestBuilder<Drawable> error = Glide.with(this).load(R.drawable.no_internet);
@@ -51,5 +58,15 @@ public class res_detail extends AppCompatActivity {
         RatingBar ratingBar = findViewById(R.id.ratingBar2);
         ratingBar.setEnabled(false);
         ratingBar.setRating(rist.getRESTAURANT_RATING());
+
+        Button button = findViewById(R.id.menu_button);
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                System.out.println("hai clikkato MENU");
+                Intent intent = new Intent(res_detail.this,food_rest.class);
+                intent.putExtra("Restaurant",rist); // passo l'oggetto ristornate
+                startActivity(intent);
+            }
+        });
     }
 }
