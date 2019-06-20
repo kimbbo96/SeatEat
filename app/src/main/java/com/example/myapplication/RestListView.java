@@ -13,20 +13,64 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.example.myapplication.db_obj.Restaurant;
+
+import java.lang.reflect.Field;
+
 public class RestListView extends ArrayAdapter<String> {
     private String[] restName;
     private String[] restDesc;
     private Integer[] imgId;
     private Activity context;
     private Float[] rate;
-    public RestListView(Activity context, String[] resName, String[] restDesc,
+
+    public RestListView(Activity context, String[] restName, String[] restDesc,
                         Integer[] imgId, Float[] rate) {
-        super(context, R.layout.activity_scrolling_restaurant,resName);
+        super(context, R.layout.activity_scrolling_restaurant, restName);
         this.context = context;
         this.imgId = imgId;
         this.restDesc = restDesc;
-        this.restName = resName;
+        this.restName = restName;
         this.rate = rate;
+    }
+
+    public RestListView(Activity context, Restaurant[] restaurants) {
+        super(context, R.layout.activity_scrolling_restaurant, getNames(restaurants));
+        String[] restName = new String[restaurants.length];
+        String[] restDesc = new String[restaurants.length];
+        Integer[] imgId = new Integer[restaurants.length];
+        Float[] rate = new Float[restaurants.length];
+        int id = -1;
+        for (int i = 0; i < restaurants.length; i++) {
+            System.out.println(restaurants[i]);
+
+            restName[i] = restaurants[i].getRESTAURANT_TITLE();
+            restDesc[i] = restaurants[i].getRESTAURANT_TYPOLOGY();
+            String imgName = restaurants[i].getRESTAURANT_IMAGE();
+            try {
+                Class res = R.drawable.class;
+                Field field = res.getField(imgName);
+                id = field.getInt(null);
+            }
+            catch (Exception e) {
+                System.out.println("Restaurant image not found: " + imgName + ", " + id + "\n" + e);
+            }
+            imgId[i] = id;
+            rate[i] = restaurants[i].getRESTAURANT_RATING();
+        }
+        this.context = context;
+        this.imgId = imgId;
+        this.restDesc = restDesc;
+        this.restName = restName;
+        this.rate = rate;
+    }
+
+    private static String[] getNames(Restaurant[] restaurants) {
+        String[] restNames = new String[restaurants.length];
+        for (int i = 0; i < restaurants.length; i++) {
+            restNames[i] = restaurants[i].getRESTAURANT_TITLE();
+        }
+        return restNames;
     }
 
     @NonNull

@@ -16,9 +16,6 @@ import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.signature.ObjectKey;
 import com.example.myapplication.db_obj.Restaurant;
 
-import android.net.Uri;
-import java.net.URISyntaxException;
-
 public class res_detail extends AppCompatActivity {
 
     @Override
@@ -53,6 +50,6 @@ public class res_detail extends AppCompatActivity {
 
         RatingBar ratingBar = findViewById(R.id.ratingBar2);
         ratingBar.setEnabled(false);
-        ratingBar.setRating(rist.getPRODUCT_RATING());
+        ratingBar.setRating(rist.getRESTAURANT_RATING());
     }
 }

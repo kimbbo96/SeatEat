@@ -1,6 +1,7 @@
 package com.example.myapplication.db_obj;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 public class Restaurant implements Serializable {
     private static final String TAG = "===Restaurant===";
@@ -37,15 +38,26 @@ public class Restaurant implements Serializable {
         return RESTAURANT_TYPOLOGY;
     }
 
-    public float getPRODUCT_RATING() {
+    public float getRESTAURANT_RATING() {
         return RESTAURANT_RATING;
     }
 
-    public String getPRODUCT_IMAGE() {
+    public String getRESTAURANT_IMAGE() {
         return RESTAURANT_IMAGE;
     }
 
     public Double[] getRESTAURANT_POSITION() {
         return RESTAURANT_POSITION;
+    }
+
+    @Override
+    public String toString() {
+        return "Restaurant{" +
+                "RESTAURANT_ID='" + RESTAURANT_ID + "',\n" +
+                "RESTAURANT_TITLE='" + RESTAURANT_TITLE + "',\n" +
+                "RESTAURANT_TYPOLOGY='" + RESTAURANT_TYPOLOGY + "',\n" +
+                "RESTAURANT_RATING='" + RESTAURANT_RATING + "',\n" +
+                "RESTAURANT_IMAGE='" + RESTAURANT_IMAGE + "',\n" +
+                "RESTAURANT_POSITION='" + Arrays.toString(RESTAURANT_POSITION) + "'}";
     }
 }

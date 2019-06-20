@@ -1,5 +1,7 @@
 package com.example.myapplication;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.BottomSheetDialogFragment;
@@ -22,23 +24,32 @@ import android.widget.ListView;
 import com.example.myapplication.db_obj.Restaurant;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class menu_rest extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    Restaurant r1 = new Restaurant("1","Trattoria IV Secolo",
-            "Trattoria, Italiano",(float)6,"image", new Double[] {42.002780, 12.384011});
-    Restaurant r2 = new Restaurant("2","Panizzeri",
-            "Panineria, Italiano",(float)4,"image", new Double[] {41.968043, 12.537057});
-    Restaurant r3 = new Restaurant("3","Ristorante Jinja",
-            "Giapponese, Cinese",(float)1,"image", new Double[] {41.927775, 12.480815});
+//    Restaurant r1 = new Restaurant("1","Trattoria IV Secolo",
+//            "Trattoria, Italiano",(float)6,"image", new Double[] {42.002780, 12.384011});
+//    Restaurant r2 = new Restaurant("2","Panizzeri",
+//            "Panineria, Italiano",(float)4,"image", new Double[] {41.968043, 12.537057});
+//    Restaurant r3 = new Restaurant("3","Ristorante Jinja",
+//            "Giapponese, Cinese",(float)1,"image", new Double[] {41.927775, 12.480815});
 
+    private static Restaurant r1 = new Restaurant("1","Trattoria IV Secolo",
+            "Trattoria, Italiano",(float)6,"iv_secolo_logo", new Double[] {42.002780, 12.384011});
+    private static Restaurant r2 = new Restaurant("2","Panizzeri",
+            "Panineria, Italiano",(float)4,"panizzeri_logo", new Double[] {41.968043, 12.537057});
+    private static Restaurant r3 = new Restaurant("3","Ristorante Jinja",
+            "Giapponese, Cinese",(float)1,"jinja_logo", new Double[] {41.927775, 12.480815});
+
+    static Restaurant[] restaurants = {r1, r2, r3};
 
     String[] resNames = {r1.getRESTAURANT_TITLE(),r2.getRESTAURANT_TITLE(),r3.getRESTAURANT_TITLE()};
     String[] resDes = {r1.getRESTAURANT_TYPOLOGY(),r2.getRESTAURANT_TYPOLOGY(),r3.getRESTAURANT_TYPOLOGY()};
     Integer[] imgID = {R.drawable.iv_secolo_logo,R.drawable.panizzeri_logo,R.drawable.jinja_logo};
-    Float[] rate = {r1.getPRODUCT_RATING(),r2.getPRODUCT_RATING(),r3.getPRODUCT_RATING()};
+    Float[] rate = {r1.getRESTAURANT_RATING(),r2.getRESTAURANT_RATING(),r3.getRESTAURANT_RATING()};
 
     ListView listView;
     List list = new ArrayList();
@@ -68,27 +79,25 @@ public class menu_rest extends AppCompatActivity
 
         ///////////////////////////////////
 
-        listView = (ListView) findViewById(R.id.list_view1);
+        fillList(this, restaurants);
+    }
+
+    static void fillList(Activity activity, Restaurant[] restaurants) {
+        ListView listView = activity.findViewById(R.id.list_view1);
         System.out.println(listView);
 
-        RestListView customListView = new RestListView(this,resNames,resDes,imgID,rate);
+        RestListView customListView = new RestListView(activity, restaurants);
 
         System.out.println("aaaaaaaaaaas"+customListView+ listView);
         listView.setAdapter(customListView);
-        final List<Restaurant> resList = new ArrayList<Restaurant>();
-        resList.add(r1); // prova
-        resList.add(r2);
-        resList.add(r3);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                System.out.println("hai clikkato "+i);
-                Intent intent = new Intent(menu_rest.this,res_detail.class);
-                intent.putExtra("Restaurant",resList.get(i)); // passo l'oggetto ristornate
-                startActivity(intent);
-            }
-        });
+        final List<Restaurant> resList = new ArrayList<>(Arrays.asList(restaurants));
 
+        listView.setOnItemClickListener((adapterView, view, i, l) -> {
+            System.out.println("hai clikkato "+i);
+            Intent intent = new Intent(activity, res_detail.class);
+            intent.putExtra("Restaurant", resList.get(i)); // passo l'oggetto ristorante
+            activity.startActivity(intent);
+        });
     }
 
     @Override
