@@ -1,6 +1,7 @@
 package com.example.myapplication;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.design.widget.FloatingActionButton;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.myapplication.db_obj.Restaurant;
@@ -36,6 +38,17 @@ public class FiltersDialogFragment extends BottomSheetDialogFragment {
         List<String> dataListDistance = new ArrayList<>(Arrays.asList(distances));
         ArrayAdapter<String> arrayAdapterDistance = new ArrayAdapter<>(context, android.R.layout.simple_list_item_single_choice, dataListDistance);
         filterDistanceView.setAdapter(arrayAdapterDistance);
+
+//        filterDistanceView.setAdapter(new ArrayAdapter<String>(context, android.R.layout.simple_list_item_single_choice, dataListDistance) {
+//            @Override
+//            public View getView(int position, View convertView, ViewGroup parent) {
+//                View view = super.getView(position, convertView, parent);
+//                TextView text = view.findViewById(android.R.id.text1);
+//                text.setTextColor(Color.BLACK);
+//                return view;
+//            }
+//        });
+
         filterDistanceView.setOnItemClickListener((adapterView, view, index, l) -> {
             Object clickItemObj = adapterView.getAdapter().getItem(index);
             Toast.makeText(context, "You clicked " + clickItemObj.toString(), Toast.LENGTH_SHORT).show();

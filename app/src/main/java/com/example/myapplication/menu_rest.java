@@ -40,7 +40,7 @@ public class menu_rest extends AppCompatActivity
     private static Restaurant r1 = new Restaurant("1","Trattoria IV Secolo",
             "Trattoria, Italiano",(float)6,"iv_secolo_logo", new Double[] {42.002780, 12.384011});
     private static Restaurant r2 = new Restaurant("2","Panizzeri",
-            "Panineria, Italiano",(float)4,"panizzeri_logo", new Double[] {41.968043, 12.537057});
+            "Paninoteca, Italiano",(float)4,"panizzeri_logo", new Double[] {41.968043, 12.537057});
     private static Restaurant r3 = new Restaurant("3","Ristorante Jinja",
             "Giapponese, Cinese",(float)1,"jinja_logo", new Double[] {41.927775, 12.480815});
 

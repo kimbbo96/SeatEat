@@ -11,6 +11,6 @@
         android:id="@+id/action_filter"
         android:orderInCategory="300"
         android:title="User"
-        android:icon="@drawable/filter"
+        android:icon="@drawable/filter_white"
         app:showAsAction="ifRoom" />
 </menu>
