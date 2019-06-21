@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -24,10 +25,19 @@ import android.widget.ListView;
 import com.example.myapplication.db_obj.Restaurant;
 
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class menu_rest extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -47,41 +57,95 @@ public class menu_rest extends AppCompatActivity
             "Giapponese, Cinese",(float)1,"jinja_logo", new Double[] {41.927775, 12.480815});
 
     static Restaurant[] restaurants = {r1, r2, r3};
+    String urlBase = "https://seateat-be.herokuapp.com";
+    //static Restaurant[] restaurants;
 
-    String[] resNames = {r1.getRESTAURANT_TITLE(),r2.getRESTAURANT_TITLE(),r3.getRESTAURANT_TITLE()};
-    String[] resDes = {r1.getRESTAURANT_TYPOLOGY(),r2.getRESTAURANT_TYPOLOGY(),r3.getRESTAURANT_TYPOLOGY()};
-    Integer[] imgID = {R.drawable.iv_secolo_logo,R.drawable.panizzeri_logo,R.drawable.jinja_logo};
-    Float[] rate = {r1.getRESTAURANT_RATING(),r2.getRESTAURANT_RATING(),r3.getRESTAURANT_RATING()};
+    //List<Restaurant> restaurants = new ArrayList<>();
 
-    ListView listView;
-    List list = new ArrayList();
-    ArrayAdapter adapter;
+
+
+    List<Restaurant> list = new ArrayList();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        Activity activity = this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_rest);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+
+
+        OkHttpClient cl = new OkHttpClient(); // inizio la procedura di get
+        String url = urlBase+"/api/example/restaurants";
+        Request request = new Request.Builder().url(url).build();
+        cl.newCall(request).enqueue(new Callback() {
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                System.out.println("hhhhh");
+                if (response.isSuccessful()){
+                    final String muresponse = response.body().string();
+                    menu_rest.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            System.out.println(muresponse);
+                            try {
+                                JSONArray jsonArray = new JSONArray(muresponse);
+                                for (int i = 0 ; i< jsonArray.length(); i++){ // per ogni ristorante
+                                    JSONObject jsonRes = jsonArray.getJSONObject(i) ;
+                                    String nome = jsonRes.getString("nome");
+                                    String id = jsonRes.getString("id");
+                                    String typology = jsonRes.getString("tipologia");
+                                    double rating = jsonRes.getDouble("rating");
+                                    String pos = jsonRes.getString("posizione");
+                                    String image = jsonRes.getString("immagine");
+                                    Double x = Double.valueOf( pos.split(" ")[0]);
+                                    Double y = Double.valueOf( pos.split(" ")[1]);
+                                    Double[] pos_conv = {x,y};
+                                    System.out.println("aasd"+jsonRes);
+
+                                    Restaurant restaurant = new Restaurant(id,nome,typology,(float) rating,image,pos_conv);
+                                    list.add(restaurant);
+
+                                }
+                                System.out.println("okoko"+list.size());
+                                restaurants =  list.toArray(new Restaurant[list.size()]);
+
+                                fab.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                                                .setAction("Action", null).show();
+                                    }
+                                });
+                                DrawerLayout drawer = findViewById(R.id.drawer_layout);
+                                NavigationView navigationView = findViewById(R.id.nav_view);
+                                ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                                        activity, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                                drawer.addDrawerListener(toggle);
+                                toggle.syncState();
+                                navigationView.setNavigationItemSelectedListener((NavigationView.OnNavigationItemSelectedListener) activity);
+
+                                fillList(activity, restaurants);
+                            }catch (JSONException err){
+                                Log.d("Error", err.toString());
+                            };
+                        }
+                    });
+                }
             }
         });
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
-        navigationView.setNavigationItemSelectedListener(this);
 
-        ///////////////////////////////////
 
-        fillList(this, restaurants);
+
+
+
     }
 
     static void fillList(Activity activity, Restaurant[] restaurants) {

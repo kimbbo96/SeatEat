@@ -2,6 +2,7 @@ package com.example.myapplication;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -19,6 +20,7 @@ import com.example.myapplication.db_obj.Restaurant;
 import java.lang.reflect.Field;
 
 public class res_detail extends AppCompatActivity {
+    private String path_base = "https://seateat-be.herokuapp.com";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,16 +40,12 @@ public class res_detail extends AppCompatActivity {
 
         ImageView copertina = findViewById(R.id.copertina);
         String imgName = rist.getRESTAURANT_IMAGE();
-        int id = -1;
-        try {
-            Class res = R.drawable.class;
-            Field field = res.getField(imgName);
-            id = field.getInt(null);
-        }
-        catch (Exception e) {
-            System.out.println("Restaurant image not found: " + imgName + ", " + id + "\n" + e);
-        }
-        copertina.setBackground(getDrawable(id));
+
+        
+        Glide.with(this)
+                .load(Uri.parse(path_base+imgName))
+                .into(copertina);
+        //copertina.setBackground(getDrawable(id));
 
         ImageView qrImg = findViewById(R.id.imageView3);
         RequestBuilder<Drawable> error = Glide.with(this).load(R.drawable.no_internet);

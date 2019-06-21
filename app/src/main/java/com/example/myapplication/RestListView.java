@@ -2,6 +2,7 @@ package com.example.myapplication;
 
 import android.app.Activity;
 import android.content.Context;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.Layout;
@@ -13,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.myapplication.db_obj.Restaurant;
 
 import java.lang.reflect.Field;
@@ -20,12 +22,13 @@ import java.lang.reflect.Field;
 public class RestListView extends ArrayAdapter<String> {
     private String[] restName;
     private String[] restDesc;
-    private Integer[] imgId;
+    private String[] imgId;
     private Activity context;
     private Float[] rate;
+    private String path_base = "https://seateat-be.herokuapp.com";
 
     public RestListView(Activity context, String[] restName, String[] restDesc,
-                        Integer[] imgId, Float[] rate) {
+                        String[] imgId, Float[] rate) {
         super(context, R.layout.activity_scrolling_restaurant, restName);
         this.context = context;
         this.imgId = imgId;
@@ -38,24 +41,15 @@ public class RestListView extends ArrayAdapter<String> {
         super(context, R.layout.activity_scrolling_restaurant, getNames(restaurants));
         String[] restName = new String[restaurants.length];
         String[] restDesc = new String[restaurants.length];
-        Integer[] imgId = new Integer[restaurants.length];
+        String[] imgId = new String[restaurants.length];
         Float[] rate = new Float[restaurants.length];
-        int id = -1;
         for (int i = 0; i < restaurants.length; i++) {
             System.out.println(restaurants[i]);
 
             restName[i] = restaurants[i].getRESTAURANT_TITLE();
             restDesc[i] = restaurants[i].getRESTAURANT_TYPOLOGY();
-            String imgName = restaurants[i].getRESTAURANT_IMAGE();
-            try {
-                Class res = R.drawable.class;
-                Field field = res.getField(imgName);
-                id = field.getInt(null);
-            }
-            catch (Exception e) {
-                System.out.println("Restaurant image not found: " + imgName + ", " + id + "\n" + e);
-            }
-            imgId[i] = id;
+
+            imgId[i] = restaurants[i].getRESTAURANT_IMAGE();
             rate[i] = restaurants[i].getRESTAURANT_RATING();
         }
         this.context = context;
@@ -89,7 +83,11 @@ public class RestListView extends ArrayAdapter<String> {
         else {
             viewHolder = (ViewHolder) r.getTag();
         }
-        viewHolder.ivw.setImageResource(imgId[position]);
+        System.out.println("jjjj"+restName[position]);
+        //viewHolder.ivw.setImageResource(imgId[position]);
+        Glide.with(context)
+                .load(Uri.parse(path_base+imgId[position]))
+                .into(viewHolder.ivw);
         viewHolder.tvw1.setText(restName[position]);
         viewHolder.tvw2.setText(restDesc[position]);
         viewHolder.rb.setRating(rate[position]);
