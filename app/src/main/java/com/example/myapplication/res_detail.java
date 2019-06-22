@@ -1,8 +1,14 @@
 package com.example.myapplication;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -14,6 +20,8 @@ import android.widget.Button;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestBuilder;
+import com.bumptech.glide.request.target.CustomViewTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.bumptech.glide.signature.ObjectKey;
 import com.example.myapplication.db_obj.Restaurant;
 
@@ -41,15 +49,25 @@ public class res_detail extends AppCompatActivity {
         ImageView copertina = findViewById(R.id.copertina);
         String imgName = rist.getRESTAURANT_IMAGE();
 
-        
-        Glide.with(this)
-                .load(Uri.parse(path_base+imgName))
-                .into(copertina);
-        //copertina.setBackground(getDrawable(id));
+        Activity activity = this;
+        Glide.with(activity).load(Uri.parse(path_base+imgName)).into(new CustomViewTarget<ImageView, Drawable>(copertina) {
+            @Override
+            public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                copertina.setBackground(resource);
+            }
+
+            @Override
+            public void onLoadFailed(@Nullable Drawable errorDrawable) {
+                Glide.with(activity).load(R.drawable.no_internet).into(copertina);
+            }
+
+            @Override
+            protected void onResourceCleared(@Nullable Drawable placeholder) {}
+        });
 
         ImageView qrImg = findViewById(R.id.imageView3);
         RequestBuilder<Drawable> error = Glide.with(this).load(R.drawable.no_internet);
-        Glide.with(this).load("https://seateat-be.herokuapp.com/api/newqr").error(error)
+        Glide.with(this).load(path_base+"/api/newqr").error(error)
                 .signature(new ObjectKey(String.valueOf(System.currentTimeMillis())))
                 .fitCenter().into(qrImg);
 
