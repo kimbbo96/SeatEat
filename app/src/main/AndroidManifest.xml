@@ -14,12 +14,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".res_detail"
-            android:parentActivityName=".menu_rest"></activity>
         <activity
-            android:name=".menu_rest"
+            android:name=".ResDetail"
+            android:parentActivityName=".MenuRest"/>
+        <activity
+            android:name=".MenuRest"
             android:label="@string/app_name"
             android:theme="@style/NoActionBar" />
+        <activity
+            android:name=".FoodRest"
+            android:parentActivityName=".ResDetail"/>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

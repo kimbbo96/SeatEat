@@ -1,7 +1,6 @@
 package com.example.myapplication;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.BottomSheetDialogFragment;
@@ -18,8 +17,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.example.myapplication.db_obj.Restaurant;
@@ -39,7 +36,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class menu_rest extends AppCompatActivity
+public class MenuRest extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
 //    Restaurant r1 = new Restaurant("1","Trattoria IV Secolo",
@@ -76,7 +73,6 @@ public class menu_rest extends AppCompatActivity
         setSupportActionBar(toolbar);
         FloatingActionButton fab = findViewById(R.id.fab);
 
-
         OkHttpClient cl = new OkHttpClient(); // inizio la procedura di get
         String url = urlBase+"/api/example/restaurants";
         Request request = new Request.Builder().url(url).build();
@@ -91,7 +87,7 @@ public class menu_rest extends AppCompatActivity
                 System.out.println("hhhhh");
                 if (response.isSuccessful()){
                     final String muresponse = response.body().string();
-                    menu_rest.this.runOnUiThread(new Runnable() {
+                    MenuRest.this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             System.out.println(muresponse);
@@ -115,7 +111,7 @@ public class menu_rest extends AppCompatActivity
 
                                 }
                                 System.out.println("okoko"+list.size());
-                                restaurants =  list.toArray(new Restaurant[list.size()]);
+                                restaurants =  list.toArray(new Restaurant[0]);
 
                                 fab.setOnClickListener(new View.OnClickListener() {
                                     @Override
@@ -135,17 +131,12 @@ public class menu_rest extends AppCompatActivity
                                 fillList(activity, restaurants);
                             }catch (JSONException err){
                                 Log.d("Error", err.toString());
-                            };
+                            }
                         }
                     });
                 }
             }
         });
-
-
-
-
-
     }
 
     static void fillList(Activity activity, Restaurant[] restaurants) {
@@ -160,7 +151,7 @@ public class menu_rest extends AppCompatActivity
 
         listView.setOnItemClickListener((adapterView, view, i, l) -> {
             System.out.println("hai clikkato "+i);
-            Intent intent = new Intent(activity, res_detail.class);
+            Intent intent = new Intent(activity, ResDetail.class);
             intent.putExtra("Restaurant", resList.get(i)); // passo l'oggetto ristorante
             activity.startActivity(intent);
         });
@@ -196,7 +187,6 @@ public class menu_rest extends AppCompatActivity
         } else if (id == R.id.action_filter) {
             return handleFilter();
         }
-
         return super.onOptionsItemSelected(item);
     }
 

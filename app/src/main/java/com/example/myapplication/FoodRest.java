@@ -21,12 +21,12 @@ import com.example.myapplication.db_obj.Food;
 import java.util.ArrayList;
 import java.util.List;
 
-public class food_rest extends AppCompatActivity
+public class FoodRest extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     Food f1 = new Food("1", "Supplì", "Riso, mozzarella, pomodoro...", 1);
-    Food f2 = new Food("1", "Crocchetta", "Patate, mozzarella...", 2);
-    Food f3 = new Food("1", "Fiore di zucca", "Fiore di zucca, mozzarella, alici...", 3);
+    Food f2 = new Food("2", "Crocchetta", "Patate, mozzarella...", 2);
+    Food f3 = new Food("3", "Fiore di zucca", "Fiore di zucca, mozzarella, alici...", 3);
 
 
     String[] foodNames = {f1.getFOOD_TITLE(),f2.getFOOD_TITLE(),f3.getFOOD_TITLE()};
@@ -41,7 +41,7 @@ public class food_rest extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_food_scrolling);
+        setContentView(R.layout.activity_food_rest);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -55,8 +55,8 @@ public class food_rest extends AppCompatActivity
             }
         });*/
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout_food);
+        NavigationView navigationView = findViewById(R.id.nav_view_food);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -83,7 +83,7 @@ public class food_rest extends AppCompatActivity
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 System.out.println("hai clikkato "+i);
-                /*Intent intent = new Intent(food_rest.this,res_detail.class);
+                /*Intent intent = new Intent(FoodRest.this,ResDetail.class);
                 intent.putExtra("Restaurant",resList.get(i)); // passo l'oggetto ristornate
                 startActivity(intent);*/
             }
@@ -104,7 +104,7 @@ public class food_rest extends AppCompatActivity
 /*    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_rest, menu);
+        getMenuInflater().inflate(R.menu.MenuRest, menu);
         return true;
     }
 
