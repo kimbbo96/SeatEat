@@ -31,7 +31,7 @@ import com.google.zxing.integration.android.IntentResult;
 
 import java.lang.reflect.Field;
 
-public class Res_Detail extends AppCompatActivity {
+public class ResDetail extends AppCompatActivity {
     private String path_base = "https://seateat-be.herokuapp.com";
 
     @Override
@@ -83,7 +83,7 @@ public class Res_Detail extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 System.out.println("hai clikkato MENU");
-                Intent intent = new Intent(Res_Detail.this,FoodRest.class);
+                Intent intent = new Intent(ResDetail.this,FoodRest.class);
                 intent.putExtra("Restaurant",rist); // passo l'oggetto ristornate
                 startActivity(intent);
             }

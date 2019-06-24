@@ -39,7 +39,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class Menu_Rest extends AppCompatActivity
+public class MenuRest extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
 //    Restaurant r1 = new Restaurant("1","Trattoria IV Secolo",
@@ -90,7 +90,7 @@ public class Menu_Rest extends AppCompatActivity
             public void onResponse(Call call, Response response) throws IOException {
                 if (response.isSuccessful()){
                     final String muresponse = response.body().string();
-                    Menu_Rest.this.runOnUiThread(new Runnable() {
+                    MenuRest.this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             System.out.println(muresponse);
@@ -159,7 +159,7 @@ public class Menu_Rest extends AppCompatActivity
 
         listView.setOnItemClickListener((adapterView, view, i, l) -> {
             System.out.println("hai clikkato "+i);
-            Intent intent = new Intent(activity, Res_Detail.class);
+            Intent intent = new Intent(activity, ResDetail.class);
             intent.putExtra("Restaurant", resList.get(i)); // passo l'oggetto ristorante
             activity.startActivity(intent);
         });
