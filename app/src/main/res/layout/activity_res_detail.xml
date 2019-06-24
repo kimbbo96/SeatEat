@@ -117,9 +117,9 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
-                android:id="@+id/imageView5"
-                android:layout_width="36dp"
-                android:layout_height="32dp"
+                android:id="@+id/camera"
+                android:layout_width="wrap_content"
+                android:layout_height="21dp"
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="48dp"
                 android:layout_marginEnd="32dp"
