@@ -1,7 +1,6 @@
 package com.example.myapplication;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.design.widget.FloatingActionButton;
@@ -12,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.myapplication.db_obj.Restaurant;
@@ -68,8 +66,8 @@ public class FiltersDialogFragment extends BottomSheetDialogFragment {
             Snackbar.make(view, "Filtriamo cose", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
 
-            Restaurant[] newRests = filterRestaurants(menu_rest.restaurants, filterDistanceView, filterTypologyView);
-            menu_rest.fillList(this.getActivity(), newRests);
+            Restaurant[] newRests = filterRestaurants(MenuRest.restaurants, filterDistanceView, filterTypologyView);
+            MenuRest.fillList(this.getActivity(), newRests);
             this.dismiss();
         });
 

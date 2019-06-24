@@ -26,7 +26,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/resName"
+                android:id="@+id/foodName"
                 android:layout_width="197dp"
                 android:layout_height="29dp"
                 android:layout_marginLeft="16dp"
@@ -35,7 +35,7 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
             <TextView
-                android:id="@+id/resDes"
+                android:id="@+id/foodDes"
                 android:layout_width="144dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
@@ -43,7 +43,7 @@
                 android:text="TextView" />
 
             <TextView
-                android:id="@+id/price"
+                android:id="@+id/foodPrice"
                 android:layout_width="72dp"
                 android:layout_height="20dp"
                 android:layout_marginLeft="325dp"

@@ -23,10 +23,11 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.example.myapplication.db_obj.Restaurant;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import com.example.myapplication.utils.CheckConnection;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -61,13 +62,12 @@ public class menu_rest extends AppCompatActivity
 
     //List<Restaurant> restaurants = new ArrayList<>();
 
+
+
     List<Restaurant> list = new ArrayList();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-        CheckConnection checkConnection = new CheckConnection();
-        System.out.println("aall"+checkConnection.isNetworkConnected(this));
 
         Activity activity = this;
         super.onCreate(savedInstanceState);
@@ -84,7 +84,6 @@ public class menu_rest extends AppCompatActivity
             @Override
             public void onFailure(Call call, IOException e) {
                 e.printStackTrace();
-                System.out.println("AAABBB");
             }
 
             @Override
@@ -95,7 +94,7 @@ public class menu_rest extends AppCompatActivity
                     menu_rest.this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            //System.out.println(muresponse);
+                            System.out.println(muresponse);
                             try {
                                 JSONArray jsonArray = new JSONArray(muresponse);
                                 for (int i = 0 ; i< jsonArray.length(); i++){ // per ogni ristorante
@@ -109,12 +108,13 @@ public class menu_rest extends AppCompatActivity
                                     Double x = Double.valueOf( pos.split(" ")[0]);
                                     Double y = Double.valueOf( pos.split(" ")[1]);
                                     Double[] pos_conv = {x,y};
-                                    //System.out.println("aasd"+jsonRes);
+                                    System.out.println("aasd"+jsonRes);
 
                                     Restaurant restaurant = new Restaurant(id,nome,typology,(float) rating,image,pos_conv);
                                     list.add(restaurant);
 
                                 }
+                                System.out.println("okoko"+list.size());
                                 restaurants =  list.toArray(new Restaurant[list.size()]);
 
                                 fab.setOnClickListener(new View.OnClickListener() {
