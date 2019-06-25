@@ -19,19 +19,21 @@ import android.widget.ListView;
 import com.example.myapplication.db_obj.Food;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class FoodRest extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    Food f1 = new Food("1", "Supplì", "Riso, mozzarella, pomodoro...", 1);
-    Food f2 = new Food("2", "Crocchetta", "Patate, mozzarella...", 2);
-    Food f3 = new Food("3", "Fiore di zucca", "Fiore di zucca, mozzarella, alici...", 3);
+    private static Food f1 = new Food("1", "Supplì", "Riso, mozzarella, pomodoro...", 1, "suppli");
+    private static Food f2 = new Food("2", "Crocchetta", "Patate, mozzarella...", 2, "crocchette");
+    private static Food f3 = new Food("3", "Fiore di zucca", "Fiore di zucca, mozzarella, alici...", 3, "fiori");
 
+    static Food[] foods = {f1, f2, f3};
 
-    String[] foodNames = {f1.getFOOD_TITLE(),f2.getFOOD_TITLE(),f3.getFOOD_TITLE()};
-    String[] foodDes = {f1.getFOOD_DESCRIPTION(),f2.getFOOD_DESCRIPTION(),f3.getFOOD_DESCRIPTION()};
-    Float[] prices = {f1.getFOOD_PRICE(),f2.getFOOD_PRICE(),f3.getFOOD_PRICE()};
+//    String[] foodNames = {f1.getFOOD_TITLE(),f2.getFOOD_TITLE(),f3.getFOOD_TITLE()};
+//    String[] foodDes = {f1.getFOOD_DESCRIPTION(),f2.getFOOD_DESCRIPTION(),f3.getFOOD_DESCRIPTION()};
+//    Float[] prices = {f1.getFOOD_PRICE(),f2.getFOOD_PRICE(),f3.getFOOD_PRICE()};
 
     ListView listView;
     List list = new ArrayList();
@@ -70,27 +72,28 @@ public class FoodRest extends AppCompatActivity
         listView = (ListView) findViewById(R.id.list_view1);
         System.out.println(listView);
 
-        FoodListView customListView = new FoodListView(this,foodNames,foodDes,prices);
+//        FoodListView customListView = new FoodListView(this,foodNames,foodDes,prices);
+        FoodListView customListView = new FoodListView(this, foods);
 
         System.out.println("foooooooodd"+customListView+ listView);
         listView.setAdapter(customListView);
 
-        final List<Food> foodList = new ArrayList<Food>();
-        foodList.add(f1); // prova
-        foodList.add(f2);
-        foodList.add(f3);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                System.out.println("hai clikkato "+i);
-                /*Intent intent = new Intent(FoodRest.this,ResDetail.class);
-                intent.putExtra("Restaurant",resList.get(i)); // passo l'oggetto ristornate
-                startActivity(intent);*/
-            }
+//        final List<Food> foodList = new ArrayList<Food>(Arrays.asList(foods));
+//        foodList.add(f1); // prova
+//        foodList.add(f2);
+//        foodList.add(f3);
+
+        listView.setOnItemClickListener((adapterView, view, i, l) -> {
+            System.out.println("hai clikkato "+i);
+
+            /*Intent intent = new Intent(FoodRest.this,ResDetail.class);
+            intent.putExtra("Restaurant",resList.get(i)); // passo l'oggetto ristornate
+            startActivity(intent);*/
         });
 
     }
 
+    // TODO qui c'è qualcosa che non va, ogni tanto dà errore
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);

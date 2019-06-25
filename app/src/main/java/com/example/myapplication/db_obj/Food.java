@@ -8,13 +8,15 @@ public class Food implements Serializable {
     private String FOOD_TITLE;
     private String FOOD_DESCRIPTION;
     private float FOOD_PRICE;
+    private String FOOD_IMAGE;
 
     public Food(String FOOD_ID, String FOOD_TITLE, String FOOD_DESCRIPTION,
-                      float FOOD_PRICE) {
+                      float FOOD_PRICE, String FOOD_IMAGE) {
         this.FOOD_ID = FOOD_ID;
         this.FOOD_TITLE = FOOD_TITLE;
         this.FOOD_DESCRIPTION = FOOD_DESCRIPTION;
         this.FOOD_PRICE = FOOD_PRICE;
+        this.FOOD_IMAGE = FOOD_IMAGE;
     }
 
     public static String getTAG() {
@@ -35,6 +37,10 @@ public class Food implements Serializable {
 
     public float getFOOD_PRICE() {
         return FOOD_PRICE;
+    }
+
+    public String getFOOD_IMAGE() {
+        return FOOD_IMAGE;
     }
 }
 

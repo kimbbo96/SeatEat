@@ -62,9 +62,7 @@ public class MenuRest extends AppCompatActivity
 
     //List<Restaurant> restaurants = new ArrayList<>();
 
-
-
-    List<Restaurant> list = new ArrayList();
+    List<Restaurant> list = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,7 +112,7 @@ public class MenuRest extends AppCompatActivity
 
                                 }
                                 System.out.println("okoko"+list.size());
-                                restaurants =  list.toArray(new Restaurant[list.size()]);
+                                restaurants =  list.toArray(new Restaurant[0]);
 
                                 fab.setOnClickListener(new View.OnClickListener() {
                                     @Override
@@ -140,11 +138,6 @@ public class MenuRest extends AppCompatActivity
                 }
             }
         });
-
-
-
-
-
     }
 
     static void fillList(Activity activity, Restaurant[] restaurants) {
@@ -155,12 +148,12 @@ public class MenuRest extends AppCompatActivity
 
         System.out.println("aaaaaaaaaaas"+customListView+ listView);
         listView.setAdapter(customListView);
-        final List<Restaurant> resList = new ArrayList<>(Arrays.asList(restaurants));
+//        final List<Restaurant> resList = new ArrayList<>(Arrays.asList(restaurants));
 
         listView.setOnItemClickListener((adapterView, view, i, l) -> {
             System.out.println("hai clikkato "+i);
             Intent intent = new Intent(activity, ResDetail.class);
-            intent.putExtra("Restaurant", resList.get(i)); // passo l'oggetto ristorante
+            intent.putExtra("Restaurant", restaurants[i]); // passo l'oggetto ristorante
             activity.startActivity(intent);
         });
     }
