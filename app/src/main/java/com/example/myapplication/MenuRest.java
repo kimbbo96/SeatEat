@@ -56,13 +56,13 @@ public class MenuRest extends AppCompatActivity
     private static Restaurant r3 = new Restaurant("3","Ristorante Jinja",
             "Giapponese, Cinese",(float)1,"jinja_logo", new Double[] {41.927775, 12.480815});
 
-    static Restaurant[] restaurants = {r1, r2, r3};
+//    static Restaurant[] restaurants = {r1, r2, r3};
     String urlBase = "https://seateat-be.herokuapp.com";
     //static Restaurant[] restaurants;
 
-    //List<Restaurant> restaurants = new ArrayList<>();
+    static List<Restaurant> restaurants = new ArrayList<>();
 
-    List<Restaurant> list = new ArrayList<>();
+//    List<Restaurant> list = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,11 +108,11 @@ public class MenuRest extends AppCompatActivity
                                     System.out.println("aasd"+jsonRes);
 
                                     Restaurant restaurant = new Restaurant(id,nome,typology,(float) rating,image,pos_conv);
-                                    list.add(restaurant);
+                                    restaurants.add(restaurant);
 
                                 }
-                                System.out.println("okoko"+list.size());
-                                restaurants =  list.toArray(new Restaurant[0]);
+                                System.out.println("okoko"+restaurants.size());
+//                                restaurants =  restaurants.toArray(new Restaurant[0]);
 
                                 fab.setOnClickListener(new View.OnClickListener() {
                                     @Override
@@ -140,11 +140,11 @@ public class MenuRest extends AppCompatActivity
         });
     }
 
-    static void fillList(Activity activity, Restaurant[] restaurants) {
+    static void fillList(Activity activity, List<Restaurant> restaurants) {
         ListView listView = activity.findViewById(R.id.list_view1);
         System.out.println(listView);
 
-        RestListView customListView = new RestListView(activity, restaurants);
+        RestListView customListView = new RestListView(activity, restaurants.toArray(new Restaurant[0]));
 
         System.out.println("aaaaaaaaaaas"+customListView+ listView);
         listView.setAdapter(customListView);
@@ -153,7 +153,7 @@ public class MenuRest extends AppCompatActivity
         listView.setOnItemClickListener((adapterView, view, i, l) -> {
             System.out.println("hai clikkato "+i);
             Intent intent = new Intent(activity, ResDetail.class);
-            intent.putExtra("Restaurant", restaurants[i]); // passo l'oggetto ristorante
+            intent.putExtra("Restaurant", restaurants.get(i)); // passo l'oggetto ristorante
             activity.startActivity(intent);
         });
     }

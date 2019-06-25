@@ -1,19 +1,27 @@
 package com.example.myapplication;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.myapplication.db_obj.Restaurant;
+import com.example.myapplication.utils.MyLocation;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -66,7 +74,7 @@ public class FiltersDialogFragment extends BottomSheetDialogFragment {
             Snackbar.make(view, "Filtriamo cose", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
 
-            Restaurant[] newRests = filterRestaurants(MenuRest.restaurants, filterDistanceView, filterTypologyView);
+            List<Restaurant> newRests = filterRestaurants(MenuRest.restaurants, filterDistanceView, filterTypologyView);
             MenuRest.fillList(this.getActivity(), newRests);
             this.dismiss();
         });
@@ -74,44 +82,83 @@ public class FiltersDialogFragment extends BottomSheetDialogFragment {
         return filterDialogueView;
     }
 
-    private Restaurant[] filterRestaurants(Restaurant[] restaurants, ListView distance, ListView typology) {
+    private List<Restaurant> filterRestaurants(List<Restaurant> restaurants, ListView distance, ListView typology) {
         List<Restaurant> newRests = new ArrayList<>();
-        SparseBooleanArray distancePositions = distance.getCheckedItemPositions();
+        int distancePosition = distance.getCheckedItemPosition();
         SparseBooleanArray typologiesPositions = typology.getCheckedItemPositions();
+        boolean hasPos = distancePosition != AdapterView.INVALID_POSITION;
+        boolean hasType = typologiesPositions.size() != 0;
+        Location here = null;
+        Location targetLocation = new Location("");
+        double checkedDistance = -1;
+        List<String> checkedTypologies = new ArrayList<>();
 
-        if (distancePositions.size() == 0 && typologiesPositions.size() == 0) {
+        if (!hasPos && !hasType) {
             return restaurants;
         }
 
-        System.out.println("distances: " + distancePositions.size());
-        List<String> checkedDistances = new ArrayList<>();
-        for (int i = 0; i < distances.length; i++) {
-            if (distancePositions.get(i)) {
-                checkedDistances.add(distances[i]);
-            }
-        }
-        System.out.println(checkedDistances);
+        if (hasPos) {
+            System.out.println("distance str: " + distances[distancePosition]);
+            Double[] intDistances = {1000d, 5000d, 10000d, Double.POSITIVE_INFINITY};
+            checkedDistance = intDistances[distancePosition];
+            System.out.println("distance: " + distances[distancePosition]);
+            System.out.println("distance double: " + checkedDistance);
 
-        System.out.println("typologies size: " + typologiesPositions.size());
-        List<String> checkedTypologies = new ArrayList<>();
-        for (int i = 0; i < typologies.length; i++) {
-            if (typologiesPositions.get(i)) {
-                checkedTypologies.add(typologies[i]);
+//            MyLocation myLoc = new MyLocation(getContext());
+//            Location here = myLoc.getMyLocation();
+            LocationManager lm = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
+            if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                    ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions((Activity) getContext(), new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, 1);
             }
+            here = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            System.out.println("position: " + here);
         }
-        System.out.println("typologies: " + checkedTypologies);
+
+        if (hasType) {
+            System.out.println("typologies size: " + typologiesPositions.size());
+            for (int i = 0; i < typologies.length; i++) {
+                if (typologiesPositions.get(i)) {
+                    checkedTypologies.add(typologies[i]);
+                }
+            }
+            System.out.println("typologies: " + checkedTypologies);
+        }
 
         for (Restaurant r : restaurants) {
-            String[] restTyp = r.getRESTAURANT_TYPOLOGY().split(",");
-            for (String s : restTyp) {
-                s = s.trim();
-                if (checkedTypologies.contains(s)) {
-                    System.out.println("yes" + r);
-                    newRests.add(r);
+            boolean addPos = true;
+            boolean addType = true;
+
+            if (hasType) {
+                String[] restTyp = r.getRESTAURANT_TYPOLOGY().split(",");
+                int typCount = restTyp.length;
+
+                for (String s : restTyp) {
+                    s = s.trim();
+                    if (! checkedTypologies.contains(s)) {
+                        System.out.println("yes" + r);
+                        typCount--;
+                    }
                 }
+                if (typCount == 0)
+                    addType = false;
+            }
+
+            if (hasPos) {
+                targetLocation.setLatitude(r.getRESTAURANT_POSITION()[0]);
+                targetLocation.setLongitude(r.getRESTAURANT_POSITION()[1]);
+                float distanceInMeters =  targetLocation.distanceTo(here);
+
+                if (distanceInMeters > checkedDistance) {
+                    addPos = false;
+                }
+            }
+
+            if (addType && addPos) {
+                newRests.add(r);
             }
         }
         System.out.println(newRests);
-        return newRests.toArray(new Restaurant[0]);
+        return newRests;
     }
 }
