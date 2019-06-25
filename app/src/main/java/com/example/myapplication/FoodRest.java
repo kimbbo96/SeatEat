@@ -45,8 +45,9 @@ public class FoodRest extends AppCompatActivity
 
         setContentView(R.layout.activity_food_rest);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.tool_bar_simple);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         /*FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -57,19 +58,19 @@ public class FoodRest extends AppCompatActivity
             }
         });*/
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout_food);
-        NavigationView navigationView = findViewById(R.id.nav_view_food);
-
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-
-        toggle.syncState();
-        navigationView.setNavigationItemSelectedListener(this);
+//        DrawerLayout drawer = findViewById(R.id.drawer_layout_food);
+//        NavigationView navigationView = findViewById(R.id.nav_view_food);
+//
+//        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+//                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+//        drawer.addDrawerListener(toggle);
+//
+//        toggle.syncState();
+//        navigationView.setNavigationItemSelectedListener(this);
 
         ///////////////////////////////////
 
-        listView = (ListView) findViewById(R.id.list_view1);
+        listView = findViewById(R.id.list_view_food);
         System.out.println(listView);
 
 //        FoodListView customListView = new FoodListView(this,foodNames,foodDes,prices);
@@ -93,10 +94,9 @@ public class FoodRest extends AppCompatActivity
 
     }
 
-    // TODO qui c'è qualcosa che non va, ogni tanto dà errore
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout_food);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -104,12 +104,12 @@ public class FoodRest extends AppCompatActivity
         }
     }
 
-/*    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.MenuRest, menu);
-        return true;
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        getMenuInflater().inflate(R.menu.MenuRest, menu);
+//        return true;
+//    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -121,10 +121,13 @@ public class FoodRest extends AppCompatActivity
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
+        } else if (id == android.R.id.home) {
+            onBackPressed();
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
-    }*/
+    }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override

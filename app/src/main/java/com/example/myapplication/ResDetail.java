@@ -13,6 +13,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.view.View;
 import android.widget.RatingBar;
@@ -42,6 +43,7 @@ public class ResDetail extends AppCompatActivity {
         setSupportActionBar(toolbar);
         //getSupportActionBar().setTitle("SeatEat");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         final Restaurant rist = (Restaurant) getIntent().getSerializableExtra("Restaurant");
         System.out.println(rist.getRESTAURANT_TITLE());
         TextView nome_res = findViewById(R.id.res_name);
@@ -115,12 +117,29 @@ public class ResDetail extends AppCompatActivity {
             }
             else{
                 Toast.makeText(this, result.getContents(),Toast.LENGTH_LONG).show();
-
             }
         }
         else {
 
             super.onActivityResult(requestCode, resultCode, data);
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        } else if (id == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

@@ -42,5 +42,15 @@ public class Food implements Serializable {
     public String getFOOD_IMAGE() {
         return FOOD_IMAGE;
     }
+
+    @Override
+    public String toString() {
+        return "Food{" +
+                "FOOD_ID='" + FOOD_ID + "',\n" +
+                "FOOD_TITLE='" + FOOD_TITLE + "',\n" +
+                "FOOD_DESCRIPTION='" + FOOD_DESCRIPTION + "',\n" +
+                "FOOD_PRICE=" + FOOD_PRICE + "',\n" +
+                "FOOD_IMAGE='" + FOOD_IMAGE + '}';
+    }
 }
 
