@@ -56,7 +56,11 @@ public class RestListView extends ArrayAdapter<String> {
                 ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions((Activity) getContext(), new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         }
-        Location here = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+        Location here = lm.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
+        //todo: tornare a GPS_PROVIDER
+
+        System.out.println("*************"+here);
         Location targetLocation = new Location("");
 
         for (int i = 0; i < restaurants.length; i++) {
@@ -111,7 +115,7 @@ public class RestListView extends ArrayAdapter<String> {
                 .into(viewHolder.ivw);
         viewHolder.tvw1.setText(restName[position]);
         viewHolder.tvw2.setText(restDesc[position]);
-        viewHolder.tvw3.setText(new Formatter().format(Locale.ITALIAN, "%.3f km", restDist[position]/1000f).toString());
+        viewHolder.tvw3.setText(new Formatter().format(Locale.ITALIAN, "%.1f km", restDist[position]/1000f).toString());
         viewHolder.rb.setRating(restRate[position]);
 
         return r;
