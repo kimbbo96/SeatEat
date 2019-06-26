@@ -55,8 +55,9 @@ public class RestListView extends ArrayAdapter<String> {
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions((Activity) getContext(), new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+        } else {
+            MainActivity.here = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         }
-        Location here = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         Location targetLocation = new Location("");
 
         for (int i = 0; i < restaurants.length; i++) {
@@ -69,7 +70,7 @@ public class RestListView extends ArrayAdapter<String> {
 
             targetLocation.setLatitude(restaurants[i].getRESTAURANT_POSITION()[0]);
             targetLocation.setLongitude(restaurants[i].getRESTAURANT_POSITION()[1]);
-            distance[i] = targetLocation.distanceTo(here);
+            distance[i] = targetLocation.distanceTo(MainActivity.here);
         }
 
         this.context = context;
