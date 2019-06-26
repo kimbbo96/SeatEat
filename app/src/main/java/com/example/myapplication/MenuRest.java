@@ -75,8 +75,8 @@ public class MenuRest extends AppCompatActivity
         setSupportActionBar(toolbar);
         FloatingActionButton fab = findViewById(R.id.fab);
 
-
         OkHttpClient cl = new OkHttpClient(); // inizio la procedura di get
+
         String url = urlBase+"/api/example/restaurants";
         Request request = new Request.Builder().url(url).build();
         cl.newCall(request).enqueue(new Callback() {
@@ -87,6 +87,7 @@ public class MenuRest extends AppCompatActivity
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
+
                 if (response.isSuccessful()){
                     final String muresponse = response.body().string();
                     MenuRest.this.runOnUiThread(new Runnable() {
@@ -113,7 +114,7 @@ public class MenuRest extends AppCompatActivity
 
                                 }
                                 System.out.println("okoko"+restaurants.size());
-//                                restaurants =  restaurants.toArray(new Restaurant[0]);
+//                              restaurants =  restaurants.toArray(new Restaurant[0]);
 
                                 fab.setOnClickListener(new View.OnClickListener() {
                                     @Override
