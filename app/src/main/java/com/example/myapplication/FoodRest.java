@@ -115,7 +115,7 @@ public class FoodRest extends AppCompatActivity
                                 JSONArray jsonArray = new JSONArray(muresponse);
                                 for (int i = 0 ; i< jsonArray.length(); i++){ // for each food
                                     JSONObject jsonFood = jsonArray.getJSONObject(i);
-//                                    String id = jsonFood.getString("id");
+                                    String id = jsonFood.getString("id");
                                     String name = jsonFood.getString("nome");
                                     String shordDescr = jsonFood.getString("descrBreve");
                                     String longDescr = jsonFood.getString("descrLunga");
@@ -124,7 +124,7 @@ public class FoodRest extends AppCompatActivity
                                     String image = jsonFood.getString("immagine");
                                     System.out.println("wasd"+jsonFood);
 
-                                    Food food = new Food("0", name, shordDescr, longDescr, dish, price, image);
+                                    Food food = new Food(id, name, shordDescr, longDescr, dish, price, image);
                                     foods.add(food);
                                 }
                                 System.out.println("okoko food" + foods.size());
@@ -132,7 +132,7 @@ public class FoodRest extends AppCompatActivity
                                 listView = findViewById(R.id.list_view_food);
                                 System.out.println(listView);
 
-                                FoodListView customListView = new FoodListView(activity, foods.toArray(new Food[0]));
+                                FoodListView customListView = new FoodListView(activity, foods.toArray(new Food[0]), rist.getRESTAURANT_ID());
 
                                 System.out.println("foooooooodd" + customListView + listView);
                                 listView.setAdapter(customListView);

@@ -22,6 +22,7 @@ class FoodListView extends ArrayAdapter<String> {
     private String[] foodDesc;
     private Double[] foodPrice;
     private String[] foodImage;
+    private String restId;
 
     private String path_base = "https://seateat-be.herokuapp.com";
 
@@ -33,8 +34,9 @@ class FoodListView extends ArrayAdapter<String> {
         this.foodPrice = foodPrice;
     }
 
-    public FoodListView(Activity context, Food[] foods) {
+    public FoodListView(Activity context, Food[] foods, String restId) {
         super(context, R.layout.activity_scrolling_restaurant, getNames(foods));
+        this.restId = restId;
         String[] foodName = new String[foods.length];
         String[] foodDesc = new String[foods.length];
         String[] foodImage = new String[foods.length];
@@ -99,7 +101,7 @@ class FoodListView extends ArrayAdapter<String> {
 
         /* for the image --- online */
         Glide.with(context)
-                .load(Uri.parse(path_base + "/" + foodImage[position]))
+                .load(Uri.parse(path_base + "/resources/menus/" + restId + "/" + foodImage[position]))
                 .into(viewHolder.ivw);
 
         return f;

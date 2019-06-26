@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onLocationChanged(Location location) {
             here = location;
-            System.out.println(location);
+//            System.out.println(location);
 //            Log.i("===Main===", "position: " + location.getLatitude() + ", " + location.getLongitude());
         }
 
