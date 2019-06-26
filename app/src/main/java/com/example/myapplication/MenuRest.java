@@ -132,7 +132,7 @@ public class MenuRest extends AppCompatActivity
                                 fillList(activity, restaurants);
                             }catch (JSONException err){
                                 Log.d("Error", err.toString());
-                            };
+                            }
                         }
                     });
                 }

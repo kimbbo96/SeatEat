@@ -21,7 +21,6 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.myapplication.db_obj.Restaurant;
-import com.example.myapplication.utils.MyLocation;
 
 import java.util.ArrayList;
 import java.util.Arrays;

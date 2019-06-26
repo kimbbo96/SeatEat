@@ -1,11 +1,15 @@
 package com.example.myapplication;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.text.Layout;
+import android.support.v4.app.ActivityCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,14 +21,16 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.myapplication.db_obj.Restaurant;
 
-import java.lang.reflect.Field;
+import java.util.Formatter;
+import java.util.Locale;
 
 public class RestListView extends ArrayAdapter<String> {
     private String[] restName;
     private String[] restDesc;
     private String[] imgId;
+    private Float[] restRate;
+    private Float[] restDist;
     private Activity context;
-    private Float[] rate;
     private String path_base = "https://seateat-be.herokuapp.com";
 
     public RestListView(Activity context, String[] restName, String[] restDesc,
@@ -34,7 +40,7 @@ public class RestListView extends ArrayAdapter<String> {
         this.imgId = imgId;
         this.restDesc = restDesc;
         this.restName = restName;
-        this.rate = rate;
+        this.restRate = rate;
     }
 
     public RestListView(Activity context, Restaurant[] restaurants) {
@@ -43,20 +49,35 @@ public class RestListView extends ArrayAdapter<String> {
         String[] restDesc = new String[restaurants.length];
         String[] imgId = new String[restaurants.length];
         Float[] rate = new Float[restaurants.length];
+        Float[] distance = new Float[restaurants.length];
+
+        LocationManager lm = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions((Activity) getContext(), new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+        }
+        Location here = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        Location targetLocation = new Location("");
+
         for (int i = 0; i < restaurants.length; i++) {
             System.out.println(restaurants[i]);
 
             restName[i] = restaurants[i].getRESTAURANT_TITLE();
             restDesc[i] = restaurants[i].getRESTAURANT_TYPOLOGY();
-
             imgId[i] = restaurants[i].getRESTAURANT_IMAGE();
             rate[i] = restaurants[i].getRESTAURANT_RATING();
+
+            targetLocation.setLatitude(restaurants[i].getRESTAURANT_POSITION()[0]);
+            targetLocation.setLongitude(restaurants[i].getRESTAURANT_POSITION()[1]);
+            distance[i] = targetLocation.distanceTo(here);
         }
+
         this.context = context;
         this.imgId = imgId;
         this.restDesc = restDesc;
         this.restName = restName;
-        this.rate = rate;
+        this.restRate = rate;
+        this.restDist = distance;
     }
 
     private static String[] getNames(Restaurant[] restaurants) {
@@ -90,18 +111,22 @@ public class RestListView extends ArrayAdapter<String> {
                 .into(viewHolder.ivw);
         viewHolder.tvw1.setText(restName[position]);
         viewHolder.tvw2.setText(restDesc[position]);
-        viewHolder.rb.setRating(rate[position]);
+        viewHolder.tvw3.setText(new Formatter().format(Locale.ITALIAN, "%.3f km", restDist[position]/1000f).toString());
+        viewHolder.rb.setRating(restRate[position]);
 
         return r;
     }
     class  ViewHolder{
         TextView tvw1;
         TextView tvw2;
+        TextView tvw3;
         RatingBar rb;
         ImageView ivw;
+
         ViewHolder(View v){
             tvw1 = v.findViewById(R.id.resName);
             tvw2 = v.findViewById(R.id.resDes);
+            tvw3 = v.findViewById(R.id.resDist);
             ivw = v.findViewById(R.id.imageView2);
             rb =  v.findViewById(R.id.ratingBar);
             rb.setNumStars(5);

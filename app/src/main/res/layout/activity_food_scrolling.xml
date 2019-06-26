@@ -55,7 +55,7 @@
                 android:id="@+id/foodPrice"
                 android:layout_width="72dp"
                 android:layout_height="20dp"
-                android:layout_marginStart="325dp"
+                android:layout_marginStart="220dp"
                 android:layout_marginTop="4dp"
                 android:text="TextView" />
 
