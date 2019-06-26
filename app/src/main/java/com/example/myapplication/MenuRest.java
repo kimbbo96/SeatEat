@@ -68,6 +68,7 @@ public class MenuRest extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
 
         Activity activity = this;
+        restaurants.clear();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_rest);
         Toolbar toolbar = findViewById(R.id.toolbar);

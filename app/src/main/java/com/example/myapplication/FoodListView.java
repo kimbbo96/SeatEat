@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -21,12 +20,12 @@ class FoodListView extends ArrayAdapter<String> {
     private Activity context;
     private String[] foodName;
     private String[] foodDesc;
-    private Float[] foodPrice;
+    private Double[] foodPrice;
     private String[] foodImage;
 
     private String path_base = "https://seateat-be.herokuapp.com";
 
-    public FoodListView(Activity context, String[] foodName, String[] foodDesc, Float[] foodPrice) {
+    public FoodListView(Activity context, String[] foodName, String[] foodDesc, Double[] foodPrice) {
         super(context, R.layout.activity_scrolling_restaurant,foodName);
         this.context = context;
         this.foodDesc = foodDesc;
@@ -39,13 +38,13 @@ class FoodListView extends ArrayAdapter<String> {
         String[] foodName = new String[foods.length];
         String[] foodDesc = new String[foods.length];
         String[] foodImage = new String[foods.length];
-        Float[] foodPrice = new Float[foods.length];
+        Double[] foodPrice = new Double[foods.length];
 
         for (int i = 0; i < foods.length; i++) {
             System.out.println(foods[i]);
 
             foodName[i] = foods[i].getFOOD_TITLE();
-            foodDesc[i] = foods[i].getFOOD_DESCRIPTION();
+            foodDesc[i] = foods[i].getFOOD_SHORT_DESCR();
             foodImage[i] = foods[i].getFOOD_IMAGE();
             foodPrice[i] = foods[i].getFOOD_PRICE();
         }
@@ -87,21 +86,21 @@ class FoodListView extends ArrayAdapter<String> {
         viewHolder.tvw3.setText(foodPrice[position] + "€");
 
         /* for the image --- offline */
-        int imgId = -1;
-        try {
-            Class res = R.drawable.class;
-            Field field = res.getField(foodImage[position]);
-            imgId = field.getInt(null);
-        }
-        catch (Exception e) {
-            System.out.println("Restaurant image not found: " + foodImage[position] + ", " + imgId + "\n" + e);
-        }
-        viewHolder.ivw.setImageResource(imgId);
+//        int imgId = -1;
+//        try {
+//            Class res = R.drawable.class;
+//            Field field = res.getField(foodImage[position]);
+//            imgId = field.getInt(null);
+//        }
+//        catch (Exception e) {
+//            System.out.println("Restaurant image not found: " + foodImage[position] + ", " + imgId + "\n" + e);
+//        }
+//        viewHolder.ivw.setImageResource(imgId);
 
         /* for the image --- online */
-//        Glide.with(context)
-//                .load(Uri.parse(path_base + foodImage[position]))
-//                .into(viewHolder.ivw);
+        Glide.with(context)
+                .load(Uri.parse(path_base + "/" + foodImage[position]))
+                .into(viewHolder.ivw);
 
         return f;
     }

@@ -6,15 +6,19 @@ public class Food implements Serializable {
     private static final String TAG = "===Food===";
     private String FOOD_ID;
     private String FOOD_TITLE;
-    private String FOOD_DESCRIPTION;
-    private float FOOD_PRICE;
+    private String FOOD_SHORT_DESCR;
+    private String FOOD_LONG_DESCR;
+    private String FOOD_DISH;
+    private double FOOD_PRICE;
     private String FOOD_IMAGE;
 
-    public Food(String FOOD_ID, String FOOD_TITLE, String FOOD_DESCRIPTION,
-                      float FOOD_PRICE, String FOOD_IMAGE) {
+    public Food(String FOOD_ID, String FOOD_TITLE, String SHORT_DESCR, String LONG_DESCR,
+                String FOOD_DISH, double FOOD_PRICE, String FOOD_IMAGE) {
         this.FOOD_ID = FOOD_ID;
         this.FOOD_TITLE = FOOD_TITLE;
-        this.FOOD_DESCRIPTION = FOOD_DESCRIPTION;
+        this.FOOD_SHORT_DESCR = SHORT_DESCR;
+        this.FOOD_LONG_DESCR = LONG_DESCR;
+        this.FOOD_DISH = FOOD_DISH;
         this.FOOD_PRICE = FOOD_PRICE;
         this.FOOD_IMAGE = FOOD_IMAGE;
     }
@@ -31,11 +35,19 @@ public class Food implements Serializable {
         return FOOD_TITLE;
     }
 
-    public String getFOOD_DESCRIPTION() {
-        return FOOD_DESCRIPTION;
+    public String getFOOD_SHORT_DESCR() {
+        return FOOD_SHORT_DESCR;
     }
 
-    public float getFOOD_PRICE() {
+    public String getFOOD_LONG_DESCR() {
+        return FOOD_LONG_DESCR;
+    }
+
+    public String getFOOD_DISH() {
+        return FOOD_DISH;
+    }
+
+    public double getFOOD_PRICE() {
         return FOOD_PRICE;
     }
 
@@ -48,7 +60,7 @@ public class Food implements Serializable {
         return "Food{" +
                 "FOOD_ID='" + FOOD_ID + "',\n" +
                 "FOOD_TITLE='" + FOOD_TITLE + "',\n" +
-                "FOOD_DESCRIPTION='" + FOOD_DESCRIPTION + "',\n" +
+                "FOOD_SHORT_DESCR='" + FOOD_SHORT_DESCR + "',\n" +
                 "FOOD_PRICE=" + FOOD_PRICE + "',\n" +
                 "FOOD_IMAGE='" + FOOD_IMAGE + '}';
     }
