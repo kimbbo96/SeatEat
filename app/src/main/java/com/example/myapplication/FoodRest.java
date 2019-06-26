@@ -47,7 +47,7 @@ public class FoodRest extends AppCompatActivity
 //    private static Food f3 = new Food("3", "Fiore di zucca", "Fiore di zucca, mozzarella, alici...", 3, "fiori");
 
 //    static Food[] foods = {f1, f2, f3};
-    static List<Food> foods = new ArrayList<>();
+    List<Food> foods = new ArrayList<>();
 
 //    String[] foodNames = {f1.getFOOD_TITLE(),f2.getFOOD_TITLE(),f3.getFOOD_TITLE()};
 //    String[] foodDes = {f1.getFOOD_SHORT_DESCR(),f2.getFOOD_SHORT_DESCR(),f3.getFOOD_SHORT_DESCR()};
@@ -64,7 +64,8 @@ public class FoodRest extends AppCompatActivity
         setContentView(R.layout.activity_food_rest);
 
         Activity activity = this;
-        foods.clear();
+//        foods.clear();
+        final Restaurant rist = (Restaurant) getIntent().getSerializableExtra("Restaurant");
 
         Toolbar toolbar = findViewById(R.id.tool_bar_simple);
         setSupportActionBar(toolbar);
@@ -91,7 +92,7 @@ public class FoodRest extends AppCompatActivity
 
         ///////////////////////////////////
 
-        int idRest = 1; // TODO prendere ID ristorante giusto
+        String idRest = rist.getRESTAURANT_ID();
         OkHttpClient cl = new OkHttpClient(); // inizio la procedura di get
         String url = urlBase + "/api/menus/" + idRest;
         Request request = new Request.Builder().url(url).build();
@@ -118,13 +119,13 @@ public class FoodRest extends AppCompatActivity
                                     String name = jsonFood.getString("nome");
                                     String shordDescr = jsonFood.getString("descrBreve");
                                     String longDescr = jsonFood.getString("descrLunga");
+                                    String dish = jsonFood.getString("portata");
                                     double price = jsonFood.getDouble("costo");
                                     String image = jsonFood.getString("immagine");
                                     System.out.println("wasd"+jsonFood);
 
-                                    Food food = new Food("0", name, shordDescr, longDescr, price, image);
+                                    Food food = new Food("0", name, shordDescr, longDescr, dish, price, image);
                                     foods.add(food);
-
                                 }
                                 System.out.println("okoko food" + foods.size());
 

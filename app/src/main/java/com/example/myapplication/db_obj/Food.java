@@ -8,15 +8,17 @@ public class Food implements Serializable {
     private String FOOD_TITLE;
     private String FOOD_SHORT_DESCR;
     private String FOOD_LONG_DESCR;
+    private String FOOD_DISH;
     private double FOOD_PRICE;
     private String FOOD_IMAGE;
 
     public Food(String FOOD_ID, String FOOD_TITLE, String SHORT_DESCR, String LONG_DESCR,
-                      double FOOD_PRICE, String FOOD_IMAGE) {
+                String FOOD_DISH, double FOOD_PRICE, String FOOD_IMAGE) {
         this.FOOD_ID = FOOD_ID;
         this.FOOD_TITLE = FOOD_TITLE;
         this.FOOD_SHORT_DESCR = SHORT_DESCR;
         this.FOOD_LONG_DESCR = LONG_DESCR;
+        this.FOOD_DISH = FOOD_DISH;
         this.FOOD_PRICE = FOOD_PRICE;
         this.FOOD_IMAGE = FOOD_IMAGE;
     }
@@ -39,6 +41,10 @@ public class Food implements Serializable {
 
     public String getFOOD_LONG_DESCR() {
         return FOOD_LONG_DESCR;
+    }
+
+    public String getFOOD_DISH() {
+        return FOOD_DISH;
     }
 
     public double getFOOD_PRICE() {
