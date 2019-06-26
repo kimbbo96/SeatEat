@@ -112,7 +112,7 @@ public class RestListView extends ArrayAdapter<String> {
                 .into(viewHolder.ivw);
         viewHolder.tvw1.setText(restName[position]);
         viewHolder.tvw2.setText(restDesc[position]);
-        viewHolder.tvw3.setText(new Formatter().format(Locale.ITALIAN, "%.3f km", restDist[position]/1000f).toString());
+        viewHolder.tvw3.setText(new Formatter().format(Locale.ITALIAN, "%.1f km", restDist[position]/1000f).toString());
         viewHolder.rb.setRating(restRate[position]);
 
         return r;
