@@ -107,11 +107,6 @@ public class MainActivity extends AppCompatActivity {
             Intent i = new Intent(MainActivity.this, Login.class);
             startActivity(i);
             finish();
-
-            editor = preferences.edit();
-            editor.putString("nome", "ficarra");
-            editor.putBoolean("savelogin", true);
-            editor.apply();
         }
     }
 }
