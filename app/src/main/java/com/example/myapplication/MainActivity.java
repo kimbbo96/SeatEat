@@ -23,7 +23,15 @@ public class MainActivity extends AppCompatActivity {
     SharedPreferences.Editor editor;
 
     private static int TIME_OUT = 1500;
+    private static double[] PDR_POS = {41.971655, 12.540330};
+    private static double[] SAPI_POS = {41.899189, 12.517717};
+    private static double[] DEFAULT_POS = PDR_POS;
     public static Location here = new Location("");
+    static {
+        here.setLatitude(DEFAULT_POS[0]);
+        here.setLongitude(DEFAULT_POS[1]);
+    }
+
     private LocationManager lm;
     private LocationListener locationListener = new LocationListener() {
         @Override
@@ -62,25 +70,28 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        // Get location or location permission
+        lm = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        try {
+            lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+        } catch (SecurityException se) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+        }
+
+        // Handle login
         preferences = getSharedPreferences("loginref", MODE_PRIVATE);
-        Boolean savelogin = preferences.getBoolean("savelogin", false);
+        boolean savelogin = preferences.getBoolean("savelogin", false);
         System.out.println("ghjkl");
-        if (savelogin == true) {
+        if (savelogin) {
             System.out.println("true valore");
             Toast.makeText(this, "ciao" + preferences.getString("nome", null), Toast.LENGTH_LONG).show();
             System.out.println(preferences.getString("nome", null));
 
-
-            super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main);
-            lm = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 
-            try {
-                lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
-            } catch (SecurityException se) {
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-            }
-
+            // Show logo
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -91,6 +102,7 @@ public class MainActivity extends AppCompatActivity {
             }, TIME_OUT);
         }
         else {
+            // Session management
             Toast.makeText(this,"prima volta", Toast.LENGTH_LONG).show();
             Intent i = new Intent(MainActivity.this, Login.class);
             startActivity(i);
@@ -99,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
             editor = preferences.edit();
             editor.putString("nome", "ficarra");
             editor.putBoolean("savelogin", true);
-            editor.commit();
+            editor.apply();
         }
     }
 }
