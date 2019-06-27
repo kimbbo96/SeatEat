@@ -5,8 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".FoodRest"
-    tools:showIn="@layout/app_bar_food_rest">
+    tools:context=".FoodRest" >
+    <!--tools:showIn="@layout/app_bar_food_rest"-->
+
+    <!--<TextView-->
+        <!--android:id="@+id/text_food"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginTop="200dp"-->
+        <!--android:text="ciaoooooo"-->
+        <!--android:textAppearance="@style/TextAppearance.AppCompat.Large"-->
+        <!--app:layout_constraintBottom_toBottomOf="parent" />-->
 
     <ListView
         android:id="@+id/list_view_food"

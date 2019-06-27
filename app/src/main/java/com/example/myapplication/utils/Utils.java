@@ -1,5 +1,11 @@
 package com.example.myapplication.utils;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class Utils {
 
     /**
@@ -31,5 +37,14 @@ public class Utils {
         System.out.println(d);
 
         double[] portaDiRoma = {41.971655, 12.540330};
+
+        Map<String, List<String>> dishes = new HashMap<>();
+        List<String> foods = new ArrayList<>(Arrays.asList("gnocchi", "pasta", "riso"));
+        dishes.put("primo", foods);
+        List<String> secondi = dishes.getOrDefault("secondo", new ArrayList<>());
+        secondi.add("bistecca");
+        dishes.put("secondo", secondi);
+        dishes.computeIfAbsent("contorno", k -> new ArrayList<>()).add("pomodori");
+        System.out.println(dishes);
     }
 }

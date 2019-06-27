@@ -11,11 +11,17 @@
         tools:layout_editor_absoluteX="24dp"
         tools:layout_editor_absoluteY="3dp" />
 
-    <include
-        layout="@layout/content_food_rest"
-        android:layout_height="match_parent"
+    <FrameLayout
+        android:id="@+id/head_container"
         android:layout_width="match_parent"
-        android:layout_marginTop="?attr/actionBarSize" />
+        android:layout_height="match_parent"
+        android:scaleType="centerInside" />
+
+    <!--<include-->
+        <!--layout="@layout/content_food_rest"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_marginTop="?attr/actionBarSize" />-->
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_food"
