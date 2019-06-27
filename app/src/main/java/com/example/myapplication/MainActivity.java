@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     private static double[] DEFAULT_POS = PDR_POS;
     public static Location here = new Location("");
     static {
+        // If the first registered position isn't the real one, we can approximate with a likely one
         here.setLatitude(DEFAULT_POS[0]);
         here.setLongitude(DEFAULT_POS[1]);
     }
