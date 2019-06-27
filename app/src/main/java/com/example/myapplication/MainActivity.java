@@ -96,10 +96,6 @@ public class MainActivity extends AppCompatActivity {
             startActivity(i);
             finish();
 
-            editor = preferences.edit();
-            editor.putString("nome", "ficarra");
-            editor.putBoolean("savelogin", true);
-            editor.commit();
         }
     }
 }
