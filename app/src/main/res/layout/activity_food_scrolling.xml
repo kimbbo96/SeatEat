@@ -77,7 +77,8 @@
             app:layout_constraintStart_toEndOf="@+id/foodName"
             app:layout_constraintTop_toTopOf="@+id/foodName"
             app:srcCompat="@drawable/add_circle_black"
-            android:tint="@color/colorPrimaryDark" />
+            android:tint="@color/colorPrimaryDark"
+            android:contentDescription="add food" />
 
         <ImageButton
             android:id="@+id/removeFoodButton"
@@ -91,8 +92,8 @@
             app:layout_constraintStart_toEndOf="@+id/addFoodButton"
             app:layout_constraintTop_toTopOf="@+id/foodName"
             app:srcCompat="@drawable/remove_circle_black"
-            android:tint="@color/colorPrimaryDark" />
-
+            android:tint="@color/colorPrimaryDark"
+            android:contentDescription="remove food" />
 
     </android.support.constraint.ConstraintLayout>
 
