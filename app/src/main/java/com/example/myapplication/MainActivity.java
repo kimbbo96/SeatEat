@@ -20,7 +20,6 @@ import com.example.myapplication.utils.UserSession;
 public class MainActivity extends AppCompatActivity {
 
     SharedPreferences preferences;
-    SharedPreferences.Editor editor;
 
     private static int TIME_OUT = 1500;
     private static double[] PDR_POS = {41.971655, 12.540330};

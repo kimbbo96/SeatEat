@@ -3,6 +3,7 @@ package com.example.myapplication;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.design.widget.FloatingActionButton;
@@ -21,6 +22,7 @@ import android.view.Menu;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.myapplication.db_obj.Restaurant;
 
@@ -41,6 +43,8 @@ import okhttp3.Response;
 
 public class MenuRest extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    SharedPreferences preferences;
+
 
 //    Restaurant r1 = new Restaurant("1","Trattoria IV Secolo",
 //            "Trattoria, Italiano",(float)6,"image", new Double[] {42.002780, 12.384011});
@@ -66,7 +70,6 @@ public class MenuRest extends AppCompatActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         Activity activity = this;
         restaurants.clear();
         super.onCreate(savedInstanceState);
@@ -172,6 +175,13 @@ public class MenuRest extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
+        preferences = getSharedPreferences("loginref", MODE_PRIVATE);
+        TextView name_tab = findViewById(R.id.usr_name_tab);
+        name_tab.setText( preferences.getString("nome", null));
+
+
+
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_rest, menu);
         return true;
