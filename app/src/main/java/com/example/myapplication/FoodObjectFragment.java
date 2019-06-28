@@ -57,15 +57,10 @@ public class FoodObjectFragment extends Fragment {
         }
 
         ListView listView = view.findViewById(R.id.list_view_food);
-        System.out.println(listView);
-
         FoodListView customListView = new FoodListView(getActivity(), foods.toArray(new Food[0]), restID);
-
         listView.setAdapter(customListView);
-
         listView.setOnItemClickListener((adapterView, v, i, l) -> {
             System.out.println("hai clikkato "+i);
-
             /*Intent intent = new Intent(FoodRest.this,ResDetail.class);
             intent.putExtra("Restaurant",resList.get(i)); // passo l'oggetto ristornate
             startActivity(intent);*/

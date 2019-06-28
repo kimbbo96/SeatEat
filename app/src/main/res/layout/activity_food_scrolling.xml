@@ -15,7 +15,8 @@
         android:clickable="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:descendantFocusability="blocksDescendants" >
 
         <ImageView
             android:id="@+id/foodImg"
@@ -78,7 +79,9 @@
             app:layout_constraintTop_toTopOf="@+id/foodName"
             app:srcCompat="@drawable/add_circle_black"
             android:tint="@color/colorPrimaryDark"
-            android:contentDescription="add food" />
+            android:contentDescription="add food"
+            android:elevation="6dp"
+            android:stateListAnimator="@animator/button_elevation" />
 
         <ImageButton
             android:id="@+id/removeFoodButton"
@@ -93,7 +96,9 @@
             app:layout_constraintTop_toTopOf="@+id/foodName"
             app:srcCompat="@drawable/remove_circle_black"
             android:tint="@color/colorPrimaryDark"
-            android:contentDescription="remove food" />
+            android:contentDescription="remove food"
+            android:elevation="6dp"
+            android:stateListAnimator="@animator/button_elevation" />
 
     </android.support.constraint.ConstraintLayout>
 

@@ -4,10 +4,13 @@ import android.app.Activity;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,6 +25,7 @@ class FoodListView extends ArrayAdapter<String> {
     private String[] foodDesc;
     private Double[] foodPrice;
     private String[] foodImage;
+    private String[] foodId;
     private String restId;
 
     private String path_base = "https://seateat-be.herokuapp.com";
@@ -41,6 +45,7 @@ class FoodListView extends ArrayAdapter<String> {
         String[] foodDesc = new String[foods.length];
         String[] foodImage = new String[foods.length];
         Double[] foodPrice = new Double[foods.length];
+        String[] foodId = new String[foods.length];
 
         for (int i = 0; i < foods.length; i++) {
             System.out.println(foods[i]);
@@ -49,6 +54,7 @@ class FoodListView extends ArrayAdapter<String> {
             foodDesc[i] = foods[i].getFOOD_SHORT_DESCR();
             foodImage[i] = foods[i].getFOOD_IMAGE();
             foodPrice[i] = foods[i].getFOOD_PRICE();
+            foodId[i] = foods[i].getFOOD_ID();
         }
 
         this.context = context;
@@ -56,6 +62,7 @@ class FoodListView extends ArrayAdapter<String> {
         this.foodDesc = foodDesc;
         this.foodImage = foodImage;
         this.foodPrice = foodPrice;
+        this.foodId = foodId;
     }
 
     private static String[] getNames(Food[] foods) {
@@ -104,6 +111,21 @@ class FoodListView extends ArrayAdapter<String> {
                 .load(Uri.parse(path_base + "/resources/menus/" + restId + "/" + foodImage[position]))
                 .into(viewHolder.ivw);
 
+        ImageButton addIB = viewHolder.addButton;
+        // TODO manage chart
+        addIB.setOnClickListener(view -> {
+            Snackbar.make(view, "Food " + foodId[position] + " (" + foodName[position] + ") added to the chart", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
+
+        });
+
+        ImageButton remIB = viewHolder.removeButton;
+        // TODO manage chart
+        remIB.setOnClickListener(view -> {
+            Snackbar.make(view, "Food " + foodId[position] + " (" + foodName[position] + ") removed from the chart", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
+        });
+
         return f;
     }
 
@@ -112,11 +134,16 @@ class FoodListView extends ArrayAdapter<String> {
         TextView tvw2;
         TextView tvw3;
         ImageView ivw;
+        ImageButton addButton;
+        ImageButton removeButton;
+
         ViewHolder(View v){
             tvw1 = v.findViewById(R.id.foodName);
             tvw2 = v.findViewById(R.id.foodDes);
             tvw3 = v.findViewById(R.id.foodPrice);
             ivw = v.findViewById(R.id.foodImg);
+            addButton = v.findViewById(R.id.addFoodButton);
+            removeButton = v.findViewById(R.id.removeFoodButton);
         }
     }
 }
