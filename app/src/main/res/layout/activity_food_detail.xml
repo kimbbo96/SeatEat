@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ResDetail" >
+
+    <include
+        layout="@layout/app_bar"
+        tools:layout_editor_absoluteX="24dp"
+        tools:layout_editor_absoluteY="3dp" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical"
+        android:fadeScrollbars="false" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/copertina"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginTop="0dp"
+                android:paddingTop="0dp"
+                android:scaleType="centerCrop"
+                android:background="@drawable/fiori"
+                android:src="@drawable/transparent_black"
+                android:elevation="4dp"/>
+
+            <TextView
+                android:id="@+id/food_name"
+                android:layout_width="199dp"
+                android:layout_height="88dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="-120dp"
+                android:layout_marginEnd="32dp"
+                android:gravity="center"
+                android:paddingVertical="8dp"
+                android:text="Piatto"
+                android:textSize="30sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:textColor="@android:color/white"
+                android:elevation="4dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="56dp"
+                android:paddingVertical="8dp">
+
+                <TextView
+                    android:id="@+id/textViewPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginEnd="32dp"
+                    android:layout_gravity="start"
+                    android:text="5€"
+                    android:textSize="18sp" />
+
+                <ImageButton
+                    android:id="@+id/addFoodButton"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginStart="208dp"
+                    android:padding="0dp"
+                    android:scaleType="centerCrop"
+                    android:layout_gravity="end"
+                    app:srcCompat="@drawable/add_circle_black"
+                    android:tint="@color/colorPrimaryDark"
+                    android:contentDescription="add food"
+                    android:elevation="6dp"
+                    android:stateListAnimator="@animator/button_elevation" />
+
+                <ImageButton
+                    android:id="@+id/removeFoodButton"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:padding="0dp"
+                    android:scaleType="centerCrop"
+                    android:layout_gravity="end"
+                    app:srcCompat="@drawable/remove_circle_black"
+                    android:tint="@color/colorPrimaryDark"
+                    android:contentDescription="remove food"
+                    android:elevation="6dp"
+                    android:stateListAnimator="@animator/button_elevation" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                android:layout_gravity="start"
+                android:text="Dettagli:"
+                android:textSize="24sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                android:layout_gravity="start"
+                android:text="cibo, cibo, cibo."
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                android:layout_gravity="start"
+                android:text="Note:"
+                android:textSize="24sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <EditText
+                android:id="@+id/editText"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:ems="10"
+                android:layout_marginTop="24dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                android:gravity="start|top"
+                android:inputType="textMultiLine" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/ordina_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="60dp"
+        android:background="@color/colorAccentLight"
+        android:contentDescription="Ordina"
+        android:marginStart="24dp"
+        android:marginBottom="24dp"
+        android:padding="16dp"
+        android:text="Ordina"
+        app:icon="@drawable/send_black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</android.support.constraint.ConstraintLayout>
