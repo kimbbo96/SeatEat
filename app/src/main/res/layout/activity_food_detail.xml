@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ResDetail" >
+    tools:context=".ResDetail"
+    android:theme="@style/Theme.MaterialComponents">
 
     <include
         layout="@layout/app_bar"
@@ -154,11 +155,10 @@
         android:id="@+id/ordina_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
         android:layout_marginBottom="60dp"
-        android:background="@color/colorAccentLight"
+        android:backgroundTint="@color/colorAccent"
         android:contentDescription="Ordina"
-        android:marginStart="24dp"
-        android:marginBottom="24dp"
         android:padding="16dp"
         android:text="Ordina"
         app:icon="@drawable/send_black"
@@ -166,4 +166,4 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
