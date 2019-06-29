@@ -227,6 +227,12 @@ public class MenuRest extends AppCompatActivity
 
         }
 
+        else if (id == R.id.nav_settings){
+            Intent intent = new Intent(getApplicationContext(), Settings.class);
+            startActivity(intent);
+
+        }
+
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
