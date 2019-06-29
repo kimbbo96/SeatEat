@@ -25,7 +25,7 @@ class FoodListView extends ArrayAdapter<String> {
     private String[] foodId;
     private String restId;
 
-    private String path_base = "https://seateat-be.herokuapp.com";
+    private final String path_base = "https://seateat-be.herokuapp.com";
 
     public FoodListView(Activity context, String[] foodName, String[] foodDesc, Double[] foodPrice) {
         super(context, R.layout.activity_scrolling_restaurant,foodName);

@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -59,10 +60,10 @@ public class FoodObjectFragment extends Fragment {
         listView.setAdapter(customListView);
         listView.setOnItemClickListener((adapterView, v, i, l) -> {
             System.out.println("hai clikkato "+i);
-            /*Intent intent = new Intent(FoodRest.this,ResDetail.class);
-            intent.putExtra("Restaurant",resList.get(i)); // passo l'oggetto ristornate
-            startActivity(intent);*/
+            Intent intent = new Intent(getActivity(), FoodDetail.class);
+            intent.putExtra("Food", foods.get(i)); // passo l'oggetto Food
+            intent.putExtra("RestID", restID);
+            startActivity(intent);
         });
-
     }
 }

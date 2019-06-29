@@ -31,7 +31,7 @@ public class RestListView extends ArrayAdapter<String> {
     private Float[] restRate;
     private Float[] restDist;
     private Activity context;
-    private String path_base = "https://seateat-be.herokuapp.com";
+    private final String path_base = "https://seateat-be.herokuapp.com";
 
     public RestListView(Activity context, String[] restName, String[] restDesc,
                         String[] imgId, Float[] rate) {

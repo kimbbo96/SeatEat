@@ -85,6 +85,7 @@ public class ResDetail extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
         ImageView cameraimg = findViewById(R.id.camera);
         cameraimg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,7 +99,6 @@ public class ResDetail extends AppCompatActivity {
                 integrator.setBeepEnabled(false);
                 integrator.setBarcodeImageEnabled(false);
                 integrator.initiateScan();
-
             }
         });
     }
