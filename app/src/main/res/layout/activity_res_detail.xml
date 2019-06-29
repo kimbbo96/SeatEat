@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -31,12 +31,13 @@
                 android:paddingTop="0dp"
                 android:scaleType="centerCrop"
                 android:background="@drawable/panizzeri_logo"
-                android:src="@drawable/transparent_black" />
+                android:src="@drawable/transparent_black"
+                android:elevation="4dp"/>
 
             <TextView
                 android:id="@+id/res_name"
                 android:layout_width="199dp"
-                android:layout_height="84dp"
+                android:layout_height="88dp"
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="-140dp"
                 android:layout_marginEnd="32dp"
@@ -47,7 +48,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:textColor="@android:color/white"/>
+                android:textColor="@android:color/white"
+                android:elevation="4dp" />
 
             <TextView
                 android:id="@+id/res_type"
@@ -61,7 +63,8 @@
                 android:textSize="18sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:textColor="@android:color/white" />
+                android:textColor="@android:color/white"
+                android:elevation="4dp" />
 
             <RatingBar
                 android:id="@+id/ratingBar2"
@@ -141,4 +144,4 @@
         </LinearLayout>
     </ScrollView>
 
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

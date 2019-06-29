@@ -1,17 +1,16 @@
 package com.example.myapplication;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.TextView;
 
-import com.example.myapplication.R;
 import com.example.myapplication.db_obj.Food;
 
 import org.json.JSONException;
@@ -61,10 +60,10 @@ public class FoodObjectFragment extends Fragment {
         listView.setAdapter(customListView);
         listView.setOnItemClickListener((adapterView, v, i, l) -> {
             System.out.println("hai clikkato "+i);
-            /*Intent intent = new Intent(FoodRest.this,ResDetail.class);
-            intent.putExtra("Restaurant",resList.get(i)); // passo l'oggetto ristornate
-            startActivity(intent);*/
+            Intent intent = new Intent(getActivity(), FoodDetail.class);
+            intent.putExtra("Food", foods.get(i)); // passo l'oggetto Food
+            intent.putExtra("RestID", restID);
+            startActivity(intent);
         });
-
     }
 }

@@ -2,22 +2,19 @@ package com.example.myapplication;
 
 import android.app.Activity;
 import android.net.Uri;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import com.google.android.material.snackbar.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.myapplication.db_obj.Food;
-
-import java.lang.reflect.Field;
 
 class FoodListView extends ArrayAdapter<String> {
     private Activity context;
@@ -28,7 +25,7 @@ class FoodListView extends ArrayAdapter<String> {
     private String[] foodId;
     private String restId;
 
-    private String path_base = "https://seateat-be.herokuapp.com";
+    private final String path_base = "https://seateat-be.herokuapp.com";
 
     public FoodListView(Activity context, String[] foodName, String[] foodDesc, Double[] foodPrice) {
         super(context, R.layout.activity_scrolling_restaurant,foodName);
