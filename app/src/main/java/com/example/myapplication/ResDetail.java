@@ -13,6 +13,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Button;
@@ -49,6 +50,7 @@ public class ResDetail extends AppCompatActivity {
 
         ImageView copertina = findViewById(R.id.copertina);
         String imgName = rist.getRESTAURANT_IMAGE();
+        ProgressBar QRprogressBar = findViewById(R.id.progressBarQR);
 
         Activity activity = this;
         Glide.with(activity).load(Uri.parse(path_base+imgName)).into(new CustomViewTarget<ImageView, Drawable>(copertina) {
@@ -71,6 +73,7 @@ public class ResDetail extends AppCompatActivity {
         Glide.with(this).load(path_base+"/api/newqr").error(error)
                 .signature(new ObjectKey(String.valueOf(System.currentTimeMillis())))
                 .fitCenter().into(qrImg);
+        QRprogressBar.setVisibility(View.GONE);
 
         RatingBar ratingBar = findViewById(R.id.ratingBar2);
         ratingBar.setEnabled(false);

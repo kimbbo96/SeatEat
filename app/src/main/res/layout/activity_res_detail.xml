@@ -81,6 +81,32 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ProgressBar
+                    android:id="@+id/progressBarQR"
+                    style="?android:attr/progressBarStyle"
+                    android:layout_width="303dp"
+                    android:layout_height="183dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginEnd="-254dp"
+                    android:layout_toStartOf="@+id/imageView3" />
+
+                <ImageView
+                    android:id="@+id/imageView3"
+                    android:layout_width="148dp"
+                    android:layout_height="148dp"
+                    android:layout_centerInParent="true"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="48dp"
+                    android:layout_marginEnd="32dp"
+                    android:src="@drawable/loading"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </RelativeLayout>
+
             <Button
                 android:id="@+id/menu_button"
                 android:layout_width="wrap_content"
@@ -93,17 +119,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 android:background="@color/colorAccentLight"/>
-
-            <ImageView
-                android:id="@+id/imageView3"
-                android:layout_width="148dp"
-                android:layout_height="148dp"
-                android:layout_marginStart="32dp"
-                android:layout_marginTop="48dp"
-                android:layout_marginEnd="32dp"
-                android:src="@drawable/loading"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/textView4"

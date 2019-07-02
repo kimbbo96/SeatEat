@@ -19,7 +19,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.myapplication.db_obj.Restaurant;
 
@@ -73,6 +75,7 @@ public class MenuRest extends AppCompatActivity
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         FloatingActionButton fab = findViewById(R.id.fab);
+        ProgressBar progressBarResList = findViewById(R.id.progressBarResList);
 
         OkHttpClient cl = new OkHttpClient(); // inizio la procedura di get
 
@@ -82,6 +85,7 @@ public class MenuRest extends AppCompatActivity
             @Override
             public void onFailure(Call call, IOException e) {
                 e.printStackTrace();
+
             }
 
             @Override
@@ -129,7 +133,7 @@ public class MenuRest extends AppCompatActivity
                                 drawer.addDrawerListener(toggle);
                                 toggle.syncState();
                                 navigationView.setNavigationItemSelectedListener((NavigationView.OnNavigationItemSelectedListener) activity);
-
+                                progressBarResList.setVisibility(View.GONE);
                                 fillList(activity, restaurants);
                             }catch (JSONException err){
                                 Log.d("Error", err.toString());
