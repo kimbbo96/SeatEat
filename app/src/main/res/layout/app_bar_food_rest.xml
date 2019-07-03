@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FoodRest">
+    tools:context=".FoodRest"
+    android:theme="@style/Theme.MaterialComponents" >
 
     <include
         layout="@layout/app_bar"
@@ -23,13 +24,30 @@
         <!--android:layout_width="match_parent"-->
         <!--android:layout_marginTop="?attr/actionBarSize" />-->
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <!--<com.google.android.material.floatingactionbutton.FloatingActionButton-->
+        <!--android:id="@+id/fab_food"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="bottom|end"-->
+        <!--android:layout_margin="@dimen/fab_margin"-->
+        <!--android:backgroundTint="@color/colorAccent"-->
+        <!--app:srcCompat="@drawable/send_black" />-->
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/fab_food"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
+        android:padding="16dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="48dp"
+        android:layout_gravity="bottom|center"
         android:backgroundTint="@color/colorAccent"
-        app:srcCompat="@drawable/send_black" />
+        android:contentDescription="Carrello"
+        android:text="Totale: 0€"
+        app:icon="@drawable/add_to_cart"
+        app:iconGravity="start"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

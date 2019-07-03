@@ -1,6 +1,8 @@
 package com.example.myapplication;
 
 import android.os.Bundle;
+
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
@@ -56,7 +58,7 @@ public class FoodRest extends AppCompatActivity
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        FloatingActionButton fab = findViewById(R.id.fab_food);
+        ExtendedFloatingActionButton fab = findViewById(R.id.fab_food);
         fab.setOnClickListener(view -> Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show());
 
@@ -123,7 +125,6 @@ public class FoodRest extends AppCompatActivity
                 }
             }
         });
-
     }
 
     @Override

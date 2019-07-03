@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.net.Uri;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,14 +18,19 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.myapplication.db_obj.Food;
 
+import java.util.ArrayList;
+import java.util.List;
+
 class FoodListView extends ArrayAdapter<String> {
     private Activity context;
+    private Food[] foods;
     private String[] foodName;
     private String[] foodDesc;
     private Double[] foodPrice;
     private String[] foodImage;
     private String[] foodId;
     private String restId;
+    private List<Food> cart = new ArrayList<>();
 
     private final String path_base = "https://seateat-be.herokuapp.com";
 
@@ -37,6 +44,7 @@ class FoodListView extends ArrayAdapter<String> {
 
     public FoodListView(Activity context, Food[] foods, String restId) {
         super(context, R.layout.activity_scrolling_restaurant, getNames(foods));
+        this.foods = foods;
         this.restId = restId;
         String[] foodName = new String[foods.length];
         String[] foodDesc = new String[foods.length];
@@ -79,8 +87,8 @@ class FoodListView extends ArrayAdapter<String> {
         {
             LayoutInflater layoutInflater = context.getLayoutInflater();
             f = layoutInflater.inflate(R.layout.activity_food_scrolling,
-                    null,true);
-            viewHolder = new ViewHolder(f);
+                    parent,false);
+            viewHolder = new ViewHolder(f, parent);
             f.setTag(viewHolder);
         }
         else {
@@ -108,18 +116,22 @@ class FoodListView extends ArrayAdapter<String> {
                 .load(Uri.parse(path_base + "/resources/menus/" + restId + "/" + foodImage[position]))
                 .into(viewHolder.ivw);
 
+        final ViewHolder vh = viewHolder;
         ImageButton addIB = viewHolder.addButton;
-        // TODO manage chart
+        // TODO manage cart
         addIB.setOnClickListener(view -> {
-            Snackbar.make(view, "Food " + foodId[position] + " (" + foodName[position] + ") added to the chart", Snackbar.LENGTH_LONG)
+            cart.add(foods[position]);
+            vh.cartButton.setText("Totale: " + cart.stream().mapToDouble(Food::getFOOD_PRICE).sum() + "€");
+            Snackbar.make(view, "Food " + foodId[position] + " (" + foodName[position] + ") added to the cart", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
-
         });
 
         ImageButton remIB = viewHolder.removeButton;
-        // TODO manage chart
+        // TODO manage cart
         remIB.setOnClickListener(view -> {
-            Snackbar.make(view, "Food " + foodId[position] + " (" + foodName[position] + ") removed from the chart", Snackbar.LENGTH_LONG)
+            cart.remove(foods[position]);
+            vh.cartButton.setText("Totale: " + cart.stream().mapToDouble(Food::getFOOD_PRICE).sum() + "€");
+            Snackbar.make(view, "Food " + foodId[position] + " (" + foodName[position] + ") removed from the cart", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
         });
 
@@ -133,14 +145,18 @@ class FoodListView extends ArrayAdapter<String> {
         ImageView ivw;
         ImageButton addButton;
         ImageButton removeButton;
+        ExtendedFloatingActionButton cartButton;
 
-        ViewHolder(View v){
+        ViewHolder(View v, ViewGroup parent){
             tvw1 = v.findViewById(R.id.foodName);
             tvw2 = v.findViewById(R.id.foodDes);
             tvw3 = v.findViewById(R.id.foodPrice);
             ivw = v.findViewById(R.id.foodImg);
             addButton = v.findViewById(R.id.addFoodButton);
             removeButton = v.findViewById(R.id.removeFoodButton);
+            ViewGroup newParent = (ViewGroup) parent.getParent().getParent().getParent().getParent().getParent();
+            System.out.println("parent: " + newParent);
+            cartButton = newParent.findViewById(R.id.fab_food);
         }
     }
 }
