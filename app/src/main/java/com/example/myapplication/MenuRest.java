@@ -78,13 +78,15 @@ public class MenuRest extends AppCompatActivity
         ProgressBar progressBarResList = findViewById(R.id.progressBarResList);
 
         OkHttpClient cl = new OkHttpClient(); // inizio la procedura di get
-
+        TextView errorMsg = findViewById(R.id.errorMessage);
         String url = urlBase+"/api/example/restaurants";
         Request request = new Request.Builder().url(url).build();
         cl.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 e.printStackTrace();
+                progressBarResList.setVisibility(View.GONE);
+                errorMsg.setVisibility(View.VISIBLE);
 
             }
 
