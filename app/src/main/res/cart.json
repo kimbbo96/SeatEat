@@ -1,0 +1,33 @@
+{
+  "restaurant": "Jinja",
+  "foods":
+  [
+    {
+      "id": "aaa",
+      "name": "Onigiri",
+      "price": 3.5,
+      "quantity": 3,
+      "users": ["abc123", "efghi"]
+    },
+    {
+      "id": "bbb",
+      "name": "Futomaki",
+      "price": 3.0,
+      "quantity": 2,
+      "users": ["abc123"]
+    }
+  ],
+  "users":
+  [
+    {
+      "isTableTop": false,
+      "id": "abc123",
+      "name": "Mario"
+    },
+    {
+      "isTableTop": true,
+      "id": "efghi",
+      "name": "Ugo"
+    }
+  ]
+}
