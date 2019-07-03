@@ -219,11 +219,10 @@ public class MenuRest extends AppCompatActivity
 
         if (id == R.id.nav_home) {
             // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
 
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_tools) {
+        }  else if (id == R.id.nav_help) {
+            Intent intent = new Intent(getApplicationContext(), Help.class);
+            startActivity(intent);
 
         } else if (id == R.id.nav_share) {
 
