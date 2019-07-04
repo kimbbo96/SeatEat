@@ -79,13 +79,14 @@ public class FoodDetail extends AppCompatActivity {
         SharedPreferences preferences = activity.getSharedPreferences("loginref", MODE_PRIVATE);
         String userId = preferences.getString("nome", "");
         EditText notesField = findViewById(R.id.foodNotesDetail);
+        TextView counterDetail = findViewById(R.id.counterDetail);
         int[] counter = {0};
 
         // add to (sub)cart
         ImageButton addIB = findViewById(R.id.addFoodButtonDetail);
         addIB.setOnClickListener(view -> {
             counter[0] = counter[0] + 1;
-            System.out.println("Counter: " + counter[0]);
+            counterDetail.setText(Integer.toString(counter[0]));
             // vh.cartButton.setText("Totale: " + cart.getTotal() + "€");
         });
 
@@ -94,7 +95,7 @@ public class FoodDetail extends AppCompatActivity {
         remIB.setOnClickListener(view -> {
             if (counter[0] > 0) {
                 counter[0] = counter[0] - 1;
-                System.out.println("Counter: " + counter[0]);
+                counterDetail.setText(Integer.toString(counter[0]));
 //            vh.cartButton.setText("Totale: " + cart.getTotal() + "€");
             }
         });
