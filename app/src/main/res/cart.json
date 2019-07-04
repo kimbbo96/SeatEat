@@ -6,15 +6,25 @@
       "id": "aaa",
       "name": "Onigiri",
       "price": 3.5,
+      "user": "abc123",
       "quantity": 3,
-      "users": ["abc123", "efghi"]
+      "note": ""
+    },
+    {
+      "id": "aaa",
+      "name": "Onigiri",
+      "price": 3.5,
+      "user": "abc123",
+      "quantity": 2,
+      "note": "senza salsa"
     },
     {
       "id": "bbb",
       "name": "Futomaki",
       "price": 3.0,
+      "user": "efghi",
       "quantity": 2,
-      "users": ["abc123"]
+      "note": "con soffio di drago"
     }
   ],
   "users":
@@ -27,7 +37,7 @@
     {
       "isTableTop": true,
       "id": "efghi",
-      "name": "Ugo"
+      "name": "Silla"
     }
   ]
 }

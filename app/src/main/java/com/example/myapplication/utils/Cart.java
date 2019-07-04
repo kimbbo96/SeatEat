@@ -28,9 +28,6 @@ public class Cart implements Serializable {
 
     public void save() {
         try {
-//            String filePath = context.getFilesDir().getPath() + "/SeatEat_Cart";
-//            File cartFile = new File(filePath);
-//            cartFile.createNewFile();
             FileOutputStream fos = context.openFileOutput("SeatEat_Cart", Context.MODE_PRIVATE);
             ObjectOutputStream os = new ObjectOutputStream(fos);
             os.writeObject(this);
@@ -44,9 +41,6 @@ public class Cart implements Serializable {
 
     public void load() {
         try {
-//            String filePath = context.getFilesDir().getPath() + "/SeatEat_Cart";
-//            File cartFile = new File(filePath);
-//            cartFile.createNewFile();
             FileInputStream fis = context.openFileInput("SeatEat_Cart");
             ObjectInputStream is = new ObjectInputStream(fis);
             Cart oldCart = (Cart) is.readObject();
@@ -96,29 +90,30 @@ public class Cart implements Serializable {
         this.cartFoods = cartFoods;
     }
 
-    public void addCartFood(String id, String name, double price, String userID) {
+    public void addCartFood(String id, String name, double price, String userID, String note) {
+        System.out.println(cartFoods);
         boolean existing = false;
         for (CartFood cf : cartFoods) {
-            if (cf.id.equals(id)) {
+            if (cf.id.equals(id) && cf.user.equals(userID) && cf.note.equals(note)) {
                 existing = true;
-                cf.addUser(userID);
+                cf.incrementQuantity();
                 break;
             }
         }
         if (! existing) {
             List<String> users = new ArrayList<>();
             users.add(userID);
-            this.cartFoods.add(new CartFood(id, name, price, users));
+            this.cartFoods.add(new CartFood(id, name, price, userID,1, note));
         }
     }
 
-    public void removeCartFood(String id, String userID) {
+    public void removeCartFood(String id, String userID, String note) {
         Iterator itr = cartFoods.iterator();
         while (itr.hasNext()) {
             CartFood cf = (CartFood) itr.next();
-            if (cf.id.equals(id)) {
-                cf.users.remove(userID);
-                if (cf.users.isEmpty()) {
+            if (cf.id.equals(id) && cf.user.equals(userID) && cf.note.equals(note)) {
+                cf.decrementQuantity();
+                if (cf.quantity == 0) {
                     itr.remove();
                 }
             }
@@ -142,13 +137,17 @@ public class Cart implements Serializable {
         private String id;
         private String name;
         private double price;
-        private List<String> users;
+        private String user;
+        private int quantity;
+        private String note;
 
-        CartFood(String id, String name, double price, List<String> users) {
+        CartFood(String id, String name, double price, String user, int quantity, String note) {
             this.id = id;
             this.name = name;
             this.price = price;
-            this.users = users;
+            this.user = user;
+            this.quantity = quantity;
+            this.note = note;
         }
 
         public String getId() {
@@ -163,16 +162,34 @@ public class Cart implements Serializable {
             return price;
         }
 
+        public String getUser() {
+            return user;
+        }
+
         public int getQuantity() {
-            return users.size();
+            return quantity;
         }
 
-        public List<String> getUsers() {
-            return users;
+        private void incrementQuantity() {
+            quantity = quantity + 1;
         }
 
-        public void addUser(String userID) {
-            users.add(userID);
+        private void decrementQuantity() {
+            quantity = quantity - 1;
+        }
+
+        public String getNote() {
+            return note;
+        }
+
+        @Override
+        public String toString() {
+            return "CartFood{" +
+                    "name='" + name + '\'' +
+                    ", user='" + user + '\'' +
+                    ", quantity=" + quantity +
+                    ", note='" + note + '\'' +
+                    '}';
         }
     }
 

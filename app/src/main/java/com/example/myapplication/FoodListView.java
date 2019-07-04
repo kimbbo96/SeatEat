@@ -48,7 +48,6 @@ class FoodListView extends ArrayAdapter<String> {
         super(context, R.layout.activity_scrolling_restaurant, getNames(foods));
 
         this.cart = new Cart(context);
-//        cart.load();
         SharedPreferences preferences = context.getSharedPreferences("loginref", MODE_PRIVATE);
         this.userId = preferences.getString("nome", "");
 
@@ -126,26 +125,26 @@ class FoodListView extends ArrayAdapter<String> {
 
         final ViewHolder vh = viewHolder;
 
-        // TODO manage cart
+        // TODO manage cart (add)
         ImageButton addIB = viewHolder.addButton;
         addIB.setOnClickListener(view -> {
             cart.load();
-            cart.addCartFood(foodId[position], foodName[position], foodPrice[position], userId);
+            cart.addCartFood(foodId[position], foodName[position], foodPrice[position], userId, "");
             cart.save();
             vh.cartButton.setText("Totale: " + cart.getTotal() + "€");
             Snackbar.make(view, "Food " + foodId[position] + " (" + foodName[position] + ") added to the cart", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show();
+                    .setAction("Action", null).show();   // TODO togliere sta cosa una volta finito col carrello
         });
 
-        // TODO manage cart
+        // TODO manage cart (remove)
         ImageButton remIB = viewHolder.removeButton;
         remIB.setOnClickListener(view -> {
             cart.load();
-            cart.removeCartFood(foodId[position], userId);
+            cart.removeCartFood(foodId[position], userId, "");
             cart.save();
             vh.cartButton.setText("Totale: " + cart.getTotal() + "€");
             Snackbar.make(view, "Food " + foodId[position] + " (" + foodName[position] + ") removed from the cart", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show();
+                    .setAction("Action", null).show();   // TODO togliere sta cosa una volta finito col carrello
         });
 
         return f;

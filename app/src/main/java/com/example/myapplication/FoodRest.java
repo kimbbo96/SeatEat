@@ -60,9 +60,9 @@ public class FoodRest extends AppCompatActivity
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         ExtendedFloatingActionButton fab = findViewById(R.id.fab_food);
-//        Cart cart = new Cart(this);
-//        cart.load();
-//        fab.setText("Totale: " + cart.getTotal() + "€");
+        Cart cart = new Cart(this);
+        cart.load();
+        fab.setText("Totale: " + cart.getTotal() + "€");
         fab.setOnClickListener(view -> Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show());
 
@@ -129,6 +129,15 @@ public class FoodRest extends AppCompatActivity
                 }
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ExtendedFloatingActionButton fab = findViewById(R.id.fab_food);
+        Cart cart = new Cart(this);
+        cart.load();
+        fab.setText("Totale: " + cart.getTotal() + "€");
     }
 
     @Override
