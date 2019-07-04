@@ -1,10 +1,12 @@
 package com.example.myapplication;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.myapplication.utils.Cart;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import android.view.LayoutInflater;
@@ -18,8 +20,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.myapplication.db_obj.Food;
 
-import java.util.ArrayList;
-import java.util.List;
+import static android.content.Context.MODE_PRIVATE;
 
 class FoodListView extends ArrayAdapter<String> {
     private Activity context;
@@ -30,7 +31,8 @@ class FoodListView extends ArrayAdapter<String> {
     private String[] foodImage;
     private String[] foodId;
     private String restId;
-    private List<Food> cart = new ArrayList<>();
+    private Cart cart;
+    private String userId;
 
     private final String path_base = "https://seateat-be.herokuapp.com";
 
@@ -44,6 +46,12 @@ class FoodListView extends ArrayAdapter<String> {
 
     public FoodListView(Activity context, Food[] foods, String restId) {
         super(context, R.layout.activity_scrolling_restaurant, getNames(foods));
+
+        this.cart = new Cart(context);
+//        cart.load();
+        SharedPreferences preferences = context.getSharedPreferences("loginref", MODE_PRIVATE);
+        this.userId = preferences.getString("nome", "");
+
         this.foods = foods;
         this.restId = restId;
         String[] foodName = new String[foods.length];
@@ -117,20 +125,25 @@ class FoodListView extends ArrayAdapter<String> {
                 .into(viewHolder.ivw);
 
         final ViewHolder vh = viewHolder;
-        ImageButton addIB = viewHolder.addButton;
+
         // TODO manage cart
+        ImageButton addIB = viewHolder.addButton;
         addIB.setOnClickListener(view -> {
-            cart.add(foods[position]);
-            vh.cartButton.setText("Totale: " + cart.stream().mapToDouble(Food::getFOOD_PRICE).sum() + "€");
+            cart.load();
+            cart.addCartFood(foodId[position], foodName[position], foodPrice[position], userId);
+            cart.save();
+            vh.cartButton.setText("Totale: " + cart.getTotal() + "€");
             Snackbar.make(view, "Food " + foodId[position] + " (" + foodName[position] + ") added to the cart", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
         });
 
-        ImageButton remIB = viewHolder.removeButton;
         // TODO manage cart
+        ImageButton remIB = viewHolder.removeButton;
         remIB.setOnClickListener(view -> {
-            cart.remove(foods[position]);
-            vh.cartButton.setText("Totale: " + cart.stream().mapToDouble(Food::getFOOD_PRICE).sum() + "€");
+            cart.load();
+            cart.removeCartFood(foodId[position], userId);
+            cart.save();
+            vh.cartButton.setText("Totale: " + cart.getTotal() + "€");
             Snackbar.make(view, "Food " + foodId[position] + " (" + foodName[position] + ") removed from the cart", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
         });
