@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("ghjkl");
         if (savelogin) {
             System.out.println("true valore");
-            Toast.makeText(this, "ciao" + preferences.getString("nome", null), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "ciao " + preferences.getString("nome", null), Toast.LENGTH_LONG).show();
             System.out.println(preferences.getString("nome", null));
 
             setContentView(R.layout.activity_main);

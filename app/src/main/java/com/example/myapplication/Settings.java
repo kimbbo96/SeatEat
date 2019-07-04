@@ -10,6 +10,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.myapplication.utils.Cart;
+
 public class Settings extends AppCompatActivity {
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
@@ -28,6 +30,7 @@ public class Settings extends AppCompatActivity {
         logout_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // handle logout
                 preferences = getSharedPreferences("loginref", MODE_PRIVATE);
 
                 editor = preferences.edit();
@@ -35,6 +38,12 @@ public class Settings extends AppCompatActivity {
                 editor.putBoolean("savelogin", false);
                 editor.putString("password",null);
                 editor.commit();
+
+                // destroy cart
+                Cart cart = new Cart(getApplicationContext());
+                cart.clear();
+                cart.save();
+
                 Intent i = new Intent(Settings.this, Login.class);
                 startActivity(i);
                 finish();
