@@ -80,7 +80,7 @@ public class FoodDetail extends AppCompatActivity {
         String userId = preferences.getString("nome", "");
         EditText notesField = findViewById(R.id.foodNotesDetail);
         TextView counterDetail = findViewById(R.id.counterDetail);
-        int[] counter = {0};
+        int[] counter = {1};
 
         // add to (sub)cart
         ImageButton addIB = findViewById(R.id.addFoodButtonDetail);

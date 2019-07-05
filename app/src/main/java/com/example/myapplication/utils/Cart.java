@@ -132,7 +132,7 @@ public class Cart implements Serializable {
         this.cartUsers.add(new CartUser(id, name, isTabletop));
     }
 
-    private static class CartFood implements Serializable {
+    public static class CartFood implements Serializable {
         public static final long serialVersionUID = 42L;
         private String id;
         private String name;
@@ -193,7 +193,7 @@ public class Cart implements Serializable {
         }
     }
 
-    private static class CartUser implements Serializable{
+    public static class CartUser implements Serializable{
         public static final long serialVersionUID = 42L;
         private String id;
         private String name;

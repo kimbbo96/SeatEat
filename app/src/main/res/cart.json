@@ -8,7 +8,8 @@
       "price": 3.5,
       "user": "abc123",
       "quantity": 3,
-      "note": ""
+      "note": "",
+      "num_ordine": 1
     },
     {
       "id": "aaa",
@@ -16,7 +17,8 @@
       "price": 3.5,
       "user": "abc123",
       "quantity": 2,
-      "note": "senza salsa"
+      "note": "senza salsa",
+      "num_ordine": 2
     },
     {
       "id": "bbb",
@@ -24,7 +26,8 @@
       "price": 3.0,
       "user": "efghi",
       "quantity": 2,
-      "note": "con soffio di drago"
+      "note": "con soffio di drago",
+      "num_ordine": 1
     }
   ],
   "users":

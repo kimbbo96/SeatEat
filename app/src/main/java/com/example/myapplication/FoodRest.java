@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.myapplication.utils.Cart;
@@ -63,8 +64,14 @@ public class FoodRest extends AppCompatActivity
         Cart cart = new Cart(this);
         cart.load();
         fab.setText("Totale: " + cart.getTotal() + "€");
-        fab.setOnClickListener(view -> Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show());
+        fab.setOnClickListener(view -> {
+//            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                    .setAction("Action", null).show();
+            System.out.println("hai clikkato il carrello");
+            Intent intent = new Intent(this, CartActivity.class);
+//            intent.putExtra("Restaurant", rist); // passo l'oggetto ristornate
+            startActivity(intent);
+        });
 
 //        DrawerLayout drawer = findViewById(R.id.drawer_layout_food);
 //        NavigationView navigationView = findViewById(R.id.nav_view_food);

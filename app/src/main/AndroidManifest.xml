@@ -30,6 +30,9 @@
         <activity
             android:name=".FoodRest"
             android:parentActivityName=".ResDetail" />
+        <activity
+            android:name=".CartActivity"
+            android:parentActivityName=".FoodRest"/>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -68,9 +68,9 @@ public class MenuRest extends AppCompatActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         Activity activity = this;
         restaurants.clear();
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_rest);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -181,8 +181,6 @@ public class MenuRest extends AppCompatActivity
         preferences = getSharedPreferences("loginref", MODE_PRIVATE);
         TextView name_tab = findViewById(R.id.usr_name_tab);
         name_tab.setText( preferences.getString("nome", null));
-
-
 
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_rest, menu);
