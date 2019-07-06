@@ -30,6 +30,7 @@ import com.google.android.material.snackbar.Snackbar;
 
 public class FoodDetail extends AppCompatActivity {
     private String path_base = "https://seateat-be.herokuapp.com/resources/menus/";
+    Cart cart = new Cart(this);
     // path_base + "/resources/menus/" + restId + "/" + foodImage[position]))
 
     @Override
@@ -75,7 +76,6 @@ public class FoodDetail extends AppCompatActivity {
         });
 
         // TODO manage cart
-        Cart cart = new Cart(activity);
         SharedPreferences preferences = activity.getSharedPreferences("loginref", MODE_PRIVATE);
         String userId = preferences.getString("nome", "");
         EditText notesField = findViewById(R.id.foodNotesDetail);
@@ -105,7 +105,7 @@ public class FoodDetail extends AppCompatActivity {
             String notes = notesField.getText().toString();
             System.out.println("hai clikkato AGGIUNGI " + food.getFOOD_TITLE() + "(id " + food.getFOOD_ID() + ")\nNotes: '" + notes + "'");
 
-            cart.load();
+            cart = cart.load();
             for (int i = 0; i < counter[0]; i++) {
                 cart.addCartFood(food.getFOOD_ID(), food.getFOOD_TITLE(), food.getFOOD_PRICE(), userId, notes);   // TODO
             }

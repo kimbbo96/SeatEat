@@ -22,6 +22,8 @@ import com.google.android.material.navigation.NavigationView;
 import java.util.List;
 
 public class CartActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+    Cart cart = new Cart(this);
+    ListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +32,7 @@ public class CartActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_cart);
         Toolbar toolbar = findViewById(R.id.tool_bar_simple);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // TODO gestire sto coso
         NavigationView navigationView = findViewById(R.id.nav_view_cart);
@@ -42,10 +45,12 @@ public class CartActivity extends AppCompatActivity implements NavigationView.On
         ProgressBar progressBarCart = findViewById(R.id.progressBar_cart);
         progressBarCart.setVisibility(View.GONE);
 
-        ListView listView = activity.findViewById(R.id.list_view_cart);
-        Cart cart = new Cart(activity);
-        cart.load();
-        List<Cart.CartFood> foods = cart.getCartFoods();
+        listView = activity.findViewById(R.id.list_view_cart);
+        cart = cart.load();
+        System.out.println("CARRELLO ATTUALE: " + cart);
+        int ordNum = cart.getOrdNum();
+        System.out.println("ordNum: " + ordNum);
+        List<Cart.CartFood> foods = cart.getCartFoods(ordNum);
         CartListView customListView = new CartListView(activity, foods);
         listView.setAdapter(customListView);
 
@@ -53,6 +58,9 @@ public class CartActivity extends AppCompatActivity implements NavigationView.On
         fab.setOnClickListener(view -> {
             System.out.println("hai clikkato 'invia ordine'");
             cart.newOrder();
+            System.out.println("CARRELLO AGGIORNATO: " + cart);
+            cart.save();
+            finish();
 //            Intent intent = new Intent(this, CartActivity.class);
 //            intent.putExtra("Restaurant", rist); // passo l'oggetto ristornate
 //            startActivity(intent);
@@ -89,11 +97,38 @@ public class CartActivity extends AppCompatActivity implements NavigationView.On
         else if (id == R.id.nav_settings){
             Intent intent = new Intent(getApplicationContext(), Settings.class);
             startActivity(intent);
-
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = findViewById(R.id.drawer_layout_cart);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        } else if (id == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

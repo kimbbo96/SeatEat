@@ -17,7 +17,7 @@ public class Cart implements Serializable {
     public static final long serialVersionUID = 42L;
     private transient Context context;
     private String restaurant = "";
-    private int ordNum = 0;
+    private static int ordNum = 1;
 
     private List<CartFood> cartFoods = new ArrayList<>();
     private List<CartUser> cartUsers = new ArrayList<>();
@@ -39,7 +39,7 @@ public class Cart implements Serializable {
         }
     }
 
-    public void load() {
+    public Cart load() {
         try {
             FileInputStream fis = context.openFileInput("SeatEat_Cart");
             ObjectInputStream is = new ObjectInputStream(fis);
@@ -59,12 +59,14 @@ public class Cart implements Serializable {
             ex.printStackTrace();
             System.out.println("Cart class not found");
         }
+        return this;
     }
 
     /**
      * Clear the content of the cart, but doesn't write it on persistent storage.
      */
     public void clear() {
+        ordNum = 1;
         restaurant = "";
         cartUsers.clear();
         cartFoods.clear();
@@ -95,6 +97,16 @@ public class Cart implements Serializable {
 
     public List<CartFood> getCartFoods() {
         return cartFoods;
+    }
+
+    public List<CartFood> getCartFoods(int ordNumber) {
+        List<CartFood> ordCartFoods = new ArrayList<>();
+        for (CartFood cf : cartFoods) {
+            if (cf.ordNum == ordNumber) {
+                ordCartFoods.add(cf);
+            }
+        }
+        return ordCartFoods;
     }
 
     public void setCartFoods(List<CartFood> cartFoods) {
@@ -141,6 +153,17 @@ public class Cart implements Serializable {
 
     public void addCartUser(String id, String name, boolean isTabletop) {
         this.cartUsers.add(new CartUser(id, name, isTabletop));
+    }
+
+    @Override
+    public String toString() {
+        return "Cart{" +
+                "context=" + context +
+                ", restaurant='" + restaurant + '\'' +
+                ", ordNum=" + ordNum +
+                ", cartFoods=" + cartFoods +
+                ", cartUsers=" + cartUsers +
+                '}';
     }
 
     public static class CartFood implements Serializable {
@@ -202,10 +225,13 @@ public class Cart implements Serializable {
         @Override
         public String toString() {
             return "CartFood{" +
-                    "name='" + name + '\'' +
+                    "id='" + id + '\'' +
+                    ", name='" + name + '\'' +
+                    ", price=" + price +
                     ", user='" + user + '\'' +
                     ", quantity=" + quantity +
                     ", note='" + note + '\'' +
+                    ", ordNum=" + ordNum +
                     '}';
         }
     }
@@ -232,6 +258,15 @@ public class Cart implements Serializable {
 
         public boolean isTabletop() {
             return isTabletop;
+        }
+
+        @Override
+        public String toString() {
+            return "CartUser{" +
+                    "id='" + id + '\'' +
+                    ", name='" + name + '\'' +
+                    ", isTabletop=" + isTabletop +
+                    '}';
         }
     }
 

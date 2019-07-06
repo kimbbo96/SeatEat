@@ -39,6 +39,7 @@ public class FoodRest extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     String urlBase = "https://seateat-be.herokuapp.com";
+    Cart cart = new Cart(this);
 
 //    private static Food f1 = new Food("1", "Supplì", "Riso, mozzarella, pomodoro...", 1, "suppli");
 //    private static Food f2 = new Food("2", "Crocchetta", "Patate, mozzarella...", 2, "crocchette");
@@ -61,8 +62,7 @@ public class FoodRest extends AppCompatActivity
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         ExtendedFloatingActionButton fab = findViewById(R.id.fab_food);
-        Cart cart = new Cart(this);
-        cart.load();
+        cart = cart.load();
         fab.setText("Totale: " + cart.getTotal() + "€");
         fab.setOnClickListener(view -> {
 //            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
@@ -142,8 +142,8 @@ public class FoodRest extends AppCompatActivity
     public void onResume() {
         super.onResume();
         ExtendedFloatingActionButton fab = findViewById(R.id.fab_food);
-        Cart cart = new Cart(this);
-        cart.load();
+        cart = cart.load();
+        System.out.println("CARRELLO CHE NON SI VUOLE AGGIORNARE" + cart);
         fab.setText("Totale: " + cart.getTotal() + "€");
     }
 
