@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,7 +24,7 @@ import okhttp3.Response;
 public class Login extends AppCompatActivity {
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
-    String urlLogin = "https://ptsv2.com/t/3efas-1561717656/post";
+    String urlLogin = "https://seateat-be.herokuapp.com/api/login";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +34,8 @@ public class Login extends AppCompatActivity {
         Button button = findViewById(R.id.bLogin);
         EditText username = findViewById(R.id.etUsername);
         EditText paswd = findViewById(R.id.etPassword);
+        TextView errmex = findViewById(R.id.err_message);
+
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -49,7 +52,7 @@ public class Login extends AppCompatActivity {
                         MediaType JSON = MediaType.parse("application/json;charset=utf-8");
                         JSONObject data = new JSONObject();
                         try {
-                            data.put("nome",username.getText().toString());
+                            data.put("nickname",username.getText().toString());
                             data.put("password",paswd.getText().toString());
                         } catch (JSONException e) {
                             Log.d("OKHTTP3","JSON exception");
@@ -62,25 +65,63 @@ public class Login extends AppCompatActivity {
                                 .build();
                         try {
                             Response response = client.newCall(newReq).execute();
-                            System.out.println("www"+response.body().string());
+                            JSONObject responsebody = new JSONObject(response.body().string());
                             System.out.println("www"+response.message());
                             System.out.println("www"+response.isSuccessful());
+
+                            if (!response.isSuccessful()){
+
+
+                                runOnUiThread(new Runnable() {
+
+                                    @Override
+                                    public void run() {
+
+                                        try {
+                                            System.out.println("òò"+responsebody.get("message")+ "Unauthorized");
+                                            System.out.println("Unauthorized"==responsebody.get("message"));
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                        try {
+                                            if(responsebody.get("message").equals("Unauthorized")){
+                                                errmex.setVisibility(View.VISIBLE);
+                                                errmex.setText("id o password errati");
+
+
+                                            }
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+
+                                    }
+                                });
+
+
+
+                            }
+
+                            else{
+                                System.out.println(responsebody.toString());
+                                editor = preferences.edit();
+                                editor.putString("nome", (username.getText().toString()));
+                                editor.putBoolean("savelogin", true);
+                                editor.putString("password",paswd.getText().toString());
+                                editor.putString("immagine",responsebody.get("immagine").toString());
+                                editor.commit();
+                                Intent i = new Intent(Login.this, MainActivity.class);
+                                startActivity(i);
+                                finish();}
+
 
 
                         } catch (IOException e) {
                             e.printStackTrace();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
                         System.out.println("richiesta finita");
 
-
-                        editor = preferences.edit();
-                        editor.putString("nome", (username.getText().toString()));
-                        editor.putBoolean("savelogin", true);
-                        editor.putString("password",paswd.getText().toString());
-                        editor.commit();
-                        Intent i = new Intent(Login.this, MainActivity.class);
-                        startActivity(i);
-                        finish();
                     }
                 }).start();
 
