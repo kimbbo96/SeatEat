@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
 
     SharedPreferences preferences;
 
-    private static int TIME_OUT = 1500;
+    private static int TIME_OUT = 500;
     private static double[] PDR_POS = {41.971655, 12.540330};
     private static double[] SAPI_POS = {41.899189, 12.517717};
     private static double[] DEFAULT_POS = PDR_POS;
@@ -58,11 +58,20 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
         try {
             lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
         } catch (SecurityException se) {
             se.printStackTrace();
+        } finally {
+            // Show logo
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Intent i = new Intent(MainActivity.this, MenuRest.class);
+                    startActivity(i);
+                    finish();
+                }
+            }, TIME_OUT);
         }
     }
 
@@ -74,6 +83,17 @@ public class MainActivity extends AppCompatActivity {
         lm = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         try {
             lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+
+            // Show logo
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Intent i = new Intent(MainActivity.this, MenuRest.class);
+                    startActivity(i);
+                    finish();
+                }
+            }, TIME_OUT);
+
         } catch (SecurityException se) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         }
@@ -88,16 +108,6 @@ public class MainActivity extends AppCompatActivity {
             System.out.println(preferences.getString("nome", null));
 
             setContentView(R.layout.activity_main);
-
-            // Show logo
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    Intent i = new Intent(MainActivity.this, MenuRest.class);
-                    startActivity(i);
-                    finish();
-                }
-            }, TIME_OUT);
         }
         else {
             // Session management
