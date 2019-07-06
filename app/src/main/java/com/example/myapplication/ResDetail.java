@@ -2,6 +2,7 @@ package com.example.myapplication;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 
@@ -21,6 +22,10 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestBuilder;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.load.model.GlideUrl;
+import com.bumptech.glide.load.model.LazyHeaderFactory;
+import com.bumptech.glide.load.model.LazyHeaders;
 import com.bumptech.glide.request.target.CustomViewTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.bumptech.glide.signature.ObjectKey;
@@ -28,8 +33,12 @@ import com.example.myapplication.db_obj.Restaurant;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import java.util.Base64;
+
 public class ResDetail extends AppCompatActivity {
     private String path_base = "https://seateat-be.herokuapp.com";
+    SharedPreferences preferences;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,11 +79,30 @@ public class ResDetail extends AppCompatActivity {
 
         ImageView qrImg = findViewById(R.id.imageView3);
         RequestBuilder<Drawable> error = Glide.with(this).load(R.drawable.no_internet);
-        Glide.with(this).load(path_base+"/api/newqr").error(error)
+
+
+        preferences = getSharedPreferences("loginref", MODE_PRIVATE);
+
+        preferences = getSharedPreferences("loginref", MODE_PRIVATE);
+
+        String token = preferences.getString("nome",null)+":"+ preferences.getString("password",null);
+
+
+        String BasicBase64format= "Basic "+Base64.getEncoder().encodeToString(token.getBytes());
+
+
+        GlideUrl glideUrl = new GlideUrl(path_base+"/api/neworder/"+rist.getRESTAURANT_ID(), new LazyHeaders.Builder()
+                .addHeader("Authorization",BasicBase64format )
+                .build());
+
+
+
+        Glide.with(this).load(glideUrl).error(error)
                 .signature(new ObjectKey(String.valueOf(System.currentTimeMillis())))
                 .fitCenter().into(qrImg);
-        QRprogressBar.setVisibility(View.GONE);
 
+
+        QRprogressBar.setVisibility(View.GONE);
         RatingBar ratingBar = findViewById(R.id.ratingBar2);
         ratingBar.setEnabled(false);
         ratingBar.setRating(rist.getRESTAURANT_RATING());
