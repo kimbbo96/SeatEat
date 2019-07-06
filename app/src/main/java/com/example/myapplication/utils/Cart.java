@@ -2,7 +2,6 @@ package com.example.myapplication.utils;
 
 import android.content.Context;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -18,6 +17,7 @@ public class Cart implements Serializable {
     public static final long serialVersionUID = 42L;
     private transient Context context;
     private String restaurant = "";
+    private int ordNum = 0;
 
     private List<CartFood> cartFoods = new ArrayList<>();
     private List<CartUser> cartUsers = new ArrayList<>();
@@ -70,12 +70,23 @@ public class Cart implements Serializable {
         cartFoods.clear();
     }
 
+    /**
+     * Update the order number, when the current order is sent
+     */
+    public void newOrder() {
+        ordNum = ordNum + 1;
+    }
+
     public double getTotal() {
         return cartFoods.stream().mapToDouble(cf -> cf.getPrice() * cf.getQuantity()).sum();
     }
 
     public String getRestaurant() {
         return restaurant;
+    }
+
+    public int getOrdNum() {
+        return ordNum;
     }
 
     public void setRestaurant(String restaurant) {
@@ -103,7 +114,7 @@ public class Cart implements Serializable {
         if (! existing) {
             List<String> users = new ArrayList<>();
             users.add(userID);
-            this.cartFoods.add(new CartFood(id, name, price, userID,1, note));
+            this.cartFoods.add(new CartFood(id, name, price, userID,1, note, ordNum));
         }
     }
 
@@ -140,14 +151,16 @@ public class Cart implements Serializable {
         private String user;
         private int quantity;
         private String note;
+        private int ordNum;
 
-        CartFood(String id, String name, double price, String user, int quantity, String note) {
+        private CartFood(String id, String name, double price, String user, int quantity, String note, int ordNum) {
             this.id = id;
             this.name = name;
             this.price = price;
             this.user = user;
             this.quantity = quantity;
             this.note = note;
+            this.ordNum = ordNum;
         }
 
         public String getId() {
@@ -182,6 +195,10 @@ public class Cart implements Serializable {
             return note;
         }
 
+        public int getOrdNum() {
+            return ordNum;
+        }
+
         @Override
         public String toString() {
             return "CartFood{" +
@@ -199,7 +216,7 @@ public class Cart implements Serializable {
         private String name;
         private boolean isTabletop;
 
-        CartUser(String id, String name, boolean isTabletop) {
+        private CartUser(String id, String name, boolean isTabletop) {
             this.id = id;
             this.name = name;
             this.isTabletop = isTabletop;

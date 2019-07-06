@@ -4,41 +4,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CartActivity"
-    android:theme="@style/Theme.MaterialComponents" >
+    tools:context=".CartActivity" >
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppBarOverlay">
+    <include
+        layout="@layout/app_bar"
+        tools:layout_editor_absoluteX="24dp"
+        tools:layout_editor_absoluteY="3dp" />
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar_cart"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:popupTheme="@style/PopupOverlay"
-            android:elevation="8dp">
-        </androidx.appcompat.widget.Toolbar>
+    <!--<com.google.android.material.appbar.AppBarLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:theme="@style/AppBarOverlay">-->
 
-    </com.google.android.material.appbar.AppBarLayout>
+        <!--<androidx.appcompat.widget.Toolbar-->
+            <!--android:id="@+id/toolbar_cart"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="?attr/actionBarSize"-->
+            <!--app:popupTheme="@style/PopupOverlay"-->
+            <!--android:elevation="8dp">-->
+        <!--</androidx.appcompat.widget.Toolbar>-->
+
+    <!--</com.google.android.material.appbar.AppBarLayout>-->
 
     <include layout="@layout/content_cart" />
-
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/fab_cart"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginBottom="48dp"
-        android:layout_gravity="bottom|center"
-        android:backgroundTint="@color/colorAccent"
-        android:contentDescription="Invia ordine"
-        android:text="Invia ordine"
-        app:icon="@drawable/send_black"
-        app:iconGravity="end"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

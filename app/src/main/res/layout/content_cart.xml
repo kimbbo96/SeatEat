@@ -6,18 +6,20 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".CartActivity"
-    tools:showIn="@layout/app_bar_cart">
+    tools:showIn="@layout/app_bar_cart"
+    android:theme="@style/Theme.MaterialComponents" >
 
     <RelativeLayout
+        android:layout_marginTop="?attr/actionBarSize"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:theme="@style/AppTheme">
 
         <ListView
             android:id="@+id/list_view_cart"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:nestedScrollingEnabled="false"
-            android:layout_marginTop="?attr/actionBarSize" />
+            android:nestedScrollingEnabled="false" />
 
         <ProgressBar
             android:id="@+id/progressBar_cart"
@@ -36,5 +38,22 @@
             android:visibility="invisible" />
 
     </RelativeLayout>
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/fab_cart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="48dp"
+        android:layout_gravity="bottom|center"
+        android:backgroundTint="@color/colorAccent"
+        android:contentDescription="Invia ordine"
+        android:text="Invia ordine"
+        app:icon="@drawable/send_black"
+        app:iconGravity="end"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

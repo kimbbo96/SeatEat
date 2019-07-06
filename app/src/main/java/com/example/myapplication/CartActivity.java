@@ -16,6 +16,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.myapplication.utils.Cart;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.List;
@@ -27,7 +28,7 @@ public class CartActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         Activity activity = this;
         setContentView(R.layout.activity_cart);
-        Toolbar toolbar = findViewById(R.id.toolbar_cart);
+        Toolbar toolbar = findViewById(R.id.tool_bar_simple);
         setSupportActionBar(toolbar);
 
         // TODO gestire sto coso
@@ -47,6 +48,15 @@ public class CartActivity extends AppCompatActivity implements NavigationView.On
         List<Cart.CartFood> foods = cart.getCartFoods();
         CartListView customListView = new CartListView(activity, foods);
         listView.setAdapter(customListView);
+
+        ExtendedFloatingActionButton fab = findViewById(R.id.fab_cart);
+        fab.setOnClickListener(view -> {
+            System.out.println("hai clikkato 'invia ordine'");
+            cart.newOrder();
+//            Intent intent = new Intent(this, CartActivity.class);
+//            intent.putExtra("Restaurant", rist); // passo l'oggetto ristornate
+//            startActivity(intent);
+        });
 
 //        final List<Restaurant> resList = new ArrayList<>(Arrays.asList(restaurants));
 //        listView.setOnItemClickListener((adapterView, view, i, l) -> {
