@@ -47,9 +47,9 @@
 
         <TextView
             android:id="@+id/foodCartPrice"
-            android:layout_width="67dp"
+            android:layout_width="wrap_content"
             android:layout_height="25dp"
-            android:layout_marginStart="26dp"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="19dp"
             android:text="TextView"

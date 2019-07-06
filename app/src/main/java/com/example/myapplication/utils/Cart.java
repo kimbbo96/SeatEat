@@ -117,7 +117,7 @@ public class Cart implements Serializable {
         System.out.println(cartFoods);
         boolean existing = false;
         for (CartFood cf : cartFoods) {
-            if (cf.id.equals(id) && cf.user.equals(userID) && cf.note.equals(note)) {
+            if (cf.id.equals(id) && cf.user.equals(userID) && cf.note.equals(note) && cf.ordNum == ordNum) {
                 existing = true;
                 cf.incrementQuantity();
                 break;
