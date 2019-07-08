@@ -12,6 +12,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
+import java.util.OptionalInt;
 
 public class Cart implements Serializable {
     public static final long serialVersionUID = 42L;
@@ -47,6 +50,9 @@ public class Cart implements Serializable {
             this.restaurant = oldCart.getRestaurant();
             this.cartFoods = oldCart.getCartFoods();
             this.cartUsers = oldCart.getCartUsers();
+            if (! cartFoods.isEmpty()) {
+                ordNum = Integer.max(ordNum, cartFoods.stream().mapToInt(CartFood::getOrdNum).max().getAsInt());
+            }
             is.close();
             fis.close();
         } catch (FileNotFoundException | ClassCastException ex) {
@@ -109,6 +115,26 @@ public class Cart implements Serializable {
         return ordCartFoods;
     }
 
+    public List<CartFood> getOldCartFoods(int ordNumber) {
+        List<CartFood> oldCartFoods = new ArrayList<>();
+        for (int i = 1; i < ordNumber; i++) {
+            for (CartFood cf : getCartFoods(i)) {
+                boolean existing = false;
+                for (CartFood ocf : oldCartFoods) {
+                    if (cf.id.equals(ocf.id) && cf.user.equals(ocf.user) && cf.note.equals(ocf.note)) {
+                        existing = true;
+                        ocf.quantity += cf.quantity;
+                        break;
+                    }
+                }
+                if (! existing) {
+                    oldCartFoods.add(new CartFood(cf.id, cf.name, cf.price, cf.user,cf.quantity, cf.note, 0));
+                }
+            }
+        }
+        return oldCartFoods;
+    }
+
     public void setCartFoods(List<CartFood> cartFoods) {
         this.cartFoods = cartFoods;
     }
@@ -124,8 +150,6 @@ public class Cart implements Serializable {
             }
         }
         if (! existing) {
-            List<String> users = new ArrayList<>();
-            users.add(userID);
             this.cartFoods.add(new CartFood(id, name, price, userID,1, note, ordNum));
         }
     }

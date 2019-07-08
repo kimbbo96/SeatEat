@@ -143,7 +143,7 @@ public class FoodRest extends AppCompatActivity
         super.onResume();
         ExtendedFloatingActionButton fab = findViewById(R.id.fab_food);
         cart = cart.load();
-        System.out.println("CARRELLO CHE NON SI VUOLE AGGIORNARE" + cart);
+        System.out.println("CARRELLO CHE NON SI VUOLE AGGIORNARE: " + cart);
         fab.setText("Totale: " + cart.getTotal() + "€");
     }
 

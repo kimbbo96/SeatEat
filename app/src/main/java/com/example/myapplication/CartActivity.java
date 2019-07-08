@@ -22,6 +22,8 @@ import com.google.android.material.navigation.NavigationView;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.myapplication.utils.Utils.justifyListViewHeight;
+
 public class CartActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     Cart cart = new Cart(this);
     ListView listView;
@@ -55,14 +57,13 @@ public class CartActivity extends AppCompatActivity implements NavigationView.On
         List<Cart.CartFood> foods = cart.getCartFoods(ordNum);
         CartListView customListView = new CartListView(activity, foods);
         listView.setAdapter(customListView);
+        justifyListViewHeight(listView);
 
         listViewOld = activity.findViewById(R.id.list_view_cart_old);
-        List<Cart.CartFood> foodsOld = new ArrayList<>();
-        for (int i = 1; i < ordNum; i++) {
-            foodsOld.addAll(cart.getCartFoods(i));
-        }
+        List<Cart.CartFood> foodsOld = cart.getOldCartFoods(ordNum);
         CartListView customListViewOld = new CartListView(activity, foodsOld);
         listViewOld.setAdapter(customListViewOld);
+        justifyListViewHeight(listViewOld);
 
         ExtendedFloatingActionButton fab = findViewById(R.id.fab_cart);
         fab.setOnClickListener(view -> {
