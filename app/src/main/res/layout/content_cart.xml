@@ -37,14 +37,12 @@
                     android:id="@+id/list_view_cart"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-
                     android:nestedScrollingEnabled="false" >
                 </ListView>
 
                 <View
-                    android:id="@+id/divider_cart"
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
+                    android:layout_height="2dp"
                     android:layout_marginVertical="8dp"
                     android:background="?android:attr/listDivider" />
 
@@ -58,8 +56,21 @@
                     android:id="@+id/list_view_cart_old"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-
                     android:nestedScrollingEnabled="false" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginVertical="8dp"
+                    android:background="?android:attr/listDivider" />
+
+                <TextView
+                    android:id="@+id/tw_total_cart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="128dp"
+                    android:text="Totale"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large" />
             </LinearLayout>
 
         </ScrollView>

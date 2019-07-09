@@ -7,6 +7,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -20,7 +21,9 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
+import java.util.Formatter;
 import java.util.List;
+import java.util.Locale;
 
 import static com.example.myapplication.utils.Utils.justifyListViewHeight;
 
@@ -49,19 +52,23 @@ public class CartActivity extends AppCompatActivity implements NavigationView.On
         ProgressBar progressBarCart = findViewById(R.id.progressBar_cart);
         progressBarCart.setVisibility(View.GONE);
 
-        listView = activity.findViewById(R.id.list_view_cart);
         cart = cart.load();
         System.out.println("CARRELLO ATTUALE: " + cart);
+
+        TextView twTotal = findViewById(R.id.tw_total_cart);
+        twTotal.setText(new Formatter().format(Locale.ITALIAN, "Totale:   %.2f€", cart.getTotal()).toString());
+
+        listView = activity.findViewById(R.id.list_view_cart);
         int ordNum = cart.getOrdNum();
         System.out.println("ordNum: " + ordNum);
         List<Cart.CartFood> foods = cart.getCartFoods(ordNum);
-        CartListView customListView = new CartListView(activity, foods);
+        CartListView customListView = new CartListView(activity, foods, false);
         listView.setAdapter(customListView);
         justifyListViewHeight(listView);
 
         listViewOld = activity.findViewById(R.id.list_view_cart_old);
         List<Cart.CartFood> foodsOld = cart.getOldCartFoods(ordNum);
-        CartListView customListViewOld = new CartListView(activity, foodsOld);
+        CartListView customListViewOld = new CartListView(activity, foodsOld, true);
         listViewOld.setAdapter(customListViewOld);
         justifyListViewHeight(listViewOld);
 

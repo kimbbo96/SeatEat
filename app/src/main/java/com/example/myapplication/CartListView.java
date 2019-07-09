@@ -26,12 +26,14 @@ import java.util.Locale;
 public class CartListView extends ArrayAdapter<String> {
     private Activity context;
     private List<Cart.CartFood> foods;
+    private boolean old;
 
-    public CartListView(Activity context, List<Cart.CartFood> foods) {
+    public CartListView(Activity context, List<Cart.CartFood> foods, boolean old) {
         super(context, R.layout.activity_scrolling_restaurant, getNames(foods));
 
         this.context = context;
         this.foods = foods;
+        this.old = old;
     }
 
     private static String[] getNames(List<Cart.CartFood> foods) {
@@ -64,6 +66,11 @@ public class CartListView extends ArrayAdapter<String> {
         viewHolder.fcPrice.setText(new Formatter().format(
                 Locale.ITALIAN, "x %d   %.2f€",
                 foods.get(position).getQuantity(), foods.get(position).getPrice()).toString());
+
+        if (old) {
+            viewHolder.addFCB.setVisibility(View.GONE);
+            viewHolder.removeFCB.setVisibility(View.GONE);
+        }
 
         return r;
     }
