@@ -14,7 +14,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".Help"></activity>
+        <activity android:name=".Qr_zoom"></activity>
+        <activity android:name=".Help" />
         <activity android:name=".Settings" />
         <activity android:name=".Login" />
         <activity
@@ -32,7 +33,7 @@
             android:parentActivityName=".ResDetail" />
         <activity
             android:name=".CartActivity"
-            android:parentActivityName=".FoodRest"/>
+            android:parentActivityName=".FoodRest" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
