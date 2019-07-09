@@ -12,9 +12,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
-import java.util.OptionalInt;
 
 public class Cart implements Serializable {
     public static final long serialVersionUID = 42L;
@@ -42,7 +39,7 @@ public class Cart implements Serializable {
         }
     }
 
-    public Cart load() {
+    public void load() {
         try {
             FileInputStream fis = context.openFileInput("SeatEat_Cart");
             ObjectInputStream is = new ObjectInputStream(fis);
@@ -65,7 +62,6 @@ public class Cart implements Serializable {
             ex.printStackTrace();
             System.out.println("Cart class not found");
         }
-        return this;
     }
 
     /**
@@ -119,6 +115,36 @@ public class Cart implements Serializable {
         List<CartFood> oldCartFoods = new ArrayList<>();
         for (int i = 1; i < ordNumber; i++) {
             for (CartFood cf : getCartFoods(i)) {
+                boolean existing = false;
+                for (CartFood ocf : oldCartFoods) {
+                    if (cf.id.equals(ocf.id) && cf.user.equals(ocf.user) && cf.note.equals(ocf.note)) {
+                        existing = true;
+                        ocf.quantity += cf.quantity;
+                        break;
+                    }
+                }
+                if (! existing) {
+                    oldCartFoods.add(new CartFood(cf.id, cf.name, cf.price, cf.user,cf.quantity, cf.note, 0));
+                }
+            }
+        }
+        return oldCartFoods;
+    }
+
+    public List<CartFood> getCartFoods(int ordNumber, String user) {
+        List<CartFood> ordCartFoods = new ArrayList<>();
+        for (CartFood cf : cartFoods) {
+            if (cf.ordNum == ordNumber && cf.user.equals(user)) {
+                ordCartFoods.add(cf);
+            }
+        }
+        return ordCartFoods;
+    }
+
+    public List<CartFood> getOldCartFoods(int ordNumber, String user) {
+        List<CartFood> oldCartFoods = new ArrayList<>();
+        for (int i = 1; i < ordNumber; i++) {
+            for (CartFood cf : getCartFoods(i, user)) {
                 boolean existing = false;
                 for (CartFood ocf : oldCartFoods) {
                     if (cf.id.equals(ocf.id) && cf.user.equals(ocf.user) && cf.note.equals(ocf.note)) {

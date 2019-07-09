@@ -105,7 +105,7 @@ public class FoodDetail extends AppCompatActivity {
             String notes = notesField.getText().toString();
             System.out.println("hai clikkato AGGIUNGI " + food.getFOOD_TITLE() + "(id " + food.getFOOD_ID() + ")\nNotes: '" + notes + "'");
 
-            cart = cart.load();
+            cart.load();
             for (int i = 0; i < counter[0]; i++) {
                 cart.addCartFood(food.getFOOD_ID(), food.getFOOD_TITLE(), food.getFOOD_PRICE(), userId, notes);   // TODO
             }

@@ -128,7 +128,7 @@ class FoodListView extends ArrayAdapter<String> {
         // TODO manage cart (add)
         ImageButton addIB = viewHolder.addButton;
         addIB.setOnClickListener(view -> {
-            cart = cart.load();
+            cart.load();
             cart.addCartFood(foodId[position], foodName[position], foodPrice[position], userId, "");
             cart.save();
             vh.cartButton.setText("Totale: " + cart.getTotal() + "€");
@@ -139,7 +139,7 @@ class FoodListView extends ArrayAdapter<String> {
         // TODO manage cart (remove)
         ImageButton remIB = viewHolder.removeButton;
         remIB.setOnClickListener(view -> {
-            cart = cart.load();
+            cart.load();
             cart.removeCartFood(foodId[position], userId, "");
             cart.save();
             vh.cartButton.setText("Totale: " + cart.getTotal() + "€");

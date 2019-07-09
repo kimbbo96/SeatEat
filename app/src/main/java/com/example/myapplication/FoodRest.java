@@ -62,7 +62,7 @@ public class FoodRest extends AppCompatActivity
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         ExtendedFloatingActionButton fab = findViewById(R.id.fab_food);
-        cart = cart.load();
+        cart.load();
         fab.setText("Totale: " + cart.getTotal() + "€");
         fab.setOnClickListener(view -> {
 //            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
@@ -142,8 +142,8 @@ public class FoodRest extends AppCompatActivity
     public void onResume() {
         super.onResume();
         ExtendedFloatingActionButton fab = findViewById(R.id.fab_food);
-        cart = cart.load();
-        System.out.println("CARRELLO CHE NON SI VUOLE AGGIORNARE: " + cart);
+        cart.load();
+        System.out.println("CARRELLO ONRESUME: " + cart);
         fab.setText("Totale: " + cart.getTotal() + "€");
     }
 
