@@ -3,6 +3,7 @@ package com.example.myapplication;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 
@@ -26,6 +27,7 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.load.model.LazyHeaderFactory;
 import com.bumptech.glide.load.model.LazyHeaders;
+import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.target.CustomViewTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.bumptech.glide.signature.ObjectKey;
@@ -33,6 +35,7 @@ import com.example.myapplication.db_obj.Restaurant;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import java.io.ByteArrayOutputStream;
 import java.util.Base64;
 
 public class ResDetail extends AppCompatActivity {
@@ -96,11 +99,37 @@ public class ResDetail extends AppCompatActivity {
                 .build());
 
 
-
+        /*
         Glide.with(this).load(glideUrl).error(error)
                 .signature(new ObjectKey(String.valueOf(System.currentTimeMillis())))
-                .fitCenter().into(qrImg);
+                .fitCenter().into(qrImg);*/
 
+        Intent zoomQRIntent = new Intent(getApplicationContext(), Qr_zoom.class);
+
+        Glide.with(this)
+                .asBitmap()
+                .load(glideUrl)
+                .into(new CustomTarget<Bitmap>() {
+                    @Override
+                    public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                        qrImg.setImageBitmap(resource);
+
+                        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                        resource.compress(Bitmap.CompressFormat.PNG, 100, baos);
+                        byte[] b = baos.toByteArray();
+                        zoomQRIntent.putExtra("QRImage",b);
+                    }
+
+                    @Override
+                    public void onLoadCleared(@Nullable Drawable placeholder) {
+                    }
+                });
+        qrImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(zoomQRIntent);
+            }
+        });
 
         QRprogressBar.setVisibility(View.GONE);
         RatingBar ratingBar = findViewById(R.id.ratingBar2);
