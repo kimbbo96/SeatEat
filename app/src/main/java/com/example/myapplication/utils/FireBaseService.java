@@ -54,7 +54,13 @@ public class FireBaseService extends FirebaseMessagingService {
                     editor.putBoolean("isCapotavola",false);
                 }
                 editor.commit();
+            }
 
+            case "userAssociation":{ // caso in cui al capotavola viene aggiunto un commensale
+                Cart cart = new Cart(getApplicationContext());
+                cart.addCartUser(remoteMessage.getData().get("id"),
+                        remoteMessage.getData().get("name"), true); //utente aggiunto
+                cart.load();
             }
 
         }
@@ -85,26 +91,6 @@ public class FireBaseService extends FirebaseMessagingService {
     @Override
     public void onNewToken(String token) {
         Log.d(TAG, "Refreshed token: " + token);
-
-
-        /*
-        OkHttpClient cl = new OkHttpClient(); // inizio la procedura di get
-        Request request = new Request.Builder().url(url+"/api/testnotifications/"+token).build();
-        System.out.println(url+"/api/testnotifications/"+token);
-        cl.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                System.err.println("invio token fallito");
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                System.out.println("invio token ok");
-            }
-        });*/
-
-
-
 
 
         OkHttpClient client = new OkHttpClient();
