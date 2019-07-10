@@ -18,6 +18,7 @@ public class Cart implements Serializable {
     private transient Context context;
     private String restaurant = "";
     private static int ordNum = 1;
+    private boolean fake = false;
 
     private List<CartFood> cartFoods = new ArrayList<>();
     private List<CartUser> cartUsers = new ArrayList<>();
@@ -49,6 +50,7 @@ public class Cart implements Serializable {
             this.cartUsers = oldCart.getCartUsers();
             if (! cartFoods.isEmpty()) {
                 ordNum = Integer.max(ordNum, cartFoods.stream().mapToInt(CartFood::getOrdNum).max().getAsInt());
+                fake = oldCart.fake;  // TODO solo per DEBUG! togliere!!!
             }
             is.close();
             fis.close();
@@ -105,28 +107,42 @@ public class Cart implements Serializable {
         List<CartFood> ordCartFoods = new ArrayList<>();
         for (CartFood cf : cartFoods) {
             if (cf.ordNum == ordNumber) {
-                ordCartFoods.add(cf);
+                boolean existing = false;
+                for (CartFood ocf : ordCartFoods) {
+                    if (cf.id.equals(ocf.id) && cf.note.equals(ocf.note)) {
+                        existing = true;
+                        ocf.quantity = ocf.quantity + cf.quantity;
+                        System.out.println("getCartFoods EXISTS! " + ordNumber + ", ocf=" + ocf + ", cf=" + cf);
+                        break;
+                    }
+                }
+                if (!existing) {
+                    ordCartFoods.add(cf.deepCopy());
+                }
             }
         }
         return ordCartFoods;
     }
 
     public List<CartFood> getOldCartFoods(int ordNumber) {
+        System.out.println("getOldCartFoods: ordNumber=" + ordNumber + ", cartFoods=" + cartFoods);
         List<CartFood> oldCartFoods = new ArrayList<>();
         for (int i = 1; i < ordNumber; i++) {
             for (CartFood cf : getCartFoods(i)) {
                 boolean existing = false;
                 for (CartFood ocf : oldCartFoods) {
-                    if (cf.id.equals(ocf.id) && cf.user.equals(ocf.user) && cf.note.equals(ocf.note)) {
+                    if (cf.id.equals(ocf.id) && cf.note.equals(ocf.note)) {
                         existing = true;
-                        ocf.quantity += cf.quantity;
+                        ocf.quantity = ocf.quantity + cf.quantity;
+                        System.out.println("getOldCartFoods EXISTS! " + ocf + " --- " + cf);
                         break;
                     }
                 }
                 if (! existing) {
-                    oldCartFoods.add(new CartFood(cf.id, cf.name, cf.price, cf.user,cf.quantity, cf.note, 0));
+                    oldCartFoods.add(new CartFood(cf.id, cf.name, cf.price, cf.user, cf.quantity, cf.note, 0));
                 }
             }
+            System.out.println("getOldCartFoods: i=" + i + ", getCartFoods=" + getCartFoods(i) + ", oldCartFoods=" + oldCartFoods);
         }
         return oldCartFoods;
     }
@@ -135,7 +151,7 @@ public class Cart implements Serializable {
         List<CartFood> ordCartFoods = new ArrayList<>();
         for (CartFood cf : cartFoods) {
             if (cf.ordNum == ordNumber && cf.user.equals(user)) {
-                ordCartFoods.add(cf);
+                ordCartFoods.add(cf.deepCopy());
             }
         }
         return ordCartFoods;
@@ -149,7 +165,7 @@ public class Cart implements Serializable {
                 for (CartFood ocf : oldCartFoods) {
                     if (cf.id.equals(ocf.id) && cf.user.equals(ocf.user) && cf.note.equals(ocf.note)) {
                         existing = true;
-                        ocf.quantity += cf.quantity;
+                        ocf.quantity = ocf.quantity + cf.quantity;
                         break;
                     }
                 }
@@ -214,6 +230,24 @@ public class Cart implements Serializable {
                 ", cartFoods=" + cartFoods +
                 ", cartUsers=" + cartUsers +
                 '}';
+    }
+
+    public void fakeFoods() {
+        if (! fake) {
+            cartFoods.add(new CartFood("3", "nuvolette di drago", 0.1, "d", 5, "", 1));
+            cartFoods.add(new CartFood("4", "spiedini di gambeli", 5, "e", 1, "", 2));
+            cartFoods.add(new CartFood("4", "spiedini di gambeli", 5, "d", 3, "", 3));
+
+            addCartFood("1", "pollo cloccante piccante", 1000, "b", "bono");
+            addCartFood("1", "pollo cloccante piccante", 1000, "b", "bono");
+            addCartFood("1", "pollo cloccante piccante", 1000, "c", "bono");
+            addCartFood("1", "pollo cloccante piccante", 1000, "c", "");
+            addCartFood("2", "noodles", 500, "b", "");
+            addCartFood("2", "noodles", 500, "c", "");
+
+            fake = true;
+            System.out.println("FAKE!");
+        }
     }
 
     public static class CartFood implements Serializable {
@@ -283,6 +317,10 @@ public class Cart implements Serializable {
                     ", note='" + note + '\'' +
                     ", ordNum=" + ordNum +
                     '}';
+        }
+
+        public CartFood deepCopy() {
+            return new CartFood(id, name, price, user, quantity, note, ordNum);
         }
     }
 
