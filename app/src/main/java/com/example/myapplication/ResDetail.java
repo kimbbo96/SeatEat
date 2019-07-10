@@ -81,16 +81,19 @@ public class ResDetail extends AppCompatActivity {
         });
 
         ImageView qrImg = findViewById(R.id.imageView3);
-
         preferences = getSharedPreferences("infoRes", MODE_PRIVATE);
         TextView textQR = findViewById(R.id.textQR);
         Boolean isCapotavola = preferences.getBoolean("isCapotavola",false);
         String ResID = preferences.getString("ID","");
-        System.out.println("qrsalvato"+preferences.getString("QRimage",null));
+        ImageView cameraimg = findViewById(R.id.camera);
+        TextView cameraInfo = findViewById(R.id.cameraInfo);
+
 
         if (ResID.equals("")) { // se non è impostato nessun ristorante allora genera il QR
 
             preferences = getSharedPreferences("loginref", MODE_PRIVATE);
+            cameraimg.setVisibility(View.VISIBLE);
+            cameraInfo.setVisibility(View.VISIBLE);
 
             String token = preferences.getString("nome", null) + ":" + preferences.getString("password", null);
 
@@ -138,21 +141,41 @@ public class ResDetail extends AppCompatActivity {
         }
 
         else if(ResID.equals(rist.getRESTAURANT_ID()) && isCapotavola) { // se sono il capotavola e sono nel ristorante associato
-
+            cameraimg.setVisibility(View.GONE);
+            cameraInfo.setVisibility(View.GONE);
+            System.out.println("schermata capotavola");
             String QREncoded = preferences.getString("QRimage",null);
             byte[] decodedByte = Base64.getDecoder().decode(QREncoded);
             Bitmap bmp = BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length);
             qrImg.setImageBitmap(bmp); // setto il qr del capotavola salvato
             System.out.println("ho impostato il QR salvato");
+            textQR.setText("Sei Il capotavola, fai scansionare questo QR ai tuoi amici. buon pasto!");
+
+            Intent zoomQRIntent = new Intent(getApplicationContext(), Qr_zoom.class);
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    bmp.compress(Bitmap.CompressFormat.PNG, 100, baos);
+                    byte[] b = baos.toByteArray();
+                    zoomQRIntent.putExtra("QRImage", b);
+                }
+            }).start();
+            qrImg.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    startActivity(zoomQRIntent);
+                }
+            });
 
 
 
-            textQR.setText("Sei Il capotavola, buon pasto!");
 
 
         }
-        else{
-
+        else{ // associato con un altro ristorante
+            cameraimg.setVisibility(View.GONE);
+            cameraInfo.setVisibility(View.GONE);
             qrImg.setImageResource(R.drawable.noqr);
             textQR.setText("Sei già associato con un ristorante, buon pasto!");
 
@@ -173,7 +196,6 @@ public class ResDetail extends AppCompatActivity {
             }
         });
 
-        ImageView cameraimg = findViewById(R.id.camera);
         cameraimg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
