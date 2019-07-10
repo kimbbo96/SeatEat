@@ -91,9 +91,10 @@ public class MenuRest extends AppCompatActivity
             @Override
             public void onFailure(Call call, IOException e) {
                 e.printStackTrace();
-                progressBarResList.setVisibility(View.GONE);
-                errorMsg.setVisibility(View.VISIBLE);
-
+                MenuRest.this.runOnUiThread(() -> {
+                    progressBarResList.setVisibility(View.GONE);
+                    errorMsg.setVisibility(View.VISIBLE);
+                });
             }
 
             @Override

@@ -14,7 +14,9 @@
             android:id="@+id/tab_layout_food"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:tabMode="scrollable" />
+            app:tabMode="scrollable"
+            app:tabIndicatorColor="@color/colorPrimaryDark"
+            app:tabIndicatorHeight="4dp" />
 
     </androidx.viewpager.widget.ViewPager>
 
