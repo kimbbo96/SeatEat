@@ -112,7 +112,6 @@ public class Cart implements Serializable {
                     if (cf.id.equals(ocf.id) && cf.note.equals(ocf.note)) {
                         existing = true;
                         ocf.quantity = ocf.quantity + cf.quantity;
-                        System.out.println("getCartFoods EXISTS! " + ordNumber + ", ocf=" + ocf + ", cf=" + cf);
                         break;
                     }
                 }
@@ -125,7 +124,6 @@ public class Cart implements Serializable {
     }
 
     public List<CartFood> getOldCartFoods(int ordNumber) {
-        System.out.println("getOldCartFoods: ordNumber=" + ordNumber + ", cartFoods=" + cartFoods);
         List<CartFood> oldCartFoods = new ArrayList<>();
         for (int i = 1; i < ordNumber; i++) {
             for (CartFood cf : getCartFoods(i)) {
@@ -134,7 +132,6 @@ public class Cart implements Serializable {
                     if (cf.id.equals(ocf.id) && cf.note.equals(ocf.note)) {
                         existing = true;
                         ocf.quantity = ocf.quantity + cf.quantity;
-                        System.out.println("getOldCartFoods EXISTS! " + ocf + " --- " + cf);
                         break;
                     }
                 }
@@ -142,7 +139,6 @@ public class Cart implements Serializable {
                     oldCartFoods.add(new CartFood(cf.id, cf.name, cf.price, cf.user, cf.quantity, cf.note, 0));
                 }
             }
-            System.out.println("getOldCartFoods: i=" + i + ", getCartFoods=" + getCartFoods(i) + ", oldCartFoods=" + oldCartFoods);
         }
         return oldCartFoods;
     }
@@ -182,7 +178,6 @@ public class Cart implements Serializable {
     }
 
     public void addCartFood(String id, String name, double price, String userID, String note) {
-        System.out.println(cartFoods);
         boolean existing = false;
         for (CartFood cf : cartFoods) {
             if (cf.id.equals(id) && cf.user.equals(userID) && cf.note.equals(note) && cf.ordNum == ordNum) {
