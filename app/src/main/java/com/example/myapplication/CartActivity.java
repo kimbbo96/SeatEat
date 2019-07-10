@@ -45,6 +45,25 @@ public class CartActivity extends AppCompatActivity implements NavigationView.On
         adapter.addFragment(new CartTabAll(activity), "Gli ordini di tutti");
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
+//        tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(viewPager) {
+//            @Override
+//            public void onTabSelected(TabLayout.Tab tab) {
+//                int pos = tab.getPosition();
+//                adapter.replaceFragment(new CartTabYou(activity), pos);
+//                viewPager.setCurrentItem(pos);
+//                System.out.println("TAB selected " + pos);
+//            }
+//
+//            @Override
+//            public void onTabUnselected(TabLayout.Tab tab) {
+//                System.out.println("TAB unselected " + tab.getPosition());
+//            }
+//
+//            @Override
+//            public void onTabReselected(TabLayout.Tab tab) {
+//                System.out.println("TAB reselected " + tab.getPosition());
+//            }
+//        });
     }
 
     @SuppressWarnings("StatementWithEmptyBody")

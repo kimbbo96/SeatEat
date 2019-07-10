@@ -26,17 +26,18 @@ import static com.example.myapplication.utils.Utils.justifyListViewHeight;
 class CartTabYou extends Fragment {
     private CartActivity activity;
     private Cart cart;
+    private String userId;
 
     public CartTabYou(CartActivity activity) {
         super();
         this.activity = activity;
         this.cart = activity.cart;
+        System.out.println("creo CartTabYou");
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        cart.load();
         System.out.println("CARRELLO ATTUALE: " + cart);
         return inflater.inflate(R.layout.content_cart_you, container, false);
     }
@@ -45,23 +46,36 @@ class CartTabYou extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        TextView twTotal = activity.findViewById(R.id.tw_total_cart_you);
-        twTotal.setText(new Formatter().format(Locale.ITALIAN, "Il tuo totale:   %.2f€", cart.getTotal()).toString());
-
         SharedPreferences preferences = activity.getSharedPreferences("loginref", Context.MODE_PRIVATE);
-        String userId = preferences.getString("nome", "");
+        userId = preferences.getString("nome", "");
+
+        fillFragment();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        fillFragment();
+        System.out.println("CartTabYou ONRESUME");
+    }
+
+    private void fillFragment() {
+        cart.load();
+
+        TextView twTotal = activity.findViewById(R.id.tw_total_cart_you);
+        twTotal.setText(new Formatter().format(Locale.ITALIAN, "Il tuo totale:   %.2f€", cart.getTotal(userId)).toString());
 
         ListView listView = activity.findViewById(R.id.list_view_cart_you);
         int ordNum = cart.getOrdNum();
         System.out.println("ordNum: " + ordNum);
         List<Cart.CartFood> foods = cart.getCartFoods(ordNum, userId);
         System.out.println("foods ora-tu: " + foods);
-        CartListView customListView = new CartListView(activity, foods, false);
+        CartListView customListView = new CartListView(activity, foods, false, CartListView.YouAll.YOU);
 
         ListView listViewOld = activity.findViewById(R.id.list_view_cart_old_you);
         List<Cart.CartFood> foodsOld = cart.getOldCartFoods(ordNum, userId);
         System.out.println("foods prima-tu: " + foodsOld);
-        CartListView customListViewOld = new CartListView(activity, foodsOld, true);
+        CartListView customListViewOld = new CartListView(activity, foodsOld, true, CartListView.YouAll.YOU);
 
         listView.setAdapter(customListView);
         justifyListViewHeight(listView);

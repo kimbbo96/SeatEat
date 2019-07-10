@@ -2,6 +2,8 @@ package com.example.myapplication.utils;
 
 import android.content.Context;
 
+import com.example.myapplication.CartActivity;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -85,6 +87,14 @@ public class Cart implements Serializable {
 
     public double getTotal() {
         return cartFoods.stream().mapToDouble(cf -> cf.getPrice() * cf.getQuantity()).sum();
+    }
+
+    public double getTotal(String user) {
+        return cartFoods.stream().mapToDouble(cf -> {
+                    if (cf.getUser().equals(user))
+                        return cf.getPrice() * cf.getQuantity();
+                    else return 0;
+                }).sum();
     }
 
     public String getRestaurant() {
@@ -177,21 +187,26 @@ public class Cart implements Serializable {
         this.cartFoods = cartFoods;
     }
 
-    public void addCartFood(String id, String name, double price, String userID, String note) {
+    public CartFood addCartFood(String id, String name, double price, String userID, String note) {
+        CartFood cartFood = null;
         boolean existing = false;
         for (CartFood cf : cartFoods) {
             if (cf.id.equals(id) && cf.user.equals(userID) && cf.note.equals(note) && cf.ordNum == ordNum) {
                 existing = true;
                 cf.incrementQuantity();
+                cartFood = cf;
                 break;
             }
         }
         if (! existing) {
-            this.cartFoods.add(new CartFood(id, name, price, userID,1, note, ordNum));
+            cartFood = new CartFood(id, name, price, userID,1, note, ordNum);
+            this.cartFoods.add(cartFood);
         }
+        return cartFood;
     }
 
-    public void removeCartFood(String id, String userID, String note) {
+    public CartFood removeCartFood(String id, String userID, String note) {
+        CartFood cartFood = null;
         Iterator itr = cartFoods.iterator();
         while (itr.hasNext()) {
             CartFood cf = (CartFood) itr.next();
@@ -200,8 +215,10 @@ public class Cart implements Serializable {
                 if (cf.quantity == 0) {
                     itr.remove();
                 }
+                cartFood = cf;
             }
         }
+        return cartFood;
     }
 
     public List<CartUser> getCartUsers() {

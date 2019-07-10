@@ -167,7 +167,7 @@ class FoodListView extends ArrayAdapter<String> {
             addButton = v.findViewById(R.id.addFoodButton);
             removeButton = v.findViewById(R.id.removeFoodButton);
             ViewGroup newParent = (ViewGroup) parent.getParent().getParent().getParent().getParent().getParent();
-            System.out.println("parent: " + newParent);
+//            System.out.println("parent: " + newParent);
             cartButton = newParent.findViewById(R.id.fab_food);
         }
     }

@@ -38,4 +38,9 @@ public class SimplePagerAdapter extends FragmentPagerAdapter {
         mFragmentList.add(fragment);
         mFragmentTitleList.add(title);
     }
+
+//    public void replaceFragment(Fragment fragment, int position) {
+//        mFragmentList.remove(position);
+//        mFragmentList.add(position, fragment);
+//    }
 }
