@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 
@@ -22,15 +23,11 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.RequestBuilder;
-import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.load.model.GlideUrl;
-import com.bumptech.glide.load.model.LazyHeaderFactory;
 import com.bumptech.glide.load.model.LazyHeaders;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.target.CustomViewTarget;
 import com.bumptech.glide.request.transition.Transition;
-import com.bumptech.glide.signature.ObjectKey;
 import com.example.myapplication.db_obj.Restaurant;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
@@ -41,6 +38,7 @@ import java.util.Base64;
 public class ResDetail extends AppCompatActivity {
     private String path_base = "https://seateat-be.herokuapp.com";
     SharedPreferences preferences;
+    SharedPreferences.Editor editor;
 
 
     @Override
@@ -49,10 +47,10 @@ public class ResDetail extends AppCompatActivity {
         setContentView(R.layout.activity_res_detail);
         Toolbar toolbar = findViewById(R.id.tool_bar_simple);
         setSupportActionBar(toolbar);
-        //getSupportActionBar().setTitle("SeatEat");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         final Restaurant rist = (Restaurant) getIntent().getSerializableExtra("Restaurant");
+        System.out.println("RistID"+rist.getRESTAURANT_ID());
         System.out.println(rist.getRESTAURANT_TITLE());
         TextView nome_res = findViewById(R.id.res_name);
         nome_res.setText(rist.getRESTAURANT_TITLE());
@@ -63,6 +61,8 @@ public class ResDetail extends AppCompatActivity {
         ImageView copertina = findViewById(R.id.copertina);
         String imgName = rist.getRESTAURANT_IMAGE();
         ProgressBar QRprogressBar = findViewById(R.id.progressBarQR);
+
+
 
         Activity activity = this;
         Glide.with(activity).load(Uri.parse(path_base+imgName)).into(new CustomViewTarget<ImageView, Drawable>(copertina) {
@@ -81,55 +81,82 @@ public class ResDetail extends AppCompatActivity {
         });
 
         ImageView qrImg = findViewById(R.id.imageView3);
-        RequestBuilder<Drawable> error = Glide.with(this).load(R.drawable.no_internet);
+
+        preferences = getSharedPreferences("infoRes", MODE_PRIVATE);
+        TextView textQR = findViewById(R.id.textQR);
+        Boolean isCapotavola = preferences.getBoolean("isCapotavola",false);
+        String ResID = preferences.getString("ID","");
+        System.out.println("qrsalvato"+preferences.getString("QRimage",null));
+
+        if (ResID.equals("")) { // se non è impostato nessun ristorante allora genera il QR
+
+            preferences = getSharedPreferences("loginref", MODE_PRIVATE);
+
+            String token = preferences.getString("nome", null) + ":" + preferences.getString("password", null);
 
 
-        preferences = getSharedPreferences("loginref", MODE_PRIVATE);
-
-        preferences = getSharedPreferences("loginref", MODE_PRIVATE);
-
-        String token = preferences.getString("nome",null)+":"+ preferences.getString("password",null);
+            String BasicBase64format = "Basic " + Base64.getEncoder().encodeToString(token.getBytes());
 
 
-        String BasicBase64format= "Basic "+Base64.getEncoder().encodeToString(token.getBytes());
+            GlideUrl glideUrl = new GlideUrl(path_base + "/api/neworder/" + rist.getRESTAURANT_ID(), new LazyHeaders.Builder()
+                    .addHeader("Authorization", BasicBase64format)
+                    .build());
+
+            Intent zoomQRIntent = new Intent(getApplicationContext(), Qr_zoom.class);
+            Glide.with(this)
+                    .asBitmap()
+                    .load(glideUrl)
+                    .into(new CustomTarget<Bitmap>() {
+                        @Override
+                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                            qrImg.setImageBitmap(resource);
+
+                            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                            resource.compress(Bitmap.CompressFormat.PNG, 100, baos);
+                            byte[] b = baos.toByteArray();
+                            zoomQRIntent.putExtra("QRImage", b);
+                            String imageEncoded = Base64.getEncoder().encodeToString(b);
+                            System.out.println("QR codificato"+imageEncoded);
+
+                            preferences = getSharedPreferences("infoRes", MODE_PRIVATE);
+
+                            editor = preferences.edit();
+                            editor.putString("QRimage", imageEncoded);
+                            editor.commit();
+                        }
+
+                        @Override
+                        public void onLoadCleared(@Nullable Drawable placeholder) {
+                        }
+                    });
+            qrImg.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    startActivity(zoomQRIntent);
+                }
+            });
+        }
+
+        else if(ResID.equals(rist.getRESTAURANT_ID()) && isCapotavola) { // se sono il capotavola e sono nel ristorante associato
+
+            String QREncoded = preferences.getString("QRimage",null);
+            byte[] decodedByte = Base64.getDecoder().decode(QREncoded);
+            Bitmap bmp = BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length);
+            qrImg.setImageBitmap(bmp); // setto il qr del capotavola salvato
+            System.out.println("ho impostato il QR salvato");
 
 
-        GlideUrl glideUrl = new GlideUrl(path_base+"/api/neworder/"+rist.getRESTAURANT_ID(), new LazyHeaders.Builder()
-                .addHeader("Authorization",BasicBase64format )
-                .build());
+
+            textQR.setText("Sei Il capotavola, buon pasto!");
 
 
-        /*
-        Glide.with(this).load(glideUrl).error(error)
-                .signature(new ObjectKey(String.valueOf(System.currentTimeMillis())))
-                .fitCenter().into(qrImg);*/
+        }
+        else{
 
-        Intent zoomQRIntent = new Intent(getApplicationContext(), Qr_zoom.class);
+            qrImg.setImageResource(R.drawable.noqr);
+            textQR.setText("Sei già associato con un ristorante, buon pasto!");
 
-        Glide.with(this)
-                .asBitmap()
-                .load(glideUrl)
-                .into(new CustomTarget<Bitmap>() {
-                    @Override
-                    public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                        qrImg.setImageBitmap(resource);
-
-                        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                        resource.compress(Bitmap.CompressFormat.PNG, 100, baos);
-                        byte[] b = baos.toByteArray();
-                        zoomQRIntent.putExtra("QRImage",b);
-                    }
-
-                    @Override
-                    public void onLoadCleared(@Nullable Drawable placeholder) {
-                    }
-                });
-        qrImg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(zoomQRIntent);
-            }
-        });
+        }
 
         QRprogressBar.setVisibility(View.GONE);
         RatingBar ratingBar = findViewById(R.id.ratingBar2);
