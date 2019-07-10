@@ -42,8 +42,13 @@ public class FoodDetail extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         final Food food = (Food) getIntent().getSerializableExtra("Food");
-        String rid = (String) getIntent().getSerializableExtra("RestID");
+        String rid = getIntent().getStringExtra("RestID");
         final String restID = rid == null ? "1" : rid;
+        String n = getIntent().getStringExtra("Note");
+        final String note = n == null ? "" : n;
+        final String mode = getIntent().getStringExtra("Mode");
+        final int quantity = getIntent().getIntExtra("Quantity", 1);
+        System.out.println("EXTRA quantity: " + quantity);
 
         TextView foodName = findViewById(R.id.foodNameDetail);
         foodName.setText(food.getFOOD_TITLE());
@@ -56,6 +61,9 @@ public class FoodDetail extends AppCompatActivity {
 
         TextView foodPriceDetail = findViewById(R.id.foodPriceDetail);
         foodPriceDetail.setText(food.getFOOD_PRICE() + "€");
+
+        EditText notesField = findViewById(R.id.foodNotesDetail);
+        notesField.setText(note);
 
         Activity activity = this;
         String imgName = food.getFOOD_IMAGE();
@@ -79,9 +87,9 @@ public class FoodDetail extends AppCompatActivity {
         // TODO manage cart
         SharedPreferences preferences = activity.getSharedPreferences("loginref", MODE_PRIVATE);
         String userId = preferences.getString("nome", "");
-        EditText notesField = findViewById(R.id.foodNotesDetail);
+        int[] counter = {quantity};
         TextView counterDetail = findViewById(R.id.counterDetail);
-        int[] counter = {1};
+        counterDetail.setText(String.valueOf(quantity));
 
         // add to (sub)cart
         ImageButton addIB = findViewById(R.id.addFoodButtonDetail);
@@ -107,8 +115,14 @@ public class FoodDetail extends AppCompatActivity {
             System.out.println("hai clikkato AGGIUNGI " + food.getFOOD_TITLE() + "(id " + food.getFOOD_ID() + ")\nNotes: '" + notes + "'");
 
             cart.load();
+            if (mode.equals("edit")) {
+                for (int i = 0; i < counter[0]; i++) {
+                    cart.removeCartFood(food.getFOOD_ID(), userId, note);
+                }
+            }
             for (int i = 0; i < counter[0]; i++) {
-                cart.addCartFood(food.getFOOD_ID(), food.getFOOD_TITLE(), food.getFOOD_PRICE(), userId, notes);   // TODO
+                cart.addCartFood(food.getFOOD_ID(), food.getFOOD_TITLE(), food.getFOOD_PRICE(),
+                        userId, notes, food.getFOOD_SHORT_DESCR(), food.getFOOD_LONG_DESCR(), food.getFOOD_IMAGE());
             }
             cart.save();
 

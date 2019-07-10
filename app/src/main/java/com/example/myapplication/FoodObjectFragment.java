@@ -63,6 +63,7 @@ public class FoodObjectFragment extends Fragment {
             Intent intent = new Intent(getActivity(), FoodDetail.class);
             intent.putExtra("Food", foods.get(i)); // passo l'oggetto Food
             intent.putExtra("RestID", restID);
+            intent.putExtra("Mode", "add");
             startActivity(intent);
         });
     }

@@ -88,7 +88,8 @@ public class CartListView extends ArrayAdapter<String> {
             // TODO manage cart (add)
             viewHolder.addFCB.setOnClickListener(view -> {
                 cart.load();
-                Cart.CartFood cartFood = cart.addCartFood(cf.getId(), cf.getName(), cf.getPrice(), userId, cf.getNote());
+                Cart.CartFood cartFood = cart.addCartFood(cf.getId(), cf.getName(), cf.getPrice(),
+                        userId, cf.getNote(), cf.getShortDescr(), cf.getLongDescr(), cf.getImage());
                 cart.save();
                 System.out.println("added food from cart: " + cartFood);
                 viewHolder.fcPrice.setText(new Formatter().format(
@@ -103,12 +104,14 @@ public class CartListView extends ArrayAdapter<String> {
                 cart.load();
                 Cart.CartFood cartFood = cart.removeCartFood(cf.getId(), userId, cf.getNote());
                 cart.save();
-                System.out.println("removed food from cart: " + cartFood);
-                viewHolder.totalTvYou.setText(new Formatter().format(Locale.ITALIAN, "Il tuo totale:   %.2f€", cart.getTotal(userId)).toString());
-                viewHolder.totalTvAll.setText(new Formatter().format(Locale.ITALIAN, "Totale:   %.2f€", cart.getTotal()).toString());
-                viewHolder.fcPrice.setText(new Formatter().format(
-                        Locale.ITALIAN, "x %d   %.2f€",
-                        cartFood.getQuantity(), cartFood.getPrice()).toString());
+                if (cartFood != null) {
+                    System.out.println("removed food from cart: " + cartFood);
+                    viewHolder.totalTvYou.setText(new Formatter().format(Locale.ITALIAN, "Il tuo totale:   %.2f€", cart.getTotal(userId)).toString());
+                    viewHolder.totalTvAll.setText(new Formatter().format(Locale.ITALIAN, "Totale:   %.2f€", cart.getTotal()).toString());
+                    viewHolder.fcPrice.setText(new Formatter().format(
+                            Locale.ITALIAN, "x %d   %.2f€",
+                            cartFood.getQuantity(), cartFood.getPrice()).toString());
+                }
             });
         }
         return r;

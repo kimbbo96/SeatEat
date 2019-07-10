@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.myapplication.db_obj.Food;
 import com.example.myapplication.utils.Cart;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 
@@ -84,7 +85,12 @@ class CartTabAll extends Fragment {
 
         listView.setOnItemClickListener((adapterView, view, i, l) -> {
             Intent intent = new Intent(activity, FoodDetail.class);
-            intent.putExtra("Food", foods.get(i)); // passo l'oggetto cibo
+            Cart.CartFood cf = foods.get(i);
+            Food food = new Food(cf.getId(), cf.getName(), cf.getShortDescr(), cf.getLongDescr(), "", cf.getPrice(), cf.getImage());
+            intent.putExtra("Food", food); // passo l'oggetto cibo
+            intent.putExtra("Quantity", cf.getQuantity());
+            intent.putExtra("Note", foods.get(i).getNote());
+            intent.putExtra("Mode", "edit");
             activity.startActivity(intent);
         });
     }

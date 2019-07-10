@@ -129,7 +129,9 @@ class FoodListView extends ArrayAdapter<String> {
         ImageButton addIB = viewHolder.addButton;
         addIB.setOnClickListener(view -> {
             cart.load();
-            cart.addCartFood(foodId[position], foodName[position], foodPrice[position], userId, "");
+            Food food = foods[position];
+            cart.addCartFood(food.getFOOD_ID(), food.getFOOD_TITLE(), food.getFOOD_PRICE(), userId, "",
+                    food.getFOOD_SHORT_DESCR(), food.getFOOD_LONG_DESCR(), food.getFOOD_IMAGE());
             cart.save();
             vh.cartButton.setText("Totale: " + cart.getTotal() + "€");
             Snackbar.make(view, "Food " + foodId[position] + " (" + foodName[position] + ") added to the cart", Snackbar.LENGTH_LONG)

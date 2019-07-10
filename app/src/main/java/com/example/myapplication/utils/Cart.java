@@ -146,7 +146,7 @@ public class Cart implements Serializable {
                     }
                 }
                 if (! existing) {
-                    oldCartFoods.add(new CartFood(cf.id, cf.name, cf.price, cf.user, cf.quantity, cf.note, 0));
+                    oldCartFoods.add(new CartFood(cf.id, cf.name, cf.price, cf.user, cf.quantity, cf.note, 0, cf.shortDescr, cf.longDescr, cf.image));
                 }
             }
         }
@@ -176,7 +176,7 @@ public class Cart implements Serializable {
                     }
                 }
                 if (! existing) {
-                    oldCartFoods.add(new CartFood(cf.id, cf.name, cf.price, cf.user,cf.quantity, cf.note, 0));
+                    oldCartFoods.add(new CartFood(cf.id, cf.name, cf.price, cf.user,cf.quantity, cf.note, 0, cf.shortDescr, cf.longDescr, cf.image));
                 }
             }
         }
@@ -187,7 +187,7 @@ public class Cart implements Serializable {
         this.cartFoods = cartFoods;
     }
 
-    public CartFood addCartFood(String id, String name, double price, String userID, String note) {
+    public CartFood addCartFood(String id, String name, double price, String userID, String note, String shortDescr, String longDescr, String image) {
         CartFood cartFood = null;
         boolean existing = false;
         for (CartFood cf : cartFoods) {
@@ -199,7 +199,7 @@ public class Cart implements Serializable {
             }
         }
         if (! existing) {
-            cartFood = new CartFood(id, name, price, userID,1, note, ordNum);
+            cartFood = new CartFood(id, name, price, userID,1, note, ordNum, shortDescr, longDescr, image);
             this.cartFoods.add(cartFood);
         }
         return cartFood;
@@ -246,16 +246,16 @@ public class Cart implements Serializable {
 
     public void fakeFoods() {
         if (! fake) {
-            cartFoods.add(new CartFood("3", "nuvolette di drago", 0.1, "d", 5, "", 1));
-            cartFoods.add(new CartFood("4", "spiedini di gambeli", 5, "e", 1, "", 2));
-            cartFoods.add(new CartFood("4", "spiedini di gambeli", 5, "d", 3, "", 3));
+            cartFoods.add(new CartFood("3", "nuvolette di drago", 0.1, "d", 5, "", 1, "", "", ""));
+            cartFoods.add(new CartFood("4", "spiedini di gambeli", 5, "e", 1, "", 2, "", "", ""));
+            cartFoods.add(new CartFood("4", "spiedini di gambeli", 5, "d", 3, "", 3, "", "", ""));
 
-            addCartFood("1", "pollo cloccante piccante", 1000, "b", "bono");
-            addCartFood("1", "pollo cloccante piccante", 1000, "b", "bono");
-            addCartFood("1", "pollo cloccante piccante", 1000, "c", "bono");
-            addCartFood("1", "pollo cloccante piccante", 1000, "c", "");
-            addCartFood("2", "noodles", 500, "b", "");
-            addCartFood("2", "noodles", 500, "c", "");
+            addCartFood("1", "pollo cloccante piccante", 1000, "b", "bono", "", "", "");
+            addCartFood("1", "pollo cloccante piccante", 1000, "b", "bono", "", "", "");
+            addCartFood("1", "pollo cloccante piccante", 1000, "c", "bono", "", "", "");
+            addCartFood("1", "pollo cloccante piccante", 1000, "c", "", "", "", "");
+            addCartFood("2", "noodles", 500, "b", "", "", "", "");
+            addCartFood("2", "noodles", 500, "c", "", "", "", "");
 
             fake = true;
             System.out.println("FAKE!");
@@ -271,8 +271,11 @@ public class Cart implements Serializable {
         private int quantity;
         private String note;
         private int ordNum;
+        private String shortDescr;
+        private String longDescr;
+        private String image;
 
-        private CartFood(String id, String name, double price, String user, int quantity, String note, int ordNum) {
+        private CartFood(String id, String name, double price, String user, int quantity, String note, int ordNum, String shortDescr, String longDescr, String image) {
             this.id = id;
             this.name = name;
             this.price = price;
@@ -280,6 +283,9 @@ public class Cart implements Serializable {
             this.quantity = quantity;
             this.note = note;
             this.ordNum = ordNum;
+            this.shortDescr = shortDescr;
+            this.longDescr = longDescr;
+            this.image = image;
         }
 
         public String getId() {
@@ -332,7 +338,19 @@ public class Cart implements Serializable {
         }
 
         public CartFood deepCopy() {
-            return new CartFood(id, name, price, user, quantity, note, ordNum);
+            return new CartFood(id, name, price, user, quantity, note, ordNum, shortDescr, longDescr, image);
+        }
+
+        public String getShortDescr() {
+            return shortDescr;
+        }
+
+        public String getLongDescr() {
+            return longDescr;
+        }
+
+        public String getImage() {
+            return image;
         }
     }
 
