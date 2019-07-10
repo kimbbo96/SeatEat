@@ -62,9 +62,13 @@ public class FoodRest extends AppCompatActivity
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         ExtendedFloatingActionButton fab = findViewById(R.id.fab_food);
-        cart = cart.load();
+        cart.load();
         fab.setText("Totale: " + cart.getTotal() + "€");
         fab.setOnClickListener(view -> {
+            cart.load();        // TODO solo per DEBUG! togliere!!!
+            cart.fakeFoods();   // TODO solo per DEBUG! togliere!!!
+            cart.save();        // TODO solo per DEBUG! togliere!!!
+
 //            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                    .setAction("Action", null).show();
             System.out.println("hai clikkato il carrello");
@@ -142,8 +146,8 @@ public class FoodRest extends AppCompatActivity
     public void onResume() {
         super.onResume();
         ExtendedFloatingActionButton fab = findViewById(R.id.fab_food);
-        cart = cart.load();
-        System.out.println("CARRELLO CHE NON SI VUOLE AGGIORNARE: " + cart);
+        cart.load();
+        System.out.println("CARRELLO ONRESUME: " + cart);
         fab.setText("Totale: " + cart.getTotal() + "€");
     }
 

@@ -128,7 +128,7 @@ class FoodListView extends ArrayAdapter<String> {
         // TODO manage cart (add)
         ImageButton addIB = viewHolder.addButton;
         addIB.setOnClickListener(view -> {
-            cart = cart.load();
+            cart.load();
             cart.addCartFood(foodId[position], foodName[position], foodPrice[position], userId, "");
             cart.save();
             vh.cartButton.setText("Totale: " + cart.getTotal() + "€");
@@ -139,7 +139,7 @@ class FoodListView extends ArrayAdapter<String> {
         // TODO manage cart (remove)
         ImageButton remIB = viewHolder.removeButton;
         remIB.setOnClickListener(view -> {
-            cart = cart.load();
+            cart.load();
             cart.removeCartFood(foodId[position], userId, "");
             cart.save();
             vh.cartButton.setText("Totale: " + cart.getTotal() + "€");
@@ -167,7 +167,7 @@ class FoodListView extends ArrayAdapter<String> {
             addButton = v.findViewById(R.id.addFoodButton);
             removeButton = v.findViewById(R.id.removeFoodButton);
             ViewGroup newParent = (ViewGroup) parent.getParent().getParent().getParent().getParent().getParent();
-            System.out.println("parent: " + newParent);
+//            System.out.println("parent: " + newParent);
             cartButton = newParent.findViewById(R.id.fab_food);
         }
     }
