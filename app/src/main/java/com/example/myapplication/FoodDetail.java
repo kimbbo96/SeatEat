@@ -42,7 +42,8 @@ public class FoodDetail extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         final Food food = (Food) getIntent().getSerializableExtra("Food");
-        final String restID = (String) getIntent().getSerializableExtra("RestID");
+        String rid = (String) getIntent().getSerializableExtra("RestID");
+        final String restID = rid == null ? "1" : rid;
 
         TextView foodName = findViewById(R.id.foodNameDetail);
         foodName.setText(food.getFOOD_TITLE());

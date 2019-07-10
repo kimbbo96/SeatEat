@@ -36,17 +36,13 @@ public class CartListView extends ArrayAdapter<String> {
     private boolean old;
     private Cart cart;
     private String userId;
-    private YouAll ya;
 
-    enum YouAll {YOU, ALL}
-
-    public CartListView(Activity context, List<Cart.CartFood> foods, boolean old, YouAll ya) {
+    public CartListView(Activity context, List<Cart.CartFood> foods, boolean old) {
         super(context, R.layout.activity_scrolling_restaurant, getNames(foods));
 
         this.context = context;
         this.foods = foods;
         this.old = old;
-        this.ya = ya;
         this.cart = new Cart(context);
 
         SharedPreferences preferences = context.getSharedPreferences("loginref", MODE_PRIVATE);
@@ -100,17 +96,6 @@ public class CartListView extends ArrayAdapter<String> {
                         cartFood.getQuantity(), cartFood.getPrice()).toString());
                 viewHolder.totalTvYou.setText(new Formatter().format(Locale.ITALIAN, "Il tuo totale:   %.2f€", cart.getTotal(userId)).toString());
                 viewHolder.totalTvAll.setText(new Formatter().format(Locale.ITALIAN, "Totale:   %.2f€", cart.getTotal()).toString());
-//                ArrayAdapter adapter = (ArrayAdapter) viewHolder.otherListView.getAdapter();
-//                adapter.notifyDataSetChanged();
-//                viewHolder.otherListView.invalidate();
-//                switch (ya) {
-//                    case YOU:
-//                        viewHolder.clAll.invalidate();
-//                        break;
-//                    case ALL:
-//                        viewHolder.clYou.invalidate();
-//                        break;
-//                }
             });
 
             // TODO manage cart (remove)
@@ -124,20 +109,14 @@ public class CartListView extends ArrayAdapter<String> {
                 viewHolder.fcPrice.setText(new Formatter().format(
                         Locale.ITALIAN, "x %d   %.2f€",
                         cartFood.getQuantity(), cartFood.getPrice()).toString());
-//                ArrayAdapter adapter = (ArrayAdapter) viewHolder.otherListView.getAdapter();
-//                adapter.notifyDataSetChanged();
-//                viewHolder.otherListView.invalidate();
-//                switch (ya) {
-//                    case YOU:
-//                        viewHolder.clAll.invalidate();
-//                        break;
-//                    case ALL:
-//                        viewHolder.clYou.invalidate();
-//                        break;
-//                }
             });
         }
         return r;
+    }
+
+    @Override
+    public boolean isEnabled(int position) {
+        return !old;
     }
 
     class  ViewHolder{
@@ -148,9 +127,6 @@ public class CartListView extends ArrayAdapter<String> {
         ImageButton removeFCB;
         TextView totalTvYou;
         TextView totalTvAll;
-//        ListView otherListView;
-//        ConstraintLayout clAll;
-//        ConstraintLayout clYou;
 
         ViewHolder(View v, ViewGroup parent){
             fcName = v.findViewById(R.id.foodCartName);
@@ -160,23 +136,8 @@ public class CartListView extends ArrayAdapter<String> {
             removeFCB = v.findViewById(R.id.removeFoodCartButton);
 
             ViewGroup newParent = (ViewGroup) parent.getParent().getParent().getParent().getParent().getParent();
-//            System.out.println("parent: " + newParent);
             totalTvYou = newParent.findViewById(R.id.tw_total_cart_you);
             totalTvAll = newParent.findViewById(R.id.tw_total_cart_all);
-//            clAll = newParent.findViewById(R.id.constraintLayoutCartAll);
-//            clYou = newParent.findViewById(R.id.constraintLayoutCartYou);
-//
-//            System.out.println("clAll: " + clAll + "clYou: " + clYou);
-
-//            switch (ya) {
-//                case YOU:
-//                    otherListView = newParent.findViewById(R.id.list_view_cart_all);
-//                    break;
-//                case ALL:
-//                    otherListView = newParent.findViewById(R.id.list_view_cart_you);
-//                    break;
-//            }
-//            System.out.println("other list view: " + otherListView);
         }
     }
 }

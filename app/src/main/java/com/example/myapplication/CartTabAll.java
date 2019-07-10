@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -63,12 +64,12 @@ class CartTabAll extends Fragment {
         System.out.println("ordNum: " + ordNum);
         List<Cart.CartFood> foods = cart.getCartFoods(ordNum);
         System.out.println("foods ora-tutti: " + foods);
-        CartListView customListView = new CartListView(activity, foods, false, CartListView.YouAll.ALL);
+        CartListView customListView = new CartListView(activity, foods, false);
 
         ListView listViewOld = activity.findViewById(R.id.list_view_cart_old_all);
         List<Cart.CartFood> foodsOld = cart.getOldCartFoods(ordNum);
         System.out.println("foods prima-tutti: " + foodsOld);
-        CartListView customListViewOld = new CartListView(activity, foodsOld, true, CartListView.YouAll.ALL);
+        CartListView customListViewOld = new CartListView(activity, foodsOld, true);
 
         listView.setAdapter(customListView);
         justifyListViewHeight(listView);
@@ -81,12 +82,10 @@ class CartTabAll extends Fragment {
         ExtendedFloatingActionButton fab = activity.findViewById(R.id.fab_cart_all);
         fab.setOnClickListener(activity.new FabCartClickListener(cart));
 
-//        final List<Restaurant> resList = new ArrayList<>(Arrays.asList(restaurants));
-//        listView.setOnItemClickListener((adapterView, view, i, l) -> {
-//            System.out.println("hai clikkato "+i);
-//            Intent intent = new Intent(activity, ResDetail.class);
-//            intent.putExtra("Restaurant", restaurants.get(i)); // passo l'oggetto ristorante
-//            activity.startActivity(intent);
-//        });
+        listView.setOnItemClickListener((adapterView, view, i, l) -> {
+            Intent intent = new Intent(activity, FoodDetail.class);
+            intent.putExtra("Food", foods.get(i)); // passo l'oggetto cibo
+            activity.startActivity(intent);
+        });
     }
 }

@@ -1,6 +1,7 @@
 package com.example.myapplication;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -70,12 +71,12 @@ class CartTabYou extends Fragment {
         System.out.println("ordNum: " + ordNum);
         List<Cart.CartFood> foods = cart.getCartFoods(ordNum, userId);
         System.out.println("foods ora-tu: " + foods);
-        CartListView customListView = new CartListView(activity, foods, false, CartListView.YouAll.YOU);
+        CartListView customListView = new CartListView(activity, foods, false);
 
         ListView listViewOld = activity.findViewById(R.id.list_view_cart_old_you);
         List<Cart.CartFood> foodsOld = cart.getOldCartFoods(ordNum, userId);
         System.out.println("foods prima-tu: " + foodsOld);
-        CartListView customListViewOld = new CartListView(activity, foodsOld, true, CartListView.YouAll.YOU);
+        CartListView customListViewOld = new CartListView(activity, foodsOld, true);
 
         listView.setAdapter(customListView);
         justifyListViewHeight(listView);
@@ -88,12 +89,10 @@ class CartTabYou extends Fragment {
         ExtendedFloatingActionButton fab = activity.findViewById(R.id.fab_cart_you);
         fab.setOnClickListener(activity.new FabCartClickListener(cart));
 
-//        final List<Restaurant> resList = new ArrayList<>(Arrays.asList(restaurants));
-//        listView.setOnItemClickListener((adapterView, view, i, l) -> {
-//            System.out.println("hai clikkato "+i);
-//            Intent intent = new Intent(activity, ResDetail.class);
-//            intent.putExtra("Restaurant", restaurants.get(i)); // passo l'oggetto ristorante
-//            activity.startActivity(intent);
-//        });
+        listView.setOnItemClickListener((adapterView, view, i, l) -> {
+            Intent intent = new Intent(activity, FoodDetail.class);
+            intent.putExtra("Food", foods.get(i)); // passo l'oggetto cibo
+            activity.startActivity(intent);
+        });
     }
 }
