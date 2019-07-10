@@ -108,7 +108,7 @@
             </RelativeLayout>
 
             <TextView
-                android:id="@+id/textView4"
+                android:id="@+id/textQR"
                 android:layout_width="363dp"
                 android:layout_height="55dp"
                 android:layout_centerHorizontal="true"

@@ -1,5 +1,6 @@
 package com.example.myapplication.utils;
 
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -17,6 +18,9 @@ import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class FireBaseService extends FirebaseMessagingService {
 
+    SharedPreferences preferences;
+    SharedPreferences.Editor editor;
+
     String url = "https://seateat-be.herokuapp.com";
 
     @Override
@@ -27,6 +31,28 @@ public class FireBaseService extends FirebaseMessagingService {
         // TODO(developer): Handle FCM messages here.
         // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
         Log.d(TAG, "From: " + remoteMessage.getFrom());
+        System.out.println("collapseKey:"+remoteMessage.getCollapseKey());
+        System.out.println("id:"+remoteMessage.getMessageId());
+        System.out.println("getdata:"+remoteMessage.getData());
+        String MessageType = remoteMessage.getData().get("type");
+
+        switch (MessageType){ // per tutte le tipologie di notifiche che il server può mandare
+
+            case "restaurantAssociation":{ //associazione al ristorante
+                preferences = getSharedPreferences("infoRes", MODE_PRIVATE);
+                editor = preferences.edit();
+                editor.putString("ID", (remoteMessage.getData().get("ID")));
+                if(remoteMessage.getData().get("isCapotavola").equals("True")){
+                    editor.putBoolean("isCapotavola",true);
+                }
+                else {
+                    editor.putBoolean("isCapotavola",false);
+                }
+                editor.commit();
+
+            }
+
+        }
 
         // Check if message contains a data payload.
         if (remoteMessage.getData().size() > 0) {
