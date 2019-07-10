@@ -42,7 +42,8 @@ public class FoodDetail extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         final Food food = (Food) getIntent().getSerializableExtra("Food");
-        final String restID = (String) getIntent().getSerializableExtra("RestID");
+        String rid = (String) getIntent().getSerializableExtra("RestID");
+        final String restID = rid == null ? "1" : rid;
 
         TextView foodName = findViewById(R.id.foodNameDetail);
         foodName.setText(food.getFOOD_TITLE());
@@ -105,7 +106,7 @@ public class FoodDetail extends AppCompatActivity {
             String notes = notesField.getText().toString();
             System.out.println("hai clikkato AGGIUNGI " + food.getFOOD_TITLE() + "(id " + food.getFOOD_ID() + ")\nNotes: '" + notes + "'");
 
-            cart = cart.load();
+            cart.load();
             for (int i = 0; i < counter[0]; i++) {
                 cart.addCartFood(food.getFOOD_ID(), food.getFOOD_TITLE(), food.getFOOD_PRICE(), userId, notes);   // TODO
             }

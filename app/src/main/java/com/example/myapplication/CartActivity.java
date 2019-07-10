@@ -1,41 +1,29 @@
 package com.example.myapplication;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.viewpager.widget.ViewPager;
 
 import com.example.myapplication.utils.Cart;
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
-
-import java.util.ArrayList;
-import java.util.Formatter;
-import java.util.List;
-import java.util.Locale;
-
-import static com.example.myapplication.utils.Utils.justifyListViewHeight;
+import com.google.android.material.tabs.TabLayout;
 
 public class CartActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     Cart cart = new Cart(this);
-    ListView listView;
-    ListView listViewOld;
+    CartActivity activity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Activity activity = this;
+        activity = this;
         setContentView(R.layout.activity_cart);
         Toolbar toolbar = findViewById(R.id.tool_bar_simple);
         setSupportActionBar(toolbar);
@@ -48,48 +36,33 @@ public class CartActivity extends AppCompatActivity implements NavigationView.On
 //                activity, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
 //        drawer.addDrawerListener(toggle);
 //        toggle.syncState();
-        navigationView.setNavigationItemSelectedListener((NavigationView.OnNavigationItemSelectedListener) activity);
-        ProgressBar progressBarCart = findViewById(R.id.progressBar_cart);
-        progressBarCart.setVisibility(View.GONE);
+        navigationView.setNavigationItemSelectedListener(activity);
 
-        cart = cart.load();
-        System.out.println("CARRELLO ATTUALE: " + cart);
-
-        TextView twTotal = findViewById(R.id.tw_total_cart);
-        twTotal.setText(new Formatter().format(Locale.ITALIAN, "Totale:   %.2f€", cart.getTotal()).toString());
-
-        listView = activity.findViewById(R.id.list_view_cart);
-        int ordNum = cart.getOrdNum();
-        System.out.println("ordNum: " + ordNum);
-        List<Cart.CartFood> foods = cart.getCartFoods(ordNum);
-        CartListView customListView = new CartListView(activity, foods, false);
-        listView.setAdapter(customListView);
-        justifyListViewHeight(listView);
-
-        listViewOld = activity.findViewById(R.id.list_view_cart_old);
-        List<Cart.CartFood> foodsOld = cart.getOldCartFoods(ordNum);
-        CartListView customListViewOld = new CartListView(activity, foodsOld, true);
-        listViewOld.setAdapter(customListViewOld);
-        justifyListViewHeight(listViewOld);
-
-        ExtendedFloatingActionButton fab = findViewById(R.id.fab_cart);
-        fab.setOnClickListener(view -> {
-            System.out.println("hai clikkato 'invia ordine'");
-            cart.newOrder();
-            System.out.println("CARRELLO AGGIORNATO: " + cart);
-            cart.save();
-            finish();
-//            Intent intent = new Intent(this, CartActivity.class);
-//            intent.putExtra("Restaurant", rist); // passo l'oggetto ristornate
-//            startActivity(intent);
-        });
-
-//        final List<Restaurant> resList = new ArrayList<>(Arrays.asList(restaurants));
-//        listView.setOnItemClickListener((adapterView, view, i, l) -> {
-//            System.out.println("hai clikkato "+i);
-//            Intent intent = new Intent(activity, ResDetail.class);
-//            intent.putExtra("Restaurant", restaurants.get(i)); // passo l'oggetto ristorante
-//            activity.startActivity(intent);
+        ViewPager viewPager = findViewById(R.id.viewPagerCart);
+        TabLayout tabLayout = findViewById(R.id.tabLayoutCart);
+        SimplePagerAdapter adapter = new SimplePagerAdapter(getSupportFragmentManager());
+        adapter.addFragment(new CartTabYou(activity), "I tuoi ordini");
+        adapter.addFragment(new CartTabAll(activity), "Gli ordini di tutti");
+        viewPager.setAdapter(adapter);
+        tabLayout.setupWithViewPager(viewPager);
+//        tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(viewPager) {
+//            @Override
+//            public void onTabSelected(TabLayout.Tab tab) {
+//                int pos = tab.getPosition();
+//                adapter.replaceFragment(new CartTabYou(activity), pos);
+//                viewPager.setCurrentItem(pos);
+//                System.out.println("TAB selected " + pos);
+//            }
+//
+//            @Override
+//            public void onTabUnselected(TabLayout.Tab tab) {
+//                System.out.println("TAB unselected " + tab.getPosition());
+//            }
+//
+//            @Override
+//            public void onTabReselected(TabLayout.Tab tab) {
+//                System.out.println("TAB reselected " + tab.getPosition());
+//            }
 //        });
     }
 
@@ -149,4 +122,25 @@ public class CartActivity extends AppCompatActivity implements NavigationView.On
 
         return super.onOptionsItemSelected(item);
     }
+
+    class FabCartClickListener implements View.OnClickListener {
+        Cart cart;
+
+        public FabCartClickListener(Cart cart) {
+            this.cart = cart;
+        }
+
+        @Override
+        public void onClick(View view) {
+            System.out.println("hai clikkato 'invia ordine'");
+            cart.newOrder();
+            System.out.println("CARRELLO AGGIORNATO: " + cart);
+            cart.save();
+            finish();
+//            Intent intent = new Intent(this, CartActivity.class);
+//            intent.putExtra("Restaurant", rist); // passo l'oggetto ristornate
+//            startActivity(intent);
+        }
+    }
+
 }
