@@ -54,6 +54,8 @@ public class Login extends AppCompatActivity {
                         try {
                             data.put("nickname",username.getText().toString());
                             data.put("password",paswd.getText().toString());
+                            data.put("firebaseToken",
+                                    preferences.getString("firebaseToken",null)); // invio il token di FireBase
                         } catch (JSONException e) {
                             Log.d("OKHTTP3","JSON exception");
                             e.printStackTrace();
@@ -71,7 +73,6 @@ public class Login extends AppCompatActivity {
 
                             if (!response.isSuccessful()){
 
-
                                 runOnUiThread(new Runnable() {
 
                                     @Override
@@ -87,8 +88,6 @@ public class Login extends AppCompatActivity {
                                             if(responsebody.get("message").equals("Unauthorized")){
                                                 errmex.setVisibility(View.VISIBLE);
                                                 errmex.setText("id o password errati");
-
-
                                             }
                                         } catch (JSONException e) {
                                             e.printStackTrace();
@@ -124,7 +123,6 @@ public class Login extends AppCompatActivity {
 
                     }
                 }).start();
-
 
             }
         });
