@@ -32,7 +32,7 @@ public class Settings extends AppCompatActivity {
             public void onClick(View view) {
                 // handle logout
                 preferences = getSharedPreferences("loginref", MODE_PRIVATE);
-
+                //preferences.
                 editor = preferences.edit();
                 editor.putString("nome", null);
                 editor.putBoolean("savelogin", false);

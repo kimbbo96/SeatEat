@@ -10,6 +10,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.Base64;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -92,44 +93,50 @@ public class FireBaseService extends FirebaseMessagingService {
     public void onNewToken(String token) {
         Log.d(TAG, "Refreshed token: " + token);
 
+        preferences = getSharedPreferences("loginref", MODE_PRIVATE);
+        editor = preferences.edit();
+        editor.putString("firebaseToken", token);
+        editor.commit();
+
+        boolean savelogin = preferences.getBoolean("savelogin", false);
 
         OkHttpClient client = new OkHttpClient();
         MediaType JSON = MediaType.parse("application/json;charset=utf-8");
         JSONObject data = new JSONObject();
-        try {
-            data.put("firebaseToken",token);
-        } catch (JSONException e) {
-            Log.d("OKHTTP3","JSON exception");
-            e.printStackTrace();
+
+        if (savelogin){ // se l'utente era già loggato allora invio l'aggiornamento
+
+            String credenziali = preferences.getString("nome", null) + ":" + preferences.getString("password", null);
+            String BasicBase64format = "Basic " + Base64.getEncoder().encodeToString(credenziali.getBytes());
+
+            try {
+                data.put("firebaseToken",token);
+            } catch (JSONException e) {
+                Log.d("OKHTTP3","JSON exception");
+                e.printStackTrace();
+            }
+            RequestBody body = RequestBody.create(JSON,data.toString());
+            Request newReq = new Request.Builder()
+                    .url(url+"/api/testnotificationss")
+                    .post(body).addHeader("Authorization", BasicBase64format)
+                    .build();
+
+            Response response = null;
+            try {
+                response = client.newCall(newReq).execute();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            System.out.println("www"+response.message());
+            System.out.println("www"+response.isSuccessful());
+
+            if (!response.isSuccessful()){
+                System.err.println("invio messaggio non riuscito");
+            }
+
         }
-        RequestBody body = RequestBody.create(JSON,data.toString());
-        Request newReq = new Request.Builder()
-                .url(url+"/api/testnotificationss")
-                .post(body)
-                .build();
 
-        Response response = null;
-        try {
-            response = client.newCall(newReq).execute();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        System.out.println("www"+response.message());
-        System.out.println("www"+response.isSuccessful());
-
-        if (!response.isSuccessful()){
-            System.err.println("invio messaggio non riuscito");
-        }
-
-
-
-
-
-
-
-
-
-                // If you want to send messages to this application instance or
+        // If you want to send messages to this application instance or
         // manage this apps subscriptions on the server side, send the
         // Instance ID token to your app server.
         //sendRegistrationToServer(token);

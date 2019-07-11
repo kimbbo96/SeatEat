@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.widget.Toast;
 
 import com.example.myapplication.utils.Utils;
@@ -80,6 +81,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        preferences = getSharedPreferences("loginref", MODE_PRIVATE);
+        preferences= PreferenceManager.getDefaultSharedPreferences(this);
+        System.out.println("true jjjj"+ preferences.getString("nome",null));
+
 
         Utils.createNotificationChannel(this);
 
@@ -107,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
         boolean savelogin = preferences.getBoolean("savelogin", false);
         System.out.println("ghjkl");
         if (savelogin) {
-            System.out.println("true valore");
+            System.out.println("true valore"+ preferences.getString("nome",null));
             Toast.makeText(this, "ciao " + preferences.getString("nome", null), Toast.LENGTH_LONG).show();
             System.out.println(preferences.getString("nome", null));
 
