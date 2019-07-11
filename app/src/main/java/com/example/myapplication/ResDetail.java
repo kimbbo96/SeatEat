@@ -13,6 +13,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
+
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.view.View;
@@ -32,8 +34,18 @@ import com.example.myapplication.db_obj.Restaurant;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.Base64;
+
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class ResDetail extends AppCompatActivity {
     private String path_base = "https://seateat-be.herokuapp.com";
@@ -113,6 +125,8 @@ public class ResDetail extends AppCompatActivity {
                         @Override
                         public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
                             qrImg.setImageBitmap(resource);
+                            qrImg.setVisibility(View.VISIBLE);
+                            QRprogressBar.setVisibility(View.GONE);
 
                             ByteArrayOutputStream baos = new ByteArrayOutputStream();
                             resource.compress(Bitmap.CompressFormat.PNG, 100, baos);
@@ -148,6 +162,8 @@ public class ResDetail extends AppCompatActivity {
             byte[] decodedByte = Base64.getDecoder().decode(QREncoded);
             Bitmap bmp = BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length);
             qrImg.setImageBitmap(bmp); // setto il qr del capotavola salvato
+            qrImg.setVisibility(View.VISIBLE);
+            QRprogressBar.setVisibility(View.GONE);
             System.out.println("ho impostato il QR salvato");
             textQR.setText("Sei Il capotavola, fai scansionare questo QR ai tuoi amici. buon pasto!");
 
@@ -168,20 +184,17 @@ public class ResDetail extends AppCompatActivity {
                 }
             });
 
-
-
-
-
         }
         else{ // associato con un altro ristorante
             cameraimg.setVisibility(View.GONE);
             cameraInfo.setVisibility(View.GONE);
             qrImg.setImageResource(R.drawable.noqr);
+            qrImg.setVisibility(View.VISIBLE);
+            QRprogressBar.setVisibility(View.GONE);
             textQR.setText("Sei già associato con un ristorante, buon pasto!");
 
         }
 
-        QRprogressBar.setVisibility(View.GONE);
         RatingBar ratingBar = findViewById(R.id.ratingBar2);
         ratingBar.setEnabled(false);
         ratingBar.setRating(rist.getRESTAURANT_RATING());
@@ -220,7 +233,58 @@ public class ResDetail extends AppCompatActivity {
                 Toast.makeText(this,"you cancelled the scanning", Toast.LENGTH_LONG).show();
             }
             else{
-                Toast.makeText(this, result.getContents(),Toast.LENGTH_LONG).show();
+                // invio lo scan al server
+                String qr = result.getContents();
+                Toast.makeText(this, qr,Toast.LENGTH_LONG).show();
+
+
+
+                OkHttpClient client = new OkHttpClient();
+                MediaType JSON = MediaType.parse("application/json;charset=utf-8");
+                JSONObject qrData = new JSONObject();
+                try {
+                    qrData.put("qrScanned",qr);
+                } catch (JSONException e) {
+                    Log.d("OKHTTP3","JSON exception");
+                    e.printStackTrace();
+                }
+
+                preferences = getSharedPreferences("loginref", MODE_PRIVATE);
+                String token = preferences.getString("nome", null) + ":" + preferences.getString("password", null);
+
+
+                String BasicBase64format = "Basic " + Base64.getEncoder().encodeToString(token.getBytes());
+
+                RequestBody body = RequestBody.create(JSON,data.toString());
+                Request newReq = new Request.Builder()
+                        .url(path_base+"/api/testnotificationss")
+                        .post(body).addHeader("Authorization", BasicBase64format)
+                        .build();
+
+
+                Response response = null;
+                try {
+                    response = client.newCall(newReq).execute();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                System.out.println("www"+response.message());
+                System.out.println("www"+response.isSuccessful());
+
+                if (!response.isSuccessful()){
+                    System.err.println("invio messaggio non riuscito");
+                }
+
+                else{ // ricevo il body con le info sul carrello?
+
+
+                }
+
+
+
+
+
+
             }
         }
         else {
