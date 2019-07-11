@@ -1,6 +1,7 @@
 package com.example.myapplication;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import com.example.myapplication.utils.Cart;
@@ -15,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.example.myapplication.db_obj.Food;
 import com.example.myapplication.db_obj.Restaurant;
@@ -62,20 +64,27 @@ public class FoodRest extends AppCompatActivity
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         ExtendedFloatingActionButton fab = findViewById(R.id.fab_food);
-        cart.load();
-        fab.setText("Totale: " + cart.getTotal() + "€");
-        fab.setOnClickListener(view -> {
-            cart.load();        // TODO solo per DEBUG! togliere!!!
-            cart.fakeFoods();   // TODO solo per DEBUG! togliere!!!
-            cart.save();        // TODO solo per DEBUG! togliere!!!
+        SharedPreferences preferencesRest = this.getSharedPreferences("infoRes", MODE_PRIVATE);
+        String idRestPref = preferencesRest.getString("ID","");
+        String idRest = rist.getRESTAURANT_ID();
+        if (idRest.equals(idRestPref)) {
+            cart.load();
+            fab.setText("Totale: " + cart.getTotal() + "€");
+            fab.setOnClickListener(view -> {
+                cart.load();        // TODO solo per DEBUG! togliere!!!
+                cart.fakeFoods();   // TODO solo per DEBUG! togliere!!!
+                cart.save();        // TODO solo per DEBUG! togliere!!!
 
 //            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                    .setAction("Action", null).show();
-            System.out.println("hai clikkato il carrello");
-            Intent intent = new Intent(this, CartActivity.class);
+                System.out.println("hai clikkato il carrello");
+                Intent intent = new Intent(this, CartActivity.class);
 //            intent.putExtra("Restaurant", rist); // passo l'oggetto ristornate
-            startActivity(intent);
-        });
+                startActivity(intent);
+            });
+        } else {
+            fab.setVisibility(View.GONE);
+        }
 
 //        DrawerLayout drawer = findViewById(R.id.drawer_layout_food);
 //        NavigationView navigationView = findViewById(R.id.nav_view_food);
@@ -88,8 +97,6 @@ public class FoodRest extends AppCompatActivity
 //        navigationView.setNavigationItemSelectedListener(this);
 
         ///////////////////////////////////
-
-        String idRest = rist.getRESTAURANT_ID();
 
         // inizio la procedura di get
         OkHttpClient cl = new OkHttpClient();

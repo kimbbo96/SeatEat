@@ -33,23 +33,19 @@ class FoodListView extends ArrayAdapter<String> {
     private String restId;
     private Cart cart;
     private String userId;
+    private String restIdPref;
 
     private final String path_base = "https://seateat-be.herokuapp.com";
 
-    public FoodListView(Activity context, String[] foodName, String[] foodDesc, Double[] foodPrice) {
-        super(context, R.layout.activity_scrolling_restaurant,foodName);
-        this.context = context;
-        this.foodDesc = foodDesc;
-        this.foodName = foodName;
-        this.foodPrice = foodPrice;
-    }
 
     public FoodListView(Activity context, Food[] foods, String restId) {
         super(context, R.layout.activity_scrolling_restaurant, getNames(foods));
 
         this.cart = new Cart(context);
-        SharedPreferences preferences = context.getSharedPreferences("loginref", MODE_PRIVATE);
-        this.userId = preferences.getString("nome", "");
+        SharedPreferences preferencesLogin = context.getSharedPreferences("loginref", MODE_PRIVATE);
+        this.userId = preferencesLogin.getString("nome", "");
+        SharedPreferences preferencesRest = context.getSharedPreferences("infoRes", MODE_PRIVATE);
+        this.restIdPref = preferencesRest.getString("ID","");
 
         this.foods = foods;
         this.restId = restId;
@@ -125,31 +121,41 @@ class FoodListView extends ArrayAdapter<String> {
 
         final ViewHolder vh = viewHolder;
 
-        // TODO manage cart (add)
         ImageButton addIB = viewHolder.addButton;
-        addIB.setOnClickListener(view -> {
-            cart.load();
-            Food food = foods[position];
-            cart.addCartFood(food.getFOOD_ID(), food.getFOOD_TITLE(), food.getFOOD_PRICE(), userId, "",
-                    food.getFOOD_SHORT_DESCR(), food.getFOOD_LONG_DESCR(), food.getFOOD_IMAGE());
-            cart.save();
-            vh.cartButton.setText("Totale: " + cart.getTotal() + "€");
-            Snackbar.make(view, "Food " + foodId[position] + " (" + foodName[position] + ") added to the cart", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show();   // TODO togliere sta cosa una volta finito col carrello
-        });
-
-        // TODO manage cart (remove)
         ImageButton remIB = viewHolder.removeButton;
-        remIB.setOnClickListener(view -> {
-            cart.load();
-            cart.removeCartFood(foodId[position], userId, "");
-            cart.save();
-            vh.cartButton.setText("Totale: " + cart.getTotal() + "€");
-            Snackbar.make(view, "Food " + foodId[position] + " (" + foodName[position] + ") removed from the cart", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show();   // TODO togliere sta cosa una volta finito col carrello
-        });
+        if (restId.equals(restIdPref)) {
+            // TODO manage cart (add)
+            addIB.setOnClickListener(view -> {
+                cart.load();
+                Food food = foods[position];
+                cart.addCartFood(food.getFOOD_ID(), food.getFOOD_TITLE(), food.getFOOD_PRICE(), userId, "",
+                        food.getFOOD_SHORT_DESCR(), food.getFOOD_LONG_DESCR(), food.getFOOD_IMAGE());
+                cart.save();
+                vh.cartButton.setText("Totale: " + cart.getTotal() + "€");
+                Snackbar.make(view, "Food " + foodId[position] + " (" + foodName[position] + ") added to the cart", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();   // TODO togliere sta cosa una volta finito col carrello
+            });
+
+            // TODO manage cart (remove)
+            remIB.setOnClickListener(view -> {
+                cart.load();
+                cart.removeCartFood(foodId[position], userId, "");
+                cart.save();
+                vh.cartButton.setText("Totale: " + cart.getTotal() + "€");
+                Snackbar.make(view, "Food " + foodId[position] + " (" + foodName[position] + ") removed from the cart", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();   // TODO togliere sta cosa una volta finito col carrello
+            });
+        } else {
+            addIB.setVisibility(View.GONE);
+            remIB.setVisibility(View.GONE);
+        }
 
         return f;
+    }
+
+    @Override
+    public boolean isEnabled(int position) {
+        return restId.equals(restIdPref);
     }
 
     class  ViewHolder{
