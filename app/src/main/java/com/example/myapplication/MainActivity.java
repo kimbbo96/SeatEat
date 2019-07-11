@@ -14,6 +14,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import com.example.myapplication.utils.Utils;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -78,6 +80,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Utils.createNotificationChannel(this);
 
         // Get location or location permission
         lm = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
