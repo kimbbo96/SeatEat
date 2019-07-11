@@ -72,12 +72,12 @@ class CartTabYou extends Fragment {
         System.out.println("ordNum: " + ordNum);
         List<Cart.CartFood> foods = cart.getCartFoods(ordNum, userId);
         System.out.println("foods ora-tu: " + foods);
-        CartListView customListView = new CartListView(activity, foods, false);
+        CartListView customListView = new CartListView(activity, foods, false, true);
 
         ListView listViewOld = activity.findViewById(R.id.list_view_cart_old_you);
         List<Cart.CartFood> foodsOld = cart.getOldCartFoods(ordNum, userId);
         System.out.println("foods prima-tu: " + foodsOld);
-        CartListView customListViewOld = new CartListView(activity, foodsOld, true);
+        CartListView customListViewOld = new CartListView(activity, foodsOld, true, true);
 
         listView.setAdapter(customListView);
         justifyListViewHeight(listView);

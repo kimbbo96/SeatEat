@@ -18,7 +18,6 @@ import java.util.List;
 public class Cart implements Serializable {
     public static final long serialVersionUID = 42L;
     private transient Context context;
-    private String restaurant = "";
     private static int ordNum = 1;
     private boolean fake = false;
 
@@ -47,7 +46,6 @@ public class Cart implements Serializable {
             FileInputStream fis = context.openFileInput("SeatEat_Cart");
             ObjectInputStream is = new ObjectInputStream(fis);
             Cart oldCart = (Cart) is.readObject();
-            this.restaurant = oldCart.getRestaurant();
             this.cartFoods = oldCart.getCartFoods();
             this.cartUsers = oldCart.getCartUsers();
             if (! cartFoods.isEmpty()) {
@@ -73,7 +71,6 @@ public class Cart implements Serializable {
      */
     public void clear() {
         ordNum = 1;
-        restaurant = "";
         cartUsers.clear();
         cartFoods.clear();
     }
@@ -97,16 +94,9 @@ public class Cart implements Serializable {
                 }).sum();
     }
 
-    public String getRestaurant() {
-        return restaurant;
-    }
 
     public int getOrdNum() {
         return ordNum;
-    }
-
-    public void setRestaurant(String restaurant) {
-        this.restaurant = restaurant;
     }
 
     public List<CartFood> getCartFoods() {
@@ -237,7 +227,6 @@ public class Cart implements Serializable {
     public String toString() {
         return "Cart{" +
                 "context=" + context +
-                ", restaurant='" + restaurant + '\'' +
                 ", ordNum=" + ordNum +
                 ", cartFoods=" + cartFoods +
                 ", cartUsers=" + cartUsers +
@@ -387,5 +376,4 @@ public class Cart implements Serializable {
                     '}';
         }
     }
-
 }

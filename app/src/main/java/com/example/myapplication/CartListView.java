@@ -34,16 +34,18 @@ public class CartListView extends ArrayAdapter<String> {
     private Activity context;
     private List<Cart.CartFood> foods;
     private boolean old;
+    private boolean showButtons;
     private Cart cart;
     private String userId;
 
-    public CartListView(Activity context, List<Cart.CartFood> foods, boolean old) {
+    public CartListView(Activity context, List<Cart.CartFood> foods, boolean old, boolean showButtons) {
         super(context, R.layout.activity_scrolling_restaurant, getNames(foods));
 
         this.context = context;
         this.foods = foods;
         this.old = old;
         this.cart = new Cart(context);
+        this.showButtons = showButtons;
 
         SharedPreferences preferences = context.getSharedPreferences("loginref", MODE_PRIVATE);
         this.userId = preferences.getString("nome", "");
@@ -81,7 +83,7 @@ public class CartListView extends ArrayAdapter<String> {
                 Locale.ITALIAN, "x %d   %.2f€",
                 foods.get(position).getQuantity(), foods.get(position).getPrice()).toString());
 
-        if (old) {
+        if (old || !showButtons) {
             viewHolder.addFCB.setVisibility(View.GONE);
             viewHolder.removeFCB.setVisibility(View.GONE);
         } else {
@@ -119,7 +121,7 @@ public class CartListView extends ArrayAdapter<String> {
 
     @Override
     public boolean isEnabled(int position) {
-        return !old;
+        return !old && showButtons;
     }
 
     class  ViewHolder{
