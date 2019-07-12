@@ -3,12 +3,15 @@ package com.example.myapplication;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.example.myapplication.utils.Cart;
 import com.google.android.material.tabs.TabLayout;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,26 +21,33 @@ import java.util.TreeMap;
 public class CollectionFoodFragment extends Fragment {
     // When requested, this adapter returns a FoodObjectFragment,
     // representing an object in the collection.
-    FoodCollectionPagerAdapter demoCollectionPagerAdapter;
-    ViewPager viewPager;
-    Map<String, ArrayList<String>> foods = new TreeMap<>();
-    String restID;
+    private FoodCollectionPagerAdapter demoCollectionPagerAdapter;
+    private ViewPager viewPager;
+    private View view;
+    private Cart cart;
+    private Map<String, ArrayList<String>> foods = new TreeMap<>();
+    private String restID;
+    private String userID;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        cart = new Cart(getContext());
         return inflater.inflate(R.layout.food_tab_bar, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        demoCollectionPagerAdapter = new FoodCollectionPagerAdapter(getChildFragmentManager(), foods, restID);
-        viewPager = view.findViewById(R.id.pager_food);
+        this.view = view;
+        this.demoCollectionPagerAdapter = new FoodCollectionPagerAdapter(getChildFragmentManager(), foods, restID);
+        this.viewPager = view.findViewById(R.id.pager_food);
         viewPager.setAdapter(demoCollectionPagerAdapter);
         TabLayout tabLayout = view.findViewById(R.id.tab_layout_food);
         tabLayout.setupWithViewPager(viewPager);
+
+        setParticipants(view);
     }
 
     @Override
@@ -45,10 +55,28 @@ public class CollectionFoodFragment extends Fragment {
         super.setArguments(args);
 
         restID = args.getString("restID");
+        userID = args.getString("userID");
 
         List<String> dishes = args.getStringArrayList("dishes");
         for (String dish : dishes) {
             foods.put(dish, args.getStringArrayList(dish));
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        setParticipants(view);
+    }
+
+    private void setParticipants(View view) {
+        cart.load();
+        String fellowship = cart.getCartUsersNames();
+        TextView fellowshipFood = view.findViewById(R.id.fellowship_food);
+        if (fellowship == null) {
+            fellowshipFood.setText("Partecipanti: " + userID);
+        } else {
+            fellowshipFood.setText("Partecipanti: " + fellowship);
         }
     }
 }

@@ -23,6 +23,7 @@ import java.util.Formatter;
 import java.util.List;
 import java.util.Locale;
 
+import static android.content.Context.MODE_PRIVATE;
 import static com.example.myapplication.utils.Utils.justifyListViewHeight;
 
 class CartTabYou extends Fragment {
@@ -48,7 +49,7 @@ class CartTabYou extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        SharedPreferences preferences = activity.getSharedPreferences("loginref", Context.MODE_PRIVATE);
+        SharedPreferences preferences = activity.getSharedPreferences("loginref", MODE_PRIVATE);
         userId = preferences.getString("nome", "");
 
         fillFragment();
@@ -100,5 +101,13 @@ class CartTabYou extends Fragment {
             intent.putExtra("Mode", "edit");
             activity.startActivity(intent);
         });
+
+        String fellowship = cart.getCartUsersNames();
+        TextView participantsTvYou = activity.findViewById(R.id.fellowship_cart_you);
+        if (fellowship == null) {
+            participantsTvYou.setText("Partecipanti: " + userId);
+        } else {
+            participantsTvYou.setText("Partecipanti: " + fellowship);
+        }
     }
 }

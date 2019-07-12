@@ -23,8 +23,24 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingHorizontal="8dp"
                 android:orientation="vertical"
                 android:nestedScrollingEnabled="false" >
+
+                <TextView
+                    android:id="@+id/fellowship_cart_all"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="8dp"
+                    android:text="Partecipanti: "
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginVertical="8dp"
+                    android:background="?android:attr/listDivider" />
 
                 <TextView
                     android:layout_width="wrap_content"

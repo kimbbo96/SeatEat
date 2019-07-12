@@ -85,8 +85,15 @@ public class MainActivity extends AppCompatActivity {
         preferences= PreferenceManager.getDefaultSharedPreferences(this);
         System.out.println("true jjjj"+ preferences.getString("nome",null));
 
-
         Utils.createNotificationChannel(this);
+        Bundle b = getIntent().getExtras();
+        System.out.println("ONCREATE MAIN EXTRAS: " + b);
+        if (b!=null) {
+            String type = b.getString("type");
+            String id = b.getString("id");
+            String capotavola = b.getString("isCapotavola");
+            System.out.println("ONCREATE MAIN type=" + type + " id=" + id + ", capotavola=" + capotavola);
+        }
 
         // Get location or location permission
         lm = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
@@ -125,6 +132,21 @@ public class MainActivity extends AppCompatActivity {
             startActivity(i);
             finish();
 
+        }
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+
+        Bundle b = getIntent().getExtras();
+        System.out.println("ONRESUME MAIN EXTRAS=" + b);
+
+        if (b!=null) {
+            String type = b.getString("type");
+            String id = b.getString("id");
+            String capotavola = b.getString("isCapotavola");
+            System.out.println("ONRESUME MAIN type=" + type + " id=" + id + ", capotavola=" + capotavola);
         }
     }
 }

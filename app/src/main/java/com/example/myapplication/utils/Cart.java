@@ -14,6 +14,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Cart implements Serializable {
     public static final long serialVersionUID = 42L;
@@ -55,7 +57,6 @@ public class Cart implements Serializable {
             is.close();
             fis.close();
         } catch (FileNotFoundException | ClassCastException ex) {
-            ex.printStackTrace();
             System.out.println("Creating new cart");
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -223,6 +224,19 @@ public class Cart implements Serializable {
         this.cartUsers.add(new CartUser(id, name, isTabletop));
     }
 
+    public String getCartUsersNames() {
+        StringBuilder usersNames = new StringBuilder();
+        for (CartUser cu : cartUsers) {
+            if (cu.isTabletop) {
+                usersNames.append(cu.name.toUpperCase() + ", ");
+            } else {
+                usersNames.append(cu.name + ", ");
+            }
+        }
+        String res = usersNames.toString();
+        return res.isEmpty() ? null : res.substring(0, res.length()-2);
+    }
+
     @Override
     public String toString() {
         return "Cart{" +
@@ -233,7 +247,7 @@ public class Cart implements Serializable {
                 '}';
     }
 
-    public void fakeFoods() {
+    public void fakeCart() {
         if (! fake) {
             cartFoods.add(new CartFood("3", "nuvolette di drago", 0.1, "d", 5, "", 1, "", "", ""));
             cartFoods.add(new CartFood("4", "spiedini di gambeli", 5, "e", 1, "", 2, "", "", ""));
@@ -245,6 +259,12 @@ public class Cart implements Serializable {
             addCartFood("1", "pollo cloccante piccante", 1000, "c", "", "", "", "");
             addCartFood("2", "noodles", 500, "b", "", "", "", "");
             addCartFood("2", "noodles", 500, "c", "", "", "", "");
+
+            addCartUser("1", "a", true);
+            addCartUser("2", "b", false);
+            addCartUser("3", "c", false);
+            addCartUser("4", "d", false);
+            addCartUser("5", "e", false);
 
             fake = true;
             System.out.println("FAKE!");

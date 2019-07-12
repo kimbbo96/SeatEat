@@ -1,6 +1,7 @@
 package com.example.myapplication;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +22,7 @@ import java.util.Formatter;
 import java.util.List;
 import java.util.Locale;
 
+import static android.content.Context.MODE_PRIVATE;
 import static com.example.myapplication.utils.Utils.justifyListViewHeight;
 
 class CartTabAll extends Fragment {
@@ -93,5 +95,15 @@ class CartTabAll extends Fragment {
             intent.putExtra("Mode", "edit");
             activity.startActivity(intent);
         });
+
+        SharedPreferences preferences = activity.getSharedPreferences("loginref", MODE_PRIVATE);
+        String userId = preferences.getString("nome", "");
+        String fellowship = cart.getCartUsersNames();
+        TextView participantsTvAll = activity.findViewById(R.id.fellowship_cart_all);
+        if (fellowship == null) {
+            participantsTvAll.setText("Partecipanti: " + userId);
+        } else {
+            participantsTvAll.setText("Partecipanti: " + fellowship);
+        }
     }
 }

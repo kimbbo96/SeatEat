@@ -4,11 +4,21 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <TextView
+        android:id="@+id/fellowship_food"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:padding="8dp"
+        android:text="Partecipanti: "
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        app:layout_constraintTop_toTopOf="parent"/>
+
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/pager_food"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="?attr/actionBarSize" >
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/fellowship_food">
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tab_layout_food"

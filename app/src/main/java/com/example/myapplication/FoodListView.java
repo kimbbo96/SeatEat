@@ -132,8 +132,6 @@ class FoodListView extends ArrayAdapter<String> {
                         food.getFOOD_SHORT_DESCR(), food.getFOOD_LONG_DESCR(), food.getFOOD_IMAGE());
                 cart.save();
                 vh.cartButton.setText("Totale: " + cart.getTotal() + "€");
-                Snackbar.make(view, "Food " + foodId[position] + " (" + foodName[position] + ") added to the cart", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();   // TODO togliere sta cosa una volta finito col carrello
             });
 
             // TODO manage cart (remove)
@@ -142,8 +140,6 @@ class FoodListView extends ArrayAdapter<String> {
                 cart.removeCartFood(foodId[position], userId, "");
                 cart.save();
                 vh.cartButton.setText("Totale: " + cart.getTotal() + "€");
-                Snackbar.make(view, "Food " + foodId[position] + " (" + foodName[position] + ") removed from the cart", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();   // TODO togliere sta cosa una volta finito col carrello
             });
         } else {
             addIB.setVisibility(View.GONE);

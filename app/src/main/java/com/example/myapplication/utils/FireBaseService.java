@@ -1,8 +1,10 @@
 package com.example.myapplication.utils;
 
+import android.app.Activity;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import com.example.myapplication.R;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -32,7 +34,7 @@ public class FireBaseService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
 
-        // ...
+        System.out.println("MESSAGE RECEIVED");
 
         // TODO(developer): Handle FCM messages here.
         // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
@@ -55,15 +57,20 @@ public class FireBaseService extends FirebaseMessagingService {
                     editor.putBoolean("isCapotavola",false);
                 }
                 editor.commit();
+                break;
             }
 
             case "userAssociation":{ // caso in cui al capotavola viene aggiunto un commensale
                 Cart cart = new Cart(getApplicationContext());
-                cart.addCartUser(remoteMessage.getData().get("id"),
-                        remoteMessage.getData().get("name"), true); //utente aggiunto
                 cart.load();
-            }
+                cart.addCartUser(remoteMessage.getData().get("id"),
+                        remoteMessage.getData().get("name"), false); //utente aggiunto
+                cart.save();
 
+                Activity a = (Activity) getApplicationContext();
+                a.findViewById(R.id.fellowship_cart_all);
+                break;
+            }
         }
 
         // Check if message contains a data payload.

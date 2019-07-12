@@ -6,9 +6,8 @@ import android.os.Bundle;
 
 import com.example.myapplication.utils.Cart;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.snackbar.Snackbar;
+
 import androidx.fragment.app.FragmentManager;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -17,6 +16,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.example.myapplication.db_obj.Food;
 import com.example.myapplication.db_obj.Restaurant;
@@ -58,21 +58,23 @@ public class FoodRest extends AppCompatActivity
         setContentView(R.layout.activity_food_rest);
 
         final Restaurant rist = (Restaurant) getIntent().getSerializableExtra("Restaurant");
+        String idRest = rist.getRESTAURANT_ID();
+        SharedPreferences preferencesLogin = this.getSharedPreferences("loginref", MODE_PRIVATE);
+        String userId = preferencesLogin.getString("nome", "");
+        SharedPreferences preferencesRest = this.getSharedPreferences("infoRes", MODE_PRIVATE);
+        String idRestPref = preferencesRest.getString("ID","");
 
         Toolbar toolbar = findViewById(R.id.tool_bar_simple);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         ExtendedFloatingActionButton fab = findViewById(R.id.fab_food);
-        SharedPreferences preferencesRest = this.getSharedPreferences("infoRes", MODE_PRIVATE);
-        String idRestPref = preferencesRest.getString("ID","");
-        String idRest = rist.getRESTAURANT_ID();
         if (idRest.equals(idRestPref)) {
             cart.load();
             fab.setText("Totale: " + cart.getTotal() + "€");
             fab.setOnClickListener(view -> {
                 cart.load();        // TODO solo per DEBUG! togliere!!!
-                cart.fakeFoods();   // TODO solo per DEBUG! togliere!!!
+                cart.fakeCart();   // TODO solo per DEBUG! togliere!!!
                 cart.save();        // TODO solo per DEBUG! togliere!!!
 
 //            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
@@ -130,6 +132,7 @@ public class FoodRest extends AppCompatActivity
                             CollectionFoodFragment cdf = new CollectionFoodFragment();
                             Bundle param = new Bundle();
                             param.putString("restID", idRest);
+                            param.putString("userID", userId);
                             param.putStringArrayList("dishes", new ArrayList<>(dishes.keySet()));
                             for (Map.Entry<String, ArrayList<String>> entry : dishes.entrySet()) {
                                 param.putStringArrayList(entry.getKey(), entry.getValue());

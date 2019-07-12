@@ -67,7 +67,7 @@ public class Utils {
             CharSequence name = "NotificationChannel";
             String description = "canale per le notifiche";
             String id = "1";
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            int importance = NotificationManager.IMPORTANCE_HIGH;
             NotificationChannel channel = new NotificationChannel(id, name, importance);
             channel.setDescription(description);
             // Register the channel with the system; you can't change the importance
