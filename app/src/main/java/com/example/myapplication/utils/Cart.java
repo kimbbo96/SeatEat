@@ -32,9 +32,8 @@ public class Cart implements Serializable {
     private transient Context context;
     private static int ordNum = 1;
     private static ScheduledThreadPoolExecutor timer = null;
-
     private boolean fake = false;
-
+    String userId;
     private List<CartFood> cartFoods = new ArrayList<>();
     private List<CartUser> cartUsers = new ArrayList<>();
 
@@ -42,13 +41,14 @@ public class Cart implements Serializable {
         this.context = context;
 
         SharedPreferences preferences = context.getSharedPreferences("loginref", MODE_PRIVATE);
-        String userId = preferences.getString("nome", "");
+        userId = preferences.getString("nome", "");
 
         Runnable command = () -> {
             System.out.println("tic tac " + System.identityHashCode(this));
 
             load();
             List<CartFood> offlineCartFoods = getOthersCartFoods(cartFoods, userId);
+            List<CartFood> myCartFoods = getCartFoods(userId);
 
             // scarica l'ultima lista cartFoods dal server
             List<CartFood> serverCartFoods = new ArrayList<>();   // TODO
@@ -58,7 +58,7 @@ public class Cart implements Serializable {
                 System.out.println("new cart from server!");
 
                 // aggiorna il carrello
-                List<CartFood> newCartFoods = new ArrayList<>(offlineCartFoods);
+                List<CartFood> newCartFoods = new ArrayList<>(myCartFoods);
                 newCartFoods.addAll(serverCartFoods);
                 setCartFoods(newCartFoods);
                 save();
@@ -192,6 +192,16 @@ public class Cart implements Serializable {
             }
         }
         return oldCartFoods;
+    }
+
+    public List<CartFood> getCartFoods(String user) {
+        List<CartFood> myCartFoods = new ArrayList<>();
+        for (CartFood cf : cartFoods) {
+            if (cf.user.equals(user)) {
+                myCartFoods.add(cf.deepCopy());
+            }
+        }
+        return myCartFoods;
     }
 
     public List<CartFood> getCartFoods(int ordNumber, String user) {
