@@ -1,8 +1,11 @@
 package com.example.myapplication.utils;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
+
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.example.myapplication.R;
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -61,14 +64,17 @@ public class FireBaseService extends FirebaseMessagingService {
             }
 
             case "userAssociation":{ // caso in cui al capotavola viene aggiunto un commensale
+                String id = remoteMessage.getData().get("id");
+                String name = remoteMessage.getData().get("name");
+
                 Cart cart = new Cart(getApplicationContext());
                 cart.load();
-                cart.addCartUser(remoteMessage.getData().get("id"),
-                        remoteMessage.getData().get("name"), false); //utente aggiunto
+                cart.addCartUser(id, name, false); //utente aggiunto
                 cart.save();
 
-                Activity a = (Activity) getApplicationContext();
-                a.findViewById(R.id.fellowship_cart_all);
+                Intent intent = new Intent("add_user");
+                intent.putExtra("content", "new CartUser");
+                LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
                 break;
             }
         }

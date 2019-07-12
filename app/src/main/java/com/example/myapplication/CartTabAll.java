@@ -1,6 +1,9 @@
 package com.example.myapplication;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,6 +16,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.example.myapplication.db_obj.Food;
 import com.example.myapplication.utils.Cart;
@@ -28,6 +32,18 @@ import static com.example.myapplication.utils.Utils.justifyListViewHeight;
 class CartTabAll extends Fragment {
     private CartActivity activity;
     private Cart cart;
+    private boolean created = false;
+
+    private BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent != null && created) {
+                String content = intent.getStringExtra("content");
+                if (content.equals("new CartUser"))
+                    setParticipants();
+            }
+        }
+    };
 
     public CartTabAll(CartActivity activity) {
         super();
@@ -37,15 +53,26 @@ class CartTabAll extends Fragment {
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        LocalBroadcastManager lbm = LocalBroadcastManager.getInstance(activity);
+        lbm.registerReceiver(receiver, new IntentFilter("add_user"));
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        System.out.println("CARRELLO ATTUALE: " + cart);
+//        System.out.println("CARRELLO ATTUALE: " + cart);
+
         return inflater.inflate(R.layout.content_cart_all, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        created = true;
         fillFragment();
     }
 
@@ -54,6 +81,22 @@ class CartTabAll extends Fragment {
         super.onResume();
         fillFragment();
         System.out.println("CartTabAll ONRESUME");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        System.out.println("destroyed tabAll");
+        created = false;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        System.out.println("destroyed view tabAll");
+        created = false;
     }
 
     private void fillFragment() {
@@ -96,6 +139,11 @@ class CartTabAll extends Fragment {
             activity.startActivity(intent);
         });
 
+        setParticipants();
+    }
+
+    private void setParticipants() {
+        cart.load();
         SharedPreferences preferences = activity.getSharedPreferences("loginref", MODE_PRIVATE);
         String userId = preferences.getString("nome", "");
         String fellowship = cart.getCartUsersNames();

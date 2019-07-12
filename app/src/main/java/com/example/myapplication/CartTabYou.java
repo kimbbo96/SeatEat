@@ -1,7 +1,9 @@
 package com.example.myapplication;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,6 +16,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.example.myapplication.db_obj.Food;
 import com.example.myapplication.utils.Cart;
@@ -30,12 +33,32 @@ class CartTabYou extends Fragment {
     private CartActivity activity;
     private Cart cart;
     private String userId;
+    private boolean created = false;
+
+    private BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent != null && created) {
+                String content = intent.getStringExtra("content");
+                if (content.equals("new CartUser"))
+                    setParticipants();
+            }
+        }
+    };
 
     public CartTabYou(CartActivity activity) {
         super();
         this.activity = activity;
         this.cart = activity.cart;
         System.out.println("creo CartTabYou");
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        LocalBroadcastManager lbm = LocalBroadcastManager.getInstance(activity);
+        lbm.registerReceiver(receiver, new IntentFilter("add_user"));
     }
 
     @Override
@@ -51,6 +74,7 @@ class CartTabYou extends Fragment {
 
         SharedPreferences preferences = activity.getSharedPreferences("loginref", MODE_PRIVATE);
         userId = preferences.getString("nome", "");
+        created = true;
 
         fillFragment();
     }
@@ -60,6 +84,22 @@ class CartTabYou extends Fragment {
         super.onResume();
         fillFragment();
         System.out.println("CartTabYou ONRESUME");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        System.out.println("destroyed tabYou");
+        created = false;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        System.out.println("destroyed view tabYou");
+        created = false;
     }
 
     private void fillFragment() {
@@ -102,6 +142,11 @@ class CartTabYou extends Fragment {
             activity.startActivity(intent);
         });
 
+        setParticipants();
+    }
+
+    private void setParticipants() {
+        cart.load();
         String fellowship = cart.getCartUsersNames();
         TextView participantsTvYou = activity.findViewById(R.id.fellowship_cart_you);
         if (fellowship == null) {
