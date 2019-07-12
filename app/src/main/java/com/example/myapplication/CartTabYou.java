@@ -40,6 +40,7 @@ class CartTabYou extends Fragment {
         public void onReceive(Context context, Intent intent) {
             if (intent != null && created) {
                 String content = intent.getStringExtra("content");
+                System.out.println(content + " YOU");
                 if (content.equals("new CartUser"))
                     setParticipants();
             }

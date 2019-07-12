@@ -41,7 +41,7 @@ public class FoodRest extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     String urlBase = "https://seateat-be.herokuapp.com";
-    Cart cart = new Cart(this);
+    Cart cart;
 
 //    private static Food f1 = new Food("1", "Supplì", "Riso, mozzarella, pomodoro...", 1, "suppli");
 //    private static Food f2 = new Food("2", "Crocchetta", "Patate, mozzarella...", 2, "crocchette");
@@ -55,6 +55,7 @@ public class FoodRest extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        cart = new Cart(this);
         setContentView(R.layout.activity_food_rest);
 
         final Restaurant rist = (Restaurant) getIntent().getSerializableExtra("Restaurant");

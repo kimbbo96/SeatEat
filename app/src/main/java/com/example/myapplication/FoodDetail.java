@@ -30,12 +30,13 @@ import com.google.android.material.snackbar.Snackbar;
 
 public class FoodDetail extends AppCompatActivity {
     private String path_base = "https://seateat-be.herokuapp.com/resources/menus/";
-    Cart cart = new Cart(this);
+    Cart cart;
     // path_base + "/resources/menus/" + restId + "/" + foodImage[position]))
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        cart = new Cart(this);
         setContentView(R.layout.activity_food_detail);
         Toolbar toolbar = findViewById(R.id.tool_bar_simple);
         setSupportActionBar(toolbar);

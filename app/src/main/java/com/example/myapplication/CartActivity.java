@@ -19,13 +19,14 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 
 public class CartActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-    Cart cart = new Cart(this);
+    Cart cart;
     CartActivity activity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity = this;
+        cart = new Cart(activity);
         setContentView(R.layout.activity_cart);
         Toolbar toolbar = findViewById(R.id.tool_bar_simple);
         setSupportActionBar(toolbar);

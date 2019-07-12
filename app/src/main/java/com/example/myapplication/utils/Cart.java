@@ -1,6 +1,11 @@
 package com.example.myapplication.utils;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+
+import androidx.annotation.NonNull;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.example.myapplication.CartActivity;
 
@@ -14,20 +19,64 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static android.content.Context.MODE_PRIVATE;
 
 public class Cart implements Serializable {
     public static final long serialVersionUID = 42L;
     private transient Context context;
     private static int ordNum = 1;
+    private static ScheduledThreadPoolExecutor timer = null;
+
     private boolean fake = false;
 
     private List<CartFood> cartFoods = new ArrayList<>();
     private List<CartUser> cartUsers = new ArrayList<>();
 
-    public Cart(Context context) {
+    public Cart(@NonNull Context context) {
         this.context = context;
+
+        SharedPreferences preferences = context.getSharedPreferences("loginref", MODE_PRIVATE);
+        String userId = preferences.getString("nome", "");
+
+        Runnable command = () -> {
+            System.out.println("tic tac " + System.identityHashCode(this));
+
+            load();
+            List<CartFood> offlineCartFoods = getOthersCartFoods(cartFoods, userId);
+
+            // scarica l'ultima lista cartFoods dal server
+            List<CartFood> serverCartFoods = new ArrayList<>();   // TODO
+            serverCartFoods = getOthersCartFoods(serverCartFoods, userId);
+
+            if (!offlineCartFoods.equals(serverCartFoods)) {
+                System.out.println("new cart from server!");
+
+                // aggiorna il carrello
+                List<CartFood> newCartFoods = new ArrayList<>(offlineCartFoods);
+                newCartFoods.addAll(serverCartFoods);
+                setCartFoods(newCartFoods);
+                save();
+
+                // invia la nuova lista di piatti al server
+                // TODO
+
+                // manda notifica all'interfaccia
+                Intent intent = new Intent("update_cart");
+                intent.putExtra("content", "new Cart");
+                LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+            }
+        };
+
+        if (timer == null || timer.isShutdown() || timer.isTerminated() || timer.isTerminating()) {
+            timer = new ScheduledThreadPoolExecutor(1);
+            timer.scheduleAtFixedRate(command, 2, 2, TimeUnit.SECONDS);
+        }
     }
 
     public void save() {
@@ -74,6 +123,7 @@ public class Cart implements Serializable {
         ordNum = 1;
         cartUsers.clear();
         cartFoods.clear();
+        timer.shutdown();
     }
 
     /**
@@ -176,6 +226,16 @@ public class Cart implements Serializable {
 
     public void setCartFoods(List<CartFood> cartFoods) {
         this.cartFoods = cartFoods;
+    }
+
+    public static List<CartFood> getOthersCartFoods(List<CartFood> myCartFoods, String user) {
+        List<CartFood> otherCartFoods = new ArrayList<>();
+        for (CartFood cf : myCartFoods) {
+            if (! cf.user.equals(user)) {
+                otherCartFoods.add(cf.deepCopy());
+            }
+        }
+        return otherCartFoods;
     }
 
     public CartFood addCartFood(String id, String name, double price, String userID, String note, String shortDescr, String longDescr, String image) {
@@ -333,6 +393,22 @@ public class Cart implements Serializable {
             return ordNum;
         }
 
+        public String getShortDescr() {
+            return shortDescr;
+        }
+
+        public String getLongDescr() {
+            return longDescr;
+        }
+
+        public String getImage() {
+            return image;
+        }
+
+        public CartFood deepCopy() {
+            return new CartFood(id, name, price, user, quantity, note, ordNum, shortDescr, longDescr, image);
+        }
+
         @Override
         public String toString() {
             return "CartFood{" +
@@ -346,20 +422,26 @@ public class Cart implements Serializable {
                     '}';
         }
 
-        public CartFood deepCopy() {
-            return new CartFood(id, name, price, user, quantity, note, ordNum, shortDescr, longDescr, image);
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            CartFood cartFood = (CartFood) o;
+            return Double.compare(cartFood.price, price) == 0 &&
+                    quantity == cartFood.quantity &&
+                    ordNum == cartFood.ordNum &&
+                    id.equals(cartFood.id) &&
+                    name.equals(cartFood.name) &&
+                    user.equals(cartFood.user) &&
+                    note.equals(cartFood.note) &&
+                    shortDescr.equals(cartFood.shortDescr) &&
+                    longDescr.equals(cartFood.longDescr) &&
+                    image.equals(cartFood.image);
         }
 
-        public String getShortDescr() {
-            return shortDescr;
-        }
-
-        public String getLongDescr() {
-            return longDescr;
-        }
-
-        public String getImage() {
-            return image;
+        @Override
+        public int hashCode() {
+            return Objects.hash(id, name, price, user, quantity, note, ordNum, shortDescr, longDescr, image);
         }
     }
 

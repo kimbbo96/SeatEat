@@ -34,13 +34,27 @@ class CartTabAll extends Fragment {
     private Cart cart;
     private boolean created = false;
 
-    private BroadcastReceiver receiver = new BroadcastReceiver() {
+    private BroadcastReceiver receiverUser = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent != null && created) {
                 String content = intent.getStringExtra("content");
-                if (content.equals("new CartUser"))
+                System.out.println(content + " ALL");
+                if (content.equals("new CartUser")) {
                     setParticipants();
+                }
+            }
+        }
+    };
+
+    private BroadcastReceiver receiverCart = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent != null && created) {
+                String content = intent.getStringExtra("content");
+                System.out.println(content);
+                if (content.equals("new Cart"))
+                    fillFragment();
             }
         }
     };
@@ -56,8 +70,11 @@ class CartTabAll extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        LocalBroadcastManager lbm = LocalBroadcastManager.getInstance(activity);
-        lbm.registerReceiver(receiver, new IntentFilter("add_user"));
+        LocalBroadcastManager lbmUser = LocalBroadcastManager.getInstance(activity);
+        lbmUser.registerReceiver(receiverUser, new IntentFilter("add_user"));
+
+        LocalBroadcastManager lbmCart = LocalBroadcastManager.getInstance(activity);
+        lbmCart.registerReceiver(receiverCart, new IntentFilter("update_cart"));
     }
 
     @Override
