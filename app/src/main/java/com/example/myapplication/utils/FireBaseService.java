@@ -2,6 +2,7 @@ package com.example.myapplication.utils;
 
 import android.content.SharedPreferences;
 import android.util.Log;
+import android.widget.TextView;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -55,13 +56,15 @@ public class FireBaseService extends FirebaseMessagingService {
                     editor.putBoolean("isCapotavola",false);
                 }
                 editor.commit();
-            }
 
-            case "userAssociation":{ // caso in cui al capotavola viene aggiunto un commensale
+                break;
+            }
+            case "userAssociation":{ // caso in cui viene aggiunto un commensale (broadcast a tutti gli altri)
                 Cart cart = new Cart(getApplicationContext());
                 cart.addCartUser(remoteMessage.getData().get("id"),
                         remoteMessage.getData().get("name"), true); //utente aggiunto
                 cart.load();
+                break;
             }
 
         }
@@ -104,7 +107,7 @@ public class FireBaseService extends FirebaseMessagingService {
         MediaType JSON = MediaType.parse("application/json;charset=utf-8");
         JSONObject data = new JSONObject();
 
-        if (savelogin){ // se l'utente era già loggato allora invio l'aggiornamento
+        if (true){ // se l'utente era già loggato allora invio l'aggiornamento
 
             String credenziali = preferences.getString("nome", null) + ":" + preferences.getString("password", null);
             String BasicBase64format = "Basic " + Base64.getEncoder().encodeToString(credenziali.getBytes());
@@ -117,7 +120,7 @@ public class FireBaseService extends FirebaseMessagingService {
             }
             RequestBody body = RequestBody.create(JSON,data.toString());
             Request newReq = new Request.Builder()
-                    .url(url+"/api/testnotificationss")
+                    .url(url+"/api/testnotifications")
                     .post(body).addHeader("Authorization", BasicBase64format)
                     .build();
 
