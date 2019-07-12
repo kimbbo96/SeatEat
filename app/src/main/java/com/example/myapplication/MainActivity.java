@@ -81,9 +81,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        preferences = getSharedPreferences("loginref", MODE_PRIVATE);
-        preferences= PreferenceManager.getDefaultSharedPreferences(this);
-        System.out.println("true jjjj"+ preferences.getString("nome",null));
+
 
         Utils.createNotificationChannel(this);
         Bundle b = getIntent().getExtras();
@@ -117,7 +115,6 @@ public class MainActivity extends AppCompatActivity {
         // Handle login
         preferences = getSharedPreferences("loginref", MODE_PRIVATE);
         boolean savelogin = preferences.getBoolean("savelogin", false);
-        System.out.println("ghjkl");
         if (savelogin) {
             System.out.println("true valore"+ preferences.getString("nome",null));
             Toast.makeText(this, "ciao " + preferences.getString("nome", null), Toast.LENGTH_LONG).show();

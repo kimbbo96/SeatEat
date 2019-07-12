@@ -255,7 +255,7 @@ public class ResDetail extends AppCompatActivity {
 
                 String BasicBase64format = "Basic " + Base64.getEncoder().encodeToString(token.getBytes());
 
-                RequestBody body = RequestBody.create(JSON,data.toString());
+                RequestBody body = RequestBody.create(JSON,qrData.toString());
                 Request newReq = new Request.Builder()
                         .url(path_base+"/api/testnotificationss")
                         .post(body).addHeader("Authorization", BasicBase64format)
