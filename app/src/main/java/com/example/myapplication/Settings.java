@@ -37,6 +37,14 @@ public class Settings extends AppCompatActivity {
                 editor.putString("nome", null);
                 editor.putBoolean("savelogin", false);
                 editor.putString("password",null);
+                editor.putString("immagine",null);
+                editor.commit();
+
+                preferences = getSharedPreferences("infoRes", MODE_PRIVATE);
+                editor = preferences.edit();
+                editor.putString("QRimage",null);
+                editor.putBoolean("isCapotavola",false);
+                editor.putString("ID", "");
                 editor.commit();
 
                 // destroy cart

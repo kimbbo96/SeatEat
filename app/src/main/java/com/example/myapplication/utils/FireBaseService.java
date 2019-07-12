@@ -120,7 +120,7 @@ public class FireBaseService extends FirebaseMessagingService {
             }
             RequestBody body = RequestBody.create(JSON,data.toString());
             Request newReq = new Request.Builder()
-                    .url(url+"/api/testnotifications")
+                    .url(url+"/api/testnotificationss")
                     .post(body).addHeader("Authorization", BasicBase64format)
                     .build();
 
