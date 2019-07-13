@@ -89,14 +89,14 @@ public class Checkout extends AppCompatActivity {
 
     public void payWithCash(View view) {
         System.out.println("hai clikkato CASH");
-        Intent intent = new Intent(this, Help.class);
-        startActivity(intent);
+        /*Intent intent = new Intent(this, Help.class);
+        startActivity(intent);*/
     }
 
     public void payWithCard(View view) {
         System.out.println("hai clikkato CARD");
-        Intent intent = new Intent(this, Help.class);
-        startActivity(intent);
+        /*Intent intent = new Intent(this, Help.class);
+        startActivity(intent);*/
     }
 
     public void payWithColl(View view) {
