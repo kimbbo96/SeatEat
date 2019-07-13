@@ -1,12 +1,15 @@
 package com.example.myapplication.utils;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
 
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import com.example.myapplication.CartActivity;
+import com.example.myapplication.FoodRest;
 import com.example.myapplication.R;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -52,10 +55,14 @@ public class FireBaseService extends FirebaseMessagingService {
             case "restaurantAssociation":{ //associazione al ristorante
                 preferences = getSharedPreferences("infoRes", MODE_PRIVATE);
                 editor = preferences.edit();
-                editor.putString("ID", (remoteMessage.getData().get("id")));
+                editor.putString("ID", (remoteMessage.getData().get("ID")));
                 editor.putBoolean("isCapotavola",true);
-                editor.putBoolean("isCapotavola",false);
                 editor.commit();
+
+                Context context = getBaseContext();
+                Intent intent = new Intent(context, FoodRest.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
                 break;
             }
 

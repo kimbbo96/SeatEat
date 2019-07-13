@@ -58,12 +58,12 @@ public class FoodRest extends AppCompatActivity
         cart = new Cart(this);
         setContentView(R.layout.activity_food_rest);
 
-        final Restaurant rist = (Restaurant) getIntent().getSerializableExtra("Restaurant");
-        String idRest = rist.getRESTAURANT_ID();
         SharedPreferences preferencesLogin = this.getSharedPreferences("loginref", MODE_PRIVATE);
         String userId = preferencesLogin.getString("nome", "");
         SharedPreferences preferencesRest = this.getSharedPreferences("infoRes", MODE_PRIVATE);
         String idRestPref = preferencesRest.getString("ID","");
+        final Restaurant rist = (Restaurant) getIntent().getSerializableExtra("Restaurant");
+        String idRest = rist == null ? idRestPref : rist.getRESTAURANT_ID();
 
         Toolbar toolbar = findViewById(R.id.tool_bar_simple);
         setSupportActionBar(toolbar);
