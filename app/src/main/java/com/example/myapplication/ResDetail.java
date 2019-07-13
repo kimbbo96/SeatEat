@@ -242,54 +242,54 @@ public class ResDetail extends AppCompatActivity {
                 String qr = result.getContents();
                 Toast.makeText(this, qr,Toast.LENGTH_LONG).show();
 
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        OkHttpClient client = new OkHttpClient();
+                        MediaType JSON = MediaType.parse("application/json;charset=utf-8");
+                        JSONObject qrData = new JSONObject();
+                        try {
+                            qrData.put("qrScanned",qr);
+                        } catch (JSONException e) {
+                            Log.d("OKHTTP3","JSON exception");
+                            e.printStackTrace();
+                        }
+
+                        preferences = getSharedPreferences("loginref", MODE_PRIVATE);
+                        String token = preferences.getString("nome", null) + ":" + preferences.getString("password", null);
 
 
-                OkHttpClient client = new OkHttpClient();
-                MediaType JSON = MediaType.parse("application/json;charset=utf-8");
-                JSONObject qrData = new JSONObject();
-                try {
-                    qrData.put("qrScanned",qr);
-                } catch (JSONException e) {
-                    Log.d("OKHTTP3","JSON exception");
-                    e.printStackTrace();
-                }
+                        String BasicBase64format = "Basic " + Base64.getEncoder().encodeToString(token.getBytes());
 
-                preferences = getSharedPreferences("loginref", MODE_PRIVATE);
-                String token = preferences.getString("nome", null) + ":" + preferences.getString("password", null);
+                        RequestBody body = RequestBody.create(JSON,qrData.toString());
+                        Request newReq = new Request.Builder()
+                                .url(path_base+"/api/testnotificationss")
+                                .post(body).addHeader("Authorization", BasicBase64format)
+                                .build();
 
 
-                String BasicBase64format = "Basic " + Base64.getEncoder().encodeToString(token.getBytes());
+                        Response response = null;
+                        try {
+                            response = client.newCall(newReq).execute();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        System.out.println("www"+response.message());
+                        System.out.println("www"+response.isSuccessful());
 
-                RequestBody body = RequestBody.create(JSON,qrData.toString());
-                Request newReq = new Request.Builder()
-                        .url(path_base+"/api/testnotificationss")
-                        .post(body).addHeader("Authorization", BasicBase64format)
-                        .build();
+                        if (!response.isSuccessful()){
+                            System.err.println("invio messaggio non riuscito");
+                        }
 
-
-                Response response = null;
-                try {
-                    response = client.newCall(newReq).execute();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                System.out.println("www"+response.message());
-                System.out.println("www"+response.isSuccessful());
-
-                if (!response.isSuccessful()){
-                    System.err.println("invio messaggio non riuscito");
-                }
-
-                else{ // ricevo il body con le info sul carrello?
+                        else{ // ricevo il body con le info sul carrello?
 
 
-                }
-
-
-
+                        }
 
 
 
+                    }
+                }).start();
             }
         }
         else {
