@@ -21,6 +21,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import com.example.myapplication.db_obj.Food;
 import com.example.myapplication.utils.Cart;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Formatter;
 import java.util.List;
@@ -129,8 +130,17 @@ class CartTabYou extends Fragment {
         ProgressBar progressBarCart = activity.findViewById(R.id.progressBar_cart_you);
         progressBarCart.setVisibility(View.GONE);
 
-        ExtendedFloatingActionButton fab = activity.findViewById(R.id.fab_cart_you);
-        fab.setOnClickListener(activity.new FabCartClickListener(cart));
+        SharedPreferences preferences = activity.getSharedPreferences("infoRes", MODE_PRIVATE);
+        Boolean isCapotavola = preferences.getBoolean("isCapotavola",false);
+        ExtendedFloatingActionButton fabCart = activity.findViewById(R.id.fab_cart_you);
+        FloatingActionButton fabCheckout = activity.findViewById(R.id.fab_checkout_you);
+        if (isCapotavola) {
+            fabCart.setOnClickListener(activity.new FabCartClickListener(cart));
+            fabCheckout.setOnClickListener(activity.new FabCheckoutClickListener());
+        } else {
+            fabCart.setEnabled(false);
+            fabCheckout.setEnabled(false);
+        }
 
         listView.setOnItemClickListener((adapterView, view, i, l) -> {
             Intent intent = new Intent(activity, FoodDetail.class);
