@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Checkout"
+    android:theme="@style/Theme.MaterialComponents" >
+
+    <include
+        android:id="@+id/include2"
+        layout="@layout/app_bar"
+        tools:layout_editor_absoluteX="24dp"
+        tools:layout_editor_absoluteY="3dp" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical"
+        android:fadeScrollbars="false" >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayoutCheckout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/topText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="72dp"
+                android:layout_marginEnd="32dp"
+                android:text="Totale ordine"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/priceText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="32dp"
+                android:text="35€"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/topText" />
+
+            <TextView
+                android:id="@+id/subText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="128dp"
+                android:text="Siete in: "
+                android:textAlignment="viewStart"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/priceText" />
+
+            <TextView
+                android:id="@+id/counterPeople"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="1"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textColor="@android:color/holo_red_dark"
+                app:layout_constraintStart_toEndOf="@id/subText"
+                app:layout_constraintTop_toBottomOf="@id/priceText" />
+
+            <ImageButton
+                android:id="@+id/addPeople"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="end"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="16dp"
+                android:contentDescription="add people"
+                android:elevation="6dp"
+                android:padding="0dp"
+                android:scaleType="centerCrop"
+                android:stateListAnimator="@animator/button_elevation"
+                app:layout_constraintStart_toEndOf="@id/counterPeople"
+                app:layout_constraintTop_toBottomOf="@id/priceText"
+                app:srcCompat="@drawable/plus_new" />
+
+            <ImageButton
+                android:id="@+id/removePeople"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="end"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:contentDescription="remove people"
+                android:elevation="6dp"
+                android:padding="0dp"
+                android:scaleType="centerCrop"
+                android:stateListAnimator="@animator/button_elevation"
+                app:layout_constraintStart_toEndOf="@id/addPeople"
+                app:layout_constraintTop_toBottomOf="@id/priceText"
+                app:srcCompat="@drawable/minus_new" />
+
+            <TextView
+                android:id="@+id/computedPriceText"
+                android:layout_width="235dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="128dp"
+                android:text="Calcolato alla romana, il prezzo a testa è: "
+                android:textAlignment="viewStart"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.258"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/subText" />
+
+            <TextView
+                android:id="@+id/counterPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginTop="8dp"
+                android:text="8€"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@android:color/holo_red_dark"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@id/computedPriceText"
+                app:layout_constraintTop_toBottomOf="@id/computedPriceText" />
+
+            <TextView
+                android:id="@+id/optionText"
+                android:layout_width="242dp"
+                android:layout_height="32dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="96dp"
+                android:layout_marginEnd="128dp"
+                android:text="Opzioni di pagamento"
+                android:textAlignment="viewStart"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/computedPriceText" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/paymentLayout1"
+                android:layout_width="395dp"
+                android:layout_height="72dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="payWithCash"
+                app:layout_constrainedHeight="false"
+                app:layout_constraintDimensionRatio=""
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/optionText">
+
+
+                <ImageView
+                    android:id="@+id/cashIcon"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/payment_method" />
+
+
+                <TextView
+                    android:id="@+id/cashText"
+                    android:layout_width="231dp"
+                    android:layout_height="29dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginEnd="80dp"
+                    android:layout_marginBottom="24dp"
+                    android:text="Paga alla cassa"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toEndOf="@+id/cashIcon"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/paymentLayout2"
+                android:layout_width="395dp"
+                android:layout_height="72dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="payWithCard"
+                app:layout_constrainedHeight="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/paymentLayout1">
+
+
+                <ImageView
+                    android:id="@+id/cardIcon"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/credit_card" />
+
+
+                <TextView
+                    android:id="@+id/cardText"
+                    android:layout_width="231dp"
+                    android:layout_height="29dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginEnd="80dp"
+                    android:layout_marginBottom="24dp"
+                    android:text="Paga con l'app"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toEndOf="@+id/cardIcon"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/paymentLayout3"
+                android:layout_width="395dp"
+                android:layout_height="72dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="payWithColl"
+                app:layout_constrainedHeight="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/paymentLayout2">
+
+
+                <ImageView
+                    android:id="@+id/collIcon"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/united" />
+
+
+                <TextView
+                    android:id="@+id/collText"
+                    android:layout_width="231dp"
+                    android:layout_height="29dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginEnd="80dp"
+                    android:layout_marginBottom="24dp"
+                    android:text="Fai una colletta"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toEndOf="@+id/collIcon"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

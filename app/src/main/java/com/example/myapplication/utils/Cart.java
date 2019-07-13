@@ -470,12 +470,15 @@ public class Cart implements Serializable {
         private String id;
         private String name;
         private boolean isTabletop;
+        private Double share;
 
         private CartUser(String id, String name, boolean isTabletop) {
             this.id = id;
             this.name = name;
             this.isTabletop = isTabletop;
         }
+
+        public void setShare(Double share) { this.share = share; }
 
         public String getId() {
             return id;
@@ -488,6 +491,8 @@ public class Cart implements Serializable {
         public boolean isTabletop() {
             return isTabletop;
         }
+
+        public Double getShare() { return share; }
 
         @Override
         public String toString() {
