@@ -46,26 +46,7 @@ public class Cart implements Serializable {
         Runnable command = () -> {
             System.out.println("tic tac " + System.identityHashCode(this));
 
-            load();
-            List<CartFood> offlineCartFoods = getOthersCartFoods(cartFoods, userId);
-            List<CartFood> myCartFoods = getCartFoods(userId);
-
-            // scarica l'ultima lista cartFoods dal server
-            List<CartFood> serverCartFoods = new ArrayList<>();   // TODO
-            serverCartFoods = getOthersCartFoods(serverCartFoods, userId);
-
-            if (!offlineCartFoods.equals(serverCartFoods)) {
-                System.out.println("new cart from server!");
-
-                // aggiorna il carrello
-                List<CartFood> newCartFoods = new ArrayList<>(myCartFoods);
-                newCartFoods.addAll(serverCartFoods);
-                setCartFoods(newCartFoods);
-                save();
-
-                // invia la nuova lista di piatti al server
-                // TODO
-
+            if (refresh()) {
                 // manda notifica all'interfaccia
                 Intent intent = new Intent("update_cart");
                 intent.putExtra("content", "new Cart");
@@ -113,6 +94,33 @@ public class Cart implements Serializable {
         } catch (ClassNotFoundException ex) {
             ex.printStackTrace();
             System.out.println("Cart class not found");
+        }
+    }
+
+    public boolean refresh() {
+        load();
+        List<CartFood> offlineCartFoods = getOthersCartFoods(cartFoods, userId);
+        List<CartFood> myCartFoods = getCartFoods(userId);
+
+        // scarica l'ultima lista cartFoods dal server
+        List<CartFood> serverCartFoods = new ArrayList<>();   // TODO
+        serverCartFoods = getOthersCartFoods(serverCartFoods, userId);
+
+        if (!offlineCartFoods.equals(serverCartFoods)) {
+            System.out.println("new cart from server!");
+
+            // aggiorna il carrello
+            List<CartFood> newCartFoods = new ArrayList<>(myCartFoods);
+            newCartFoods.addAll(serverCartFoods);
+            setCartFoods(newCartFoods);
+            save();
+
+            // invia la nuova lista di piatti al server
+            // TODO
+
+            return true;
+        } else {
+            return false;
         }
     }
 
