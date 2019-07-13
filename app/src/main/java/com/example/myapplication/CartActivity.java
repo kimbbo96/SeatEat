@@ -117,6 +117,7 @@ public class CartActivity extends AppCompatActivity implements NavigationView.On
         @Override
         public void onClick(View view) {
             System.out.println("hai clikkato 'invia ordine'");
+            cart.refresh();
             cart.newOrder();
             System.out.println("CARRELLO AGGIORNATO: " + cart);
             cart.save();

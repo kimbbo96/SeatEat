@@ -42,9 +42,11 @@ public class FoodDetail extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        SharedPreferences preferencesRest = this.getSharedPreferences("infoRes", MODE_PRIVATE);
+        String idRestPref = preferencesRest.getString("ID","");
         final Food food = (Food) getIntent().getSerializableExtra("Food");
         String rid = getIntent().getStringExtra("RestID");
-        final String restID = rid == null ? "1" : rid;
+        final String restID = rid == null ? idRestPref : rid;
         String n = getIntent().getStringExtra("Note");
         final String note = n == null ? "" : n;
         final String mode = getIntent().getStringExtra("Mode");
@@ -70,6 +72,7 @@ public class FoodDetail extends AppCompatActivity {
         String imgName = food.getFOOD_IMAGE();
         ImageView copertina = findViewById(R.id.copertinaFoodDetail);
         String imgURL = path_base + restID + "/" + imgName;
+        System.out.println("COPERTINA: " + imgName + ", url: " + imgURL);
         Glide.with(activity).load(Uri.parse(imgURL)).into(new CustomViewTarget<ImageView, Drawable>(copertina) {
             @Override
             public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {

@@ -256,7 +256,8 @@ public class Cart implements Serializable {
         return otherCartFoods;
     }
 
-    public CartFood addCartFood(String id, String name, double price, String userID, String note, String shortDescr, String longDescr, String image) {
+    public CartFood addCartFood(String id, String name, double price, String userID, String note,
+                                String shortDescr, String longDescr, String image) {
         CartFood cartFood = null;
         boolean existing = false;
         for (CartFood cf : cartFoods) {
@@ -362,7 +363,8 @@ public class Cart implements Serializable {
         private String longDescr;
         private String image;
 
-        private CartFood(String id, String name, double price, String user, int quantity, String note, int ordNum, String shortDescr, String longDescr, String image) {
+        private CartFood(String id, String name, double price, String user, int quantity, String note,
+                         int ordNum, String shortDescr, String longDescr, String image) {
             this.id = id;
             this.name = name;
             this.price = price;
