@@ -49,7 +49,7 @@ class CartTabYou extends Fragment {
     };
 
     public CartTabYou(CartActivity activity) {
-        super();
+//        super();
         this.activity = activity;
         this.cart = activity.cart;
         System.out.println("creo CartTabYou");
@@ -131,8 +131,8 @@ class CartTabYou extends Fragment {
         progressBarCart.setVisibility(View.GONE);
 
         SharedPreferences preferences = activity.getSharedPreferences("infoRes", MODE_PRIVATE);
-        Boolean isCapotavola = preferences.getBoolean("isCapotavola",false);
-        ExtendedFloatingActionButton fabCart = activity.findViewById(R.id.fab_cart_you);
+        boolean isCapotavola = preferences.getBoolean("isCapotavola",false);
+        FloatingActionButton fabCart = activity.findViewById(R.id.fab_cart_you);
         FloatingActionButton fabCheckout = activity.findViewById(R.id.fab_checkout_you);
         if (isCapotavola) {
             fabCart.setOnClickListener(activity.new FabCartClickListener(cart));
