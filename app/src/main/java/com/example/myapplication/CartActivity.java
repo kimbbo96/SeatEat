@@ -128,4 +128,18 @@ public class CartActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    class FabCheckoutClickListener implements View.OnClickListener {
+
+        @Override
+        public void onClick(View view) {
+            System.out.println("hai clikkato 'checkout'");
+
+            // X ALBA: qua devi far partire la tua activity
+//            Intent intent = new Intent(this, CartActivity.class);
+//            intent.putExtra("Restaurant", rist); // passo l'oggetto ristornate
+//            startActivity(intent);
+            finish();
+        }
+    }
+
 }
