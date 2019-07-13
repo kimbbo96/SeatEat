@@ -293,17 +293,24 @@ public class ResDetail extends AppCompatActivity {
                             preferences = getSharedPreferences("infoRes", MODE_PRIVATE);
                             editor = preferences.edit();
                             try {
+                                SharedPreferences preferencesLogin = getSharedPreferences("loginref", MODE_PRIVATE);
+                                String userId = preferencesLogin.getString("nome", "");
                                 editor.putString("ID", (String) responsebody.get("id"));
                                 editor.commit();
-                                JSONArray jsonArray = responsebody.getJSONArray("commensali");
-                                for (int i = 0 ; i < jsonArray.length();i++){
-                                    System.out.println(jsonArray.get(i));
-                                }
                                 Cart cart = new Cart(getApplicationContext());
                                 cart.load();
+                                cart.addCartUser(userId, false); //utente aggiunto
+                                JSONArray jsonArray = responsebody.getJSONArray("commensali");
+                                cart.addCartUser((String) jsonArray.get(0), true); //utente capotavola
+                                for (int i = 1 ; i < jsonArray.length();i++){
+                                    cart.addCartUser((String) jsonArray.get(i), false); //utente aggiunto
+                                    System.out.println("elemento"+jsonArray.get(i));
+                                }
                                 //cart.addCartUser(id, name, false); //utente aggiunto
                                 cart.save();
-
+                                Intent intent = new Intent(getApplicationContext(), FoodRest.class);
+                                //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent);
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
