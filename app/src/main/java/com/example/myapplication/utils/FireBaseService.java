@@ -52,9 +52,8 @@ public class FireBaseService extends FirebaseMessagingService {
             case "restaurantAssociation":{ //associazione al ristorante
                 preferences = getSharedPreferences("infoRes", MODE_PRIVATE);
                 editor = preferences.edit();
-                editor.putString("ID", (remoteMessage.getData().get("id")));
+                editor.putString("ID", (remoteMessage.getData().get("ID")));
                 editor.putBoolean("isCapotavola",true);
-                editor.putBoolean("isCapotavola",false);
                 editor.commit();
                 break;
             }

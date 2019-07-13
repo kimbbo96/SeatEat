@@ -101,7 +101,7 @@ public class ResDetail extends AppCompatActivity {
         String ResID = preferences.getString("ID","");
         ImageView cameraimg = findViewById(R.id.camera);
         TextView cameraInfo = findViewById(R.id.cameraInfo);
-
+        System.out.println("id in preferences "+ResID);
 
         if (ResID.equals("")) { // se non è impostato nessun ristorante allora genera il QR
 
