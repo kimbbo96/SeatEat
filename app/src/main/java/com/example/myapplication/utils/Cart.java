@@ -44,7 +44,7 @@ public class Cart implements Serializable {
         userId = preferences.getString("nome", "");
 
         Runnable command = () -> {
-            System.out.println("tic tac " + System.identityHashCode(this));
+//            System.out.println("tic tac " + System.identityHashCode(this));
 
             if (refresh()) {
                 // manda notifica all'interfaccia
