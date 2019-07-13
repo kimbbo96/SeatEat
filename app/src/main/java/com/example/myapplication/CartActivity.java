@@ -134,10 +134,9 @@ public class CartActivity extends AppCompatActivity implements NavigationView.On
         public void onClick(View view) {
             System.out.println("hai clikkato 'checkout'");
 
-            // X ALBA: qua devi far partire la tua activity
-//            Intent intent = new Intent(this, CartActivity.class);
-//            intent.putExtra("Restaurant", rist); // passo l'oggetto ristornate
-//            startActivity(intent);
+            Intent intent = new Intent(getApplicationContext(), Checkout.class);
+//            intent.putExtra("Restaurant", rist);
+            startActivity(intent);
             finish();
         }
     }

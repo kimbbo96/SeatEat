@@ -61,7 +61,7 @@ class CartTabAll extends Fragment {
     };
 
     public CartTabAll(CartActivity activity) {
-        super();
+//        super();
         this.activity = activity;
         this.cart = activity.cart;
         System.out.println("creo CartTabAll");
@@ -144,8 +144,8 @@ class CartTabAll extends Fragment {
         progressBarCart.setVisibility(View.GONE);
 
         SharedPreferences preferences = activity.getSharedPreferences("infoRes", MODE_PRIVATE);
-        Boolean isCapotavola = preferences.getBoolean("isCapotavola",false);
-        ExtendedFloatingActionButton fabCart = activity.findViewById(R.id.fab_cart_all);
+        boolean isCapotavola = preferences.getBoolean("isCapotavola",false);
+        FloatingActionButton fabCart = activity.findViewById(R.id.fab_cart_all);
         FloatingActionButton fabCheckout = activity.findViewById(R.id.fab_checkout_all);
         if (isCapotavola) {
             fabCart.setOnClickListener(activity.new FabCartClickListener(cart));
@@ -176,7 +176,7 @@ class CartTabAll extends Fragment {
         String fellowship = cart.getCartUsersNames();
         TextView participantsTvAll = activity.findViewById(R.id.fellowship_cart_all);
         if (fellowship == null) {
-            participantsTvAll.setText("Partecipanti: " + userId);
+            participantsTvAll.setText("Partecipanti: tu");
         } else {
             participantsTvAll.setText("Partecipanti: " + fellowship);
         }

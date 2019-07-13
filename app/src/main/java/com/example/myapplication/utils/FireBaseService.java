@@ -1,12 +1,15 @@
 package com.example.myapplication.utils;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
 
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import com.example.myapplication.CartActivity;
+import com.example.myapplication.FoodRest;
 import com.example.myapplication.R;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -47,19 +50,27 @@ public class FireBaseService extends FirebaseMessagingService {
         System.out.println("getdata:"+remoteMessage.getData());
         String MessageType = remoteMessage.getData().get("type");
 
+        Context context = getBaseContext();
+        SharedPreferences preferences = context.getSharedPreferences("loginref", MODE_PRIVATE);
+        Cart cart = new Cart(context);
+
         switch (MessageType){ // per tutte le tipologie di notifiche che il server può mandare
 
             case "restaurantAssociation":{ //associazione al ristorante
                 preferences = getSharedPreferences("infoRes", MODE_PRIVATE);
                 editor = preferences.edit();
-                editor.putString("ID", (remoteMessage.getData().get("id")));
-                if(remoteMessage.getData().get("isCapotavola").equals("true")){
-                    editor.putBoolean("isCapotavola",true);
-                }
-                else {
-                    editor.putBoolean("isCapotavola",false);
-                }
+                editor.putString("ID", (remoteMessage.getData().get("ID")));
+                editor.putBoolean("isCapotavola",true);
                 editor.commit();
+
+                String userId = preferences.getString("nome", "");
+                cart.load();
+                cart.addCartUser(userId, "tu", true); //utente aggiunto
+                cart.save();
+
+                Intent intent = new Intent(context, FoodRest.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
                 break;
             }
 
@@ -67,7 +78,6 @@ public class FireBaseService extends FirebaseMessagingService {
                 String id = remoteMessage.getData().get("id");
                 String name = remoteMessage.getData().get("name");
 
-                Cart cart = new Cart(getApplicationContext());
                 cart.load();
                 cart.addCartUser(id, name, false); //utente aggiunto
                 cart.save();

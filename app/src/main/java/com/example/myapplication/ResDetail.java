@@ -25,11 +25,13 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.load.model.LazyHeaders;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.target.CustomViewTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.bumptech.glide.signature.ObjectKey;
 import com.example.myapplication.db_obj.Restaurant;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
@@ -99,7 +101,7 @@ public class ResDetail extends AppCompatActivity {
         String ResID = preferences.getString("ID","");
         ImageView cameraimg = findViewById(R.id.camera);
         TextView cameraInfo = findViewById(R.id.cameraInfo);
-
+        System.out.println("id in preferences "+ResID);
 
         if (ResID.equals("")) { // se non è impostato nessun ristorante allora genera il QR
 
@@ -121,6 +123,9 @@ public class ResDetail extends AppCompatActivity {
             Glide.with(this)
                     .asBitmap()
                     .load(glideUrl)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true)
+                    .signature(new ObjectKey(System.currentTimeMillis()))
                     .into(new CustomTarget<Bitmap>() {
                         @Override
                         public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
@@ -237,54 +242,54 @@ public class ResDetail extends AppCompatActivity {
                 String qr = result.getContents();
                 Toast.makeText(this, qr,Toast.LENGTH_LONG).show();
 
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        OkHttpClient client = new OkHttpClient();
+                        MediaType JSON = MediaType.parse("application/json;charset=utf-8");
+                        JSONObject qrData = new JSONObject();
+                        try {
+                            qrData.put("qrScanned",qr);
+                        } catch (JSONException e) {
+                            Log.d("OKHTTP3","JSON exception");
+                            e.printStackTrace();
+                        }
+
+                        preferences = getSharedPreferences("loginref", MODE_PRIVATE);
+                        String token = preferences.getString("nome", null) + ":" + preferences.getString("password", null);
 
 
-                OkHttpClient client = new OkHttpClient();
-                MediaType JSON = MediaType.parse("application/json;charset=utf-8");
-                JSONObject qrData = new JSONObject();
-                try {
-                    qrData.put("qrScanned",qr);
-                } catch (JSONException e) {
-                    Log.d("OKHTTP3","JSON exception");
-                    e.printStackTrace();
-                }
+                        String BasicBase64format = "Basic " + Base64.getEncoder().encodeToString(token.getBytes());
 
-                preferences = getSharedPreferences("loginref", MODE_PRIVATE);
-                String token = preferences.getString("nome", null) + ":" + preferences.getString("password", null);
+                        RequestBody body = RequestBody.create(JSON,qrData.toString());
+                        Request newReq = new Request.Builder()
+                                .url(path_base+"/api/testnotificationss")
+                                .post(body).addHeader("Authorization", BasicBase64format)
+                                .build();
 
 
-                String BasicBase64format = "Basic " + Base64.getEncoder().encodeToString(token.getBytes());
+                        Response response = null;
+                        try {
+                            response = client.newCall(newReq).execute();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        System.out.println("www"+response.message());
+                        System.out.println("www"+response.isSuccessful());
 
-                RequestBody body = RequestBody.create(JSON,qrData.toString());
-                Request newReq = new Request.Builder()
-                        .url(path_base+"/api/testnotificationss")
-                        .post(body).addHeader("Authorization", BasicBase64format)
-                        .build();
+                        if (!response.isSuccessful()){
+                            System.err.println("invio messaggio non riuscito");
+                        }
 
-
-                Response response = null;
-                try {
-                    response = client.newCall(newReq).execute();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                System.out.println("www"+response.message());
-                System.out.println("www"+response.isSuccessful());
-
-                if (!response.isSuccessful()){
-                    System.err.println("invio messaggio non riuscito");
-                }
-
-                else{ // ricevo il body con le info sul carrello?
+                        else{ // ricevo il body con le info sul carrello?
 
 
-                }
-
-
-
+                        }
 
 
 
+                    }
+                }).start();
             }
         }
         else {
