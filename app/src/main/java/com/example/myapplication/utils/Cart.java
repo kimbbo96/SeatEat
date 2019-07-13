@@ -120,6 +120,7 @@ public class Cart implements Serializable {
 
             return true;
         } else {
+            save();
             return false;
         }
     }
