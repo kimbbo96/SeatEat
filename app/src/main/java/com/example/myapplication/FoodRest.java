@@ -74,9 +74,9 @@ public class FoodRest extends AppCompatActivity
             cart.load();
             fab.setText("Totale: " + cart.getTotal() + "€");
             fab.setOnClickListener(view -> {
-                cart.load();        // TODO solo per DEBUG! togliere!!!
-                cart.fakeCart();   // TODO solo per DEBUG! togliere!!!
-                cart.save();        // TODO solo per DEBUG! togliere!!!
+//                cart.load();        // TODO solo per DEBUG! togliere!!!
+//                cart.fakeCart();   // TODO solo per DEBUG! togliere!!!
+//                cart.save();        // TODO solo per DEBUG! togliere!!!
 
 //            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                    .setAction("Action", null).show();

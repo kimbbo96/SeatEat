@@ -308,6 +308,8 @@ public class Cart implements Serializable {
         SharedPreferences preferencesUser = context.getSharedPreferences("loginref", MODE_PRIVATE);
         String userId = preferencesUser.getString("nome", "");
 
+        System.out.println("GETCARTUSERNAMES " + cartUsers);
+
         StringBuilder usersNames = new StringBuilder();
         for (CartUser cu : cartUsers) {
             if (cu.name.equals(userId)) {

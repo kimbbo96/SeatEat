@@ -159,6 +159,7 @@ class CartTabYou extends Fragment {
     private void setParticipants() {
         cart.load();
         String fellowship = cart.getCartUsersNames();
+        System.out.println("FELLOWSHIP CARTTABYOU " + fellowship);
         TextView participantsTvYou = activity.findViewById(R.id.fellowship_cart_you);
         if (fellowship == null) {
             participantsTvYou.setText("Partecipanti: tu");
