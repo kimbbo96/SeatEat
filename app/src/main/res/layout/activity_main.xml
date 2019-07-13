@@ -15,13 +15,13 @@
 
         <ImageView
             android:id="@+id/profile_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="1026dp"
+            android:layout_height="510dp"
             android:layout_marginStart="105dp"
             android:layout_marginTop="121dp"
             android:layout_marginEnd="105dp"
             android:layout_marginBottom="410dp"
-            app:srcCompat="@drawable/seat_eat_logo" />
+            app:srcCompat="@drawable/logo33" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

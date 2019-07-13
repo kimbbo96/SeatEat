@@ -63,7 +63,8 @@ public class Checkout extends AppCompatActivity {
 
         price = cart.getTotal();
 
-        double[] counter2 = {price};
+        TextView totalText = findViewById(R.id.totalText);
+        totalText.setText(String.valueOf(price)+"€");
 
         TextView counterPrice = findViewById(R.id.counterPrice);
         counterPrice.setText(String.valueOf(price/people)+"€");
@@ -89,14 +90,14 @@ public class Checkout extends AppCompatActivity {
 
     public void payWithCash(View view) {
         System.out.println("hai clikkato CASH");
-        Intent intent = new Intent(this, Help.class);
-        startActivity(intent);
+        /*Intent intent = new Intent(this, Help.class);
+        startActivity(intent);*/
     }
 
     public void payWithCard(View view) {
         System.out.println("hai clikkato CARD");
-        Intent intent = new Intent(this, Help.class);
-        startActivity(intent);
+        /*Intent intent = new Intent(this, Help.class);
+        startActivity(intent);*/
     }
 
     public void payWithColl(View view) {

@@ -33,9 +33,11 @@ import com.bumptech.glide.request.target.CustomViewTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.bumptech.glide.signature.ObjectKey;
 import com.example.myapplication.db_obj.Restaurant;
+import com.example.myapplication.utils.Cart;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -263,25 +265,49 @@ public class ResDetail extends AppCompatActivity {
 
                         RequestBody body = RequestBody.create(JSON,qrData.toString());
                         Request newReq = new Request.Builder()
-                                .url(path_base+"/api/testnotificationss")
+                                .url(path_base+"/api/scanassociationqr")
                                 .post(body).addHeader("Authorization", BasicBase64format)
                                 .build();
 
 
                         Response response = null;
+                        JSONObject responsebody = null;
                         try {
                             response = client.newCall(newReq).execute();
+                            responsebody = new JSONObject(response.body().string());
+
                         } catch (IOException e) {
+                            e.printStackTrace();
+                        } catch (JSONException e) {
                             e.printStackTrace();
                         }
                         System.out.println("www"+response.message());
                         System.out.println("www"+response.isSuccessful());
+                        System.out.println("kkk"+responsebody);
 
                         if (!response.isSuccessful()){
                             System.err.println("invio messaggio non riuscito");
                         }
 
                         else{ // ricevo il body con le info sul carrello?
+                            preferences = getSharedPreferences("infoRes", MODE_PRIVATE);
+                            editor = preferences.edit();
+                            try {
+                                editor.putString("ID", (String) responsebody.get("id"));
+                                editor.commit();
+                                JSONArray jsonArray = responsebody.getJSONArray("commensali");
+                                for (int i = 0 ; i < jsonArray.length();i++){
+                                    System.out.println(jsonArray.get(i));
+                                }
+                                Cart cart = new Cart(getApplicationContext());
+                                cart.load();
+                                //cart.addCartUser(id, name, false); //utente aggiunto
+                                cart.save();
+
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
 
 
                         }
