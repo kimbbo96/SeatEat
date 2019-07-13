@@ -63,7 +63,8 @@ public class Checkout extends AppCompatActivity {
 
         price = cart.getTotal();
 
-        double[] counter2 = {price};
+        TextView totalText = findViewById(R.id.totalText);
+        totalText.setText(String.valueOf(price)+"€");
 
         TextView counterPrice = findViewById(R.id.counterPrice);
         counterPrice.setText(String.valueOf(price/people)+"€");
