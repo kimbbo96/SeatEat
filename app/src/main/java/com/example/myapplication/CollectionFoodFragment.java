@@ -98,7 +98,7 @@ public class CollectionFoodFragment extends Fragment {
         String fellowship = cart.getCartUsersNames();
         TextView fellowshipFood = view.findViewById(R.id.fellowship_food);
         if (fellowship == null) {
-            fellowshipFood.setText("Partecipanti: " + userID);
+            fellowshipFood.setText("Partecipanti: tu");
         } else {
             fellowshipFood.setText("Partecipanti: " + fellowship);
         }

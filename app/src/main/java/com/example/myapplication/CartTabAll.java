@@ -176,7 +176,7 @@ class CartTabAll extends Fragment {
         String fellowship = cart.getCartUsersNames();
         TextView participantsTvAll = activity.findViewById(R.id.fellowship_cart_all);
         if (fellowship == null) {
-            participantsTvAll.setText("Partecipanti: " + userId);
+            participantsTvAll.setText("Partecipanti: tu");
         } else {
             participantsTvAll.setText("Partecipanti: " + fellowship);
         }
