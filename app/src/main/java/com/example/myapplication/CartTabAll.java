@@ -142,8 +142,14 @@ class CartTabAll extends Fragment {
         ProgressBar progressBarCart = activity.findViewById(R.id.progressBar_cart_all);
         progressBarCart.setVisibility(View.GONE);
 
+        SharedPreferences preferences = activity.getSharedPreferences("infoRes", MODE_PRIVATE);
+        Boolean isCapotavola = preferences.getBoolean("isCapotavola",false);
         ExtendedFloatingActionButton fab = activity.findViewById(R.id.fab_cart_all);
-        fab.setOnClickListener(activity.new FabCartClickListener(cart));
+        if (isCapotavola) {
+            fab.setOnClickListener(activity.new FabCartClickListener(cart));
+        } else {
+            fab.setEnabled(false);
+        }
 
         listView.setOnItemClickListener((adapterView, view, i, l) -> {
             Intent intent = new Intent(activity, FoodDetail.class);
