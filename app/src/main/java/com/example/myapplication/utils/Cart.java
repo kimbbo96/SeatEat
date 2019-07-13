@@ -300,18 +300,30 @@ public class Cart implements Serializable {
         this.cartUsers = cartUsers;
     }
 
-    public void addCartUser(String id, String name, boolean isTabletop) {
-        this.cartUsers.add(new CartUser(id, name, isTabletop));
+    public void addCartUser(String name, boolean isTabletop) {
+        this.cartUsers.add(new CartUser(name, isTabletop));
     }
 
     public String getCartUsersNames() {
+        SharedPreferences preferencesUser = context.getSharedPreferences("loginref", MODE_PRIVATE);
+        String userId = preferencesUser.getString("nome", "");
+
         StringBuilder usersNames = new StringBuilder();
         for (CartUser cu : cartUsers) {
-            if (cu.isTabletop) {
-                usersNames.append(cu.name.toUpperCase() + ", ");
+            if (cu.name.equals(userId)) {
+                if (cu.isTabletop) {
+                    usersNames.append("TU, ");
+                } else {
+                    usersNames.append("tu, ");
+                }
             } else {
-                usersNames.append(cu.name + ", ");
+                if (cu.isTabletop) {
+                    usersNames.append(cu.name.toUpperCase() + ", ");
+                } else {
+                    usersNames.append(cu.name + ", ");
+                }
             }
+
         }
         String res = usersNames.toString();
         return res.isEmpty() ? null : res.substring(0, res.length()-2);
@@ -340,11 +352,11 @@ public class Cart implements Serializable {
             addCartFood("2", "noodles", 500, "b", "", "", "", "");
             addCartFood("2", "noodles", 500, "c", "", "", "", "");
 
-            addCartUser("1", "a", true);
-            addCartUser("2", "b", false);
-            addCartUser("3", "c", false);
-            addCartUser("4", "d", false);
-            addCartUser("5", "e", false);
+            addCartUser("a", true);
+            addCartUser("b", false);
+            addCartUser("c", false);
+            addCartUser("d", false);
+            addCartUser("e", false);
 
             fake = true;
             System.out.println("FAKE!");
@@ -468,22 +480,22 @@ public class Cart implements Serializable {
 
     public static class CartUser implements Serializable{
         public static final long serialVersionUID = 42L;
-        private String id;
+//        private String id;
         private String name;
         private boolean isTabletop;
         private Double share;
 
-        private CartUser(String id, String name, boolean isTabletop) {
-            this.id = id;
+        private CartUser(String name, boolean isTabletop) {
+//            this.id = id;
             this.name = name;
             this.isTabletop = isTabletop;
         }
 
         public void setShare(Double share) { this.share = share; }
 
-        public String getId() {
-            return id;
-        }
+//        public String getId() {
+//            return id;
+//        }
 
         public String getName() {
             return name;
@@ -498,7 +510,7 @@ public class Cart implements Serializable {
         @Override
         public String toString() {
             return "CartUser{" +
-                    "id='" + id + '\'' +
+//                    "id='" + id + '\'' +
                     ", name='" + name + '\'' +
                     ", isTabletop=" + isTabletop +
                     '}';

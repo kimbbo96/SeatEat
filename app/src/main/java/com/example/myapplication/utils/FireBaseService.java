@@ -51,21 +51,21 @@ public class FireBaseService extends FirebaseMessagingService {
         String MessageType = remoteMessage.getData().get("type");
 
         Context context = getBaseContext();
-        SharedPreferences preferences = context.getSharedPreferences("loginref", MODE_PRIVATE);
+        preferences = getSharedPreferences("infoRes", MODE_PRIVATE);
         Cart cart = new Cart(context);
 
         switch (MessageType){ // per tutte le tipologie di notifiche che il server può mandare
 
             case "restaurantAssociation":{ //associazione al ristorante
-                preferences = getSharedPreferences("infoRes", MODE_PRIVATE);
                 editor = preferences.edit();
                 editor.putString("ID", (remoteMessage.getData().get("ID")));
                 editor.putBoolean("isCapotavola",true);
                 editor.commit();
 
-                String userId = preferences.getString("nome", "");
+                SharedPreferences preferencesUser = context.getSharedPreferences("loginref", MODE_PRIVATE);
+                String userId = preferencesUser.getString("nome", "");
                 cart.load();
-                cart.addCartUser(userId, "tu", true); //utente aggiunto
+                cart.addCartUser(userId, true); //utente aggiunto
                 cart.save();
 
                 Intent intent = new Intent(context, FoodRest.class);
@@ -75,11 +75,11 @@ public class FireBaseService extends FirebaseMessagingService {
             }
 
             case "userAssociation":{ // caso in cui al capotavola viene aggiunto un commensale
-                String id = remoteMessage.getData().get("id");
+//                String id = remoteMessage.getData().get("id");
                 String name = remoteMessage.getData().get("name");
 
                 cart.load();
-                cart.addCartUser(id, name, false); //utente aggiunto
+                cart.addCartUser(name, false); //utente aggiunto
                 cart.save();
 
                 Intent intent = new Intent("add_user");

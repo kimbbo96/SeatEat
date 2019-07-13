@@ -171,8 +171,8 @@ class CartTabAll extends Fragment {
 
     private void setParticipants() {
         cart.load();
-        SharedPreferences preferences = activity.getSharedPreferences("loginref", MODE_PRIVATE);
-        String userId = preferences.getString("nome", "");
+//        SharedPreferences preferences = activity.getSharedPreferences("loginref", MODE_PRIVATE);
+//        String userId = preferences.getString("nome", "");
         String fellowship = cart.getCartUsersNames();
         TextView participantsTvAll = activity.findViewById(R.id.fellowship_cart_all);
         if (fellowship == null) {
