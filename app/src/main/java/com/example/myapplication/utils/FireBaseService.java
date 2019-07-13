@@ -53,12 +53,8 @@ public class FireBaseService extends FirebaseMessagingService {
                 preferences = getSharedPreferences("infoRes", MODE_PRIVATE);
                 editor = preferences.edit();
                 editor.putString("ID", (remoteMessage.getData().get("id")));
-                if(remoteMessage.getData().get("isCapotavola").equals("true")){
-                    editor.putBoolean("isCapotavola",true);
-                }
-                else {
-                    editor.putBoolean("isCapotavola",false);
-                }
+                editor.putBoolean("isCapotavola",true);
+                editor.putBoolean("isCapotavola",false);
                 editor.commit();
                 break;
             }
