@@ -119,8 +119,8 @@
         android:layout_marginEnd="48dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:src="@drawable/cart"
-        app:backgroundTint="@color/colorAccentDark" />
+        android:src="@drawable/pay1"
+        app:backgroundTint="@color/colorPrimaryLight" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_cart_all"

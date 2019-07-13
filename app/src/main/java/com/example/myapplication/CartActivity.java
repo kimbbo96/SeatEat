@@ -41,11 +41,12 @@ public class CartActivity extends AppCompatActivity implements NavigationView.On
 //        toggle.syncState();
         navigationView.setNavigationItemSelectedListener(activity);
 
+        String restId = getIntent().getStringExtra("RestId");
         ViewPager viewPager = findViewById(R.id.viewPagerCart);
         TabLayout tabLayout = findViewById(R.id.tabLayoutCart);
         SimplePagerAdapter adapter = new SimplePagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new CartTabYou(activity), "I tuoi ordini");
-        adapter.addFragment(new CartTabAll(activity), "Gli ordini di tutti");
+        adapter.addFragment(new CartTabYou(activity, restId), "I tuoi ordini");
+        adapter.addFragment(new CartTabAll(activity, restId), "Gli ordini di tutti");
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
     }

@@ -20,7 +20,6 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.example.myapplication.db_obj.Food;
 import com.example.myapplication.utils.Cart;
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Formatter;
@@ -34,6 +33,7 @@ class CartTabYou extends Fragment {
     private CartActivity activity;
     private Cart cart;
     private String userId;
+    private String restId;
     private boolean created = false;
 
     private BroadcastReceiver receiver = new BroadcastReceiver() {
@@ -48,10 +48,11 @@ class CartTabYou extends Fragment {
         }
     };
 
-    public CartTabYou(CartActivity activity) {
+    public CartTabYou(CartActivity activity, String restId) {
 //        super();
         this.activity = activity;
         this.cart = activity.cart;
+        this.restId = restId;
         System.out.println("creo CartTabYou");
     }
 
@@ -157,14 +158,21 @@ class CartTabYou extends Fragment {
     }
 
     private void setParticipants() {
-        cart.load();
-        String fellowship = cart.getCartUsersNames();
-        System.out.println("FELLOWSHIP CARTTABYOU " + fellowship);
+        SharedPreferences preferencesRest = activity.getSharedPreferences("infoRes", MODE_PRIVATE);
+        String restIdPref = preferencesRest.getString("ID","");
         TextView participantsTvYou = activity.findViewById(R.id.fellowship_cart_you);
-        if (fellowship == null) {
-            participantsTvYou.setText("Partecipanti: tu");
+
+        if (restId.equals(restIdPref)) {
+            cart.load();
+            String fellowship = cart.getCartUsersNames();
+            System.out.println("FELLOWSHIP CARTTABYOU " + fellowship);
+            if (fellowship == null) {
+                participantsTvYou.setText("Partecipanti: tu");
+            } else {
+                participantsTvYou.setText("Partecipanti: " + fellowship);
+            }
         } else {
-            participantsTvYou.setText("Partecipanti: " + fellowship);
+            participantsTvYou.setVisibility(View.GONE);
         }
     }
 }
