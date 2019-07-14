@@ -49,7 +49,7 @@ class CartTabYou extends Fragment {
     };
 
     public CartTabYou(CartActivity activity, String restId) {
-//        super();
+        super();
         this.activity = activity;
         this.cart = activity.cart;
         this.restId = restId;
@@ -131,17 +131,17 @@ class CartTabYou extends Fragment {
         ProgressBar progressBarCart = activity.findViewById(R.id.progressBar_cart_you);
         progressBarCart.setVisibility(View.GONE);
 
-        SharedPreferences preferences = activity.getSharedPreferences("infoRes", MODE_PRIVATE);
-        boolean isCapotavola = preferences.getBoolean("isCapotavola",false);
-        FloatingActionButton fabCart = activity.findViewById(R.id.fab_cart_you);
-        FloatingActionButton fabCheckout = activity.findViewById(R.id.fab_checkout_you);
-        if (isCapotavola) {
-            fabCart.setOnClickListener(activity.new FabCartClickListener(cart));
-            fabCheckout.setOnClickListener(activity.new FabCheckoutClickListener());
-        } else {
-            fabCart.setEnabled(false);
-            fabCheckout.setEnabled(false);
-        }
+//        SharedPreferences preferences = activity.getSharedPreferences("infoRes", MODE_PRIVATE);
+//        boolean isCapotavola = preferences.getBoolean("isCapotavola",false);
+//        FloatingActionButton fabCart = activity.findViewById(R.id.fab_cart_you);
+//        FloatingActionButton fabCheckout = activity.findViewById(R.id.fab_checkout_you);
+//        if (isCapotavola) {
+//            fabCart.setOnClickListener(activity.new FabCartClickListener(cart));
+//            fabCheckout.setOnClickListener(activity.new FabCheckoutClickListener());
+//        } else {
+//            fabCart.setEnabled(false);
+//            fabCheckout.setEnabled(false);
+//        }
 
         listView.setOnItemClickListener((adapterView, view, i, l) -> {
             Intent intent = new Intent(activity, FoodDetail.class);
@@ -176,17 +176,17 @@ class CartTabYou extends Fragment {
         }
     }
 
-    public void hideButtons() {
-        FloatingActionButton fabCart = activity.findViewById(R.id.fab_cart_all);
-        FloatingActionButton fabCheckout = activity.findViewById(R.id.fab_checkout_all);
-        fabCart.setVisibility(View.GONE);
-        fabCheckout.setVisibility(View.GONE);
-    }
-
-    public void showButtons() {
-        FloatingActionButton fabCart = activity.findViewById(R.id.fab_cart_all);
-        FloatingActionButton fabCheckout = activity.findViewById(R.id.fab_checkout_all);
-        fabCart.setVisibility(View.VISIBLE);
-        fabCheckout.setVisibility(View.VISIBLE);
-    }
+//    public void hideButtons() {
+//        FloatingActionButton fabCart = activity.findViewById(R.id.fab_cart_all);
+//        FloatingActionButton fabCheckout = activity.findViewById(R.id.fab_checkout_all);
+//        fabCart.setVisibility(View.GONE);
+//        fabCheckout.setVisibility(View.GONE);
+//    }
+//
+//    public void showButtons() {
+//        FloatingActionButton fabCart = activity.findViewById(R.id.fab_cart_all);
+//        FloatingActionButton fabCheckout = activity.findViewById(R.id.fab_checkout_all);
+//        fabCart.setVisibility(View.VISIBLE);
+//        fabCheckout.setVisibility(View.VISIBLE);
+//    }
 }

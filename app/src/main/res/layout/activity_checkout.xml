@@ -26,7 +26,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/topText"
+                android:id="@+id/topTextCheck"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
@@ -40,7 +40,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/priceText"
+                android:id="@+id/priceTextCheck"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
@@ -51,10 +51,10 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Display1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/topText" />
+                app:layout_constraintTop_toBottomOf="@id/topTextCheck" />
 
             <TextView
-                android:id="@+id/subText"
+                android:id="@+id/subTextCheck"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
@@ -65,10 +65,10 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/priceText" />
+                app:layout_constraintTop_toBottomOf="@id/priceTextCheck" />
 
             <TextView
-                android:id="@+id/counterPeople"
+                android:id="@+id/counterPeopleCheck"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
@@ -77,11 +77,11 @@
                 android:text="1"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 android:textColor="@android:color/holo_red_dark"
-                app:layout_constraintStart_toEndOf="@id/subText"
-                app:layout_constraintTop_toBottomOf="@id/priceText" />
+                app:layout_constraintStart_toEndOf="@id/subTextCheck"
+                app:layout_constraintTop_toBottomOf="@id/priceTextCheck" />
 
             <ImageButton
-                android:id="@+id/addPeople"
+                android:id="@+id/addPeopleCheck"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:layout_gravity="end"
@@ -92,12 +92,12 @@
                 android:padding="0dp"
                 android:scaleType="centerCrop"
                 android:stateListAnimator="@animator/button_elevation"
-                app:layout_constraintStart_toEndOf="@id/counterPeople"
-                app:layout_constraintTop_toBottomOf="@id/priceText"
+                app:layout_constraintStart_toEndOf="@id/counterPeopleCheck"
+                app:layout_constraintTop_toBottomOf="@id/priceTextCheck"
                 app:srcCompat="@drawable/plus_new" />
 
             <ImageButton
-                android:id="@+id/removePeople"
+                android:id="@+id/removePeopleCheck"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:layout_gravity="end"
@@ -108,12 +108,12 @@
                 android:padding="0dp"
                 android:scaleType="centerCrop"
                 android:stateListAnimator="@animator/button_elevation"
-                app:layout_constraintStart_toEndOf="@id/addPeople"
-                app:layout_constraintTop_toBottomOf="@id/priceText"
+                app:layout_constraintStart_toEndOf="@id/addPeopleCheck"
+                app:layout_constraintTop_toBottomOf="@id/priceTextCheck"
                 app:srcCompat="@drawable/minus_new" />
 
             <TextView
-                android:id="@+id/computedPriceText"
+                android:id="@+id/computedpriceTextCheck"
                 android:layout_width="235dp"
                 android:layout_height="50dp"
                 android:layout_marginStart="32dp"
@@ -125,10 +125,10 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.258"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/subText" />
+                app:layout_constraintTop_toBottomOf="@id/subTextCheck" />
 
             <TextView
-                android:id="@+id/counterPrice"
+                android:id="@+id/counterPriceCheck"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
@@ -138,8 +138,8 @@
                 android:textColor="@android:color/holo_red_dark"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@id/computedPriceText"
-                app:layout_constraintTop_toBottomOf="@id/computedPriceText" />
+                app:layout_constraintStart_toStartOf="@id/computedpriceTextCheck"
+                app:layout_constraintTop_toBottomOf="@id/computedpriceTextCheck" />
 
             <TextView
                 android:id="@+id/optionText"
@@ -154,7 +154,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/computedPriceText" />
+                app:layout_constraintTop_toBottomOf="@id/computedpriceTextCheck" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/paymentLayout1"
