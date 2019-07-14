@@ -108,7 +108,6 @@ public class Checkout extends AppCompatActivity {
 
         // TODO fare in modo di passare il campo people aggiornato
 
-        System.out.println("******PRICE: "+price);
         intent.putExtra("People", people); // passo il numero di commensali
         intent.putExtra("Price", price); // passo il prezzo totale
 
