@@ -37,6 +37,7 @@
                 android:text="Totale ordine"
                 android:textAlignment="center"
                 android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                android:textColor="@color/transparentBlack60"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -51,6 +52,7 @@
                 android:text="35€"
                 android:textAlignment="center"
                 android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                android:textColor="@color/transparentBlack40"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/topText" />
@@ -65,6 +67,7 @@
                 android:text="Siete in: "
                 android:textAlignment="viewStart"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textColor="@color/transparentBlack40"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.678"
                 app:layout_constraintStart_toStartOf="parent"
@@ -79,20 +82,21 @@
                 android:layout_marginTop="16dp"
                 android:text="1"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                android:textColor="@android:color/holo_red_dark"
+                android:textColor="@color/transparentBlack60"
                 app:layout_constraintStart_toEndOf="@+id/subText"
                 app:layout_constraintTop_toBottomOf="@+id/priceText" />
 
             <TextView
                 android:id="@+id/computedPriceText"
-                android:layout_width="235dp"
-                android:layout_height="50dp"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
                 android:layout_marginStart="32dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="24dp"
                 android:layout_marginEnd="128dp"
                 android:text="Calcolato alla romana, il prezzo a testa è: "
                 android:textAlignment="viewStart"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/transparentBlack40"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.258"
                 app:layout_constraintStart_toStartOf="parent"
@@ -105,27 +109,36 @@
                 android:layout_gravity="end"
                 android:layout_marginTop="8dp"
                 android:text="8€"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="@android:color/holo_red_dark"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textColor="@color/transparentBlack60"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@id/computedPriceText"
                 app:layout_constraintTop_toBottomOf="@id/computedPriceText" />
 
+            <View
+                android:id="@+id/view"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="16dp"
+                android:background="#c0c0c0"
+                app:layout_constraintTop_toBottomOf="@id/counterPrice" />
+
             <TextView
                 android:id="@+id/collText"
                 android:layout_width="wrap_content"
-                android:layout_height="32dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
-                android:layout_marginTop="96dp"
+                android:layout_marginTop="32dp"
                 android:layout_marginEnd="128dp"
                 android:text="Colletta"
                 android:textAlignment="viewStart"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textColor="@color/transparentBlack60"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/computedPriceText" />
+                app:layout_constraintTop_toBottomOf="@id/counterPrice" />
 
             <ListView
                 android:id="@+id/list_view_coll"
@@ -138,13 +151,14 @@
             <TextView
                 android:id="@+id/totalText"
                 android:layout_width="wrap_content"
-                android:layout_height="32dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="128dp"
                 android:text="Avete raccolto: "
                 android:textAlignment="viewStart"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textColor="@color/transparentBlack60"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -159,7 +173,7 @@
                 android:layout_marginTop="16dp"
                 android:text="8€"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                android:textColor="@android:color/holo_red_dark"
+                android:textColor="@color/transparentBlack60"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.03"
                 app:layout_constraintStart_toEndOf="@id/totalText"

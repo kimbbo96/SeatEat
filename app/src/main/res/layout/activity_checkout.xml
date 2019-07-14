@@ -34,6 +34,7 @@
                 android:layout_marginEnd="32dp"
                 android:text="Totale ordine"
                 android:textAlignment="center"
+                android:textColor="@color/transparentBlack60"
                 android:textAppearance="@style/TextAppearance.AppCompat.Display1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -49,6 +50,7 @@
                 android:text="35€"
                 android:textAlignment="center"
                 android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                android:textColor="@color/transparentBlack40"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/topText" />
@@ -63,6 +65,7 @@
                 android:text="Siete in: "
                 android:textAlignment="viewStart"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textColor="@color/transparentBlack40"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/priceText" />
@@ -76,7 +79,7 @@
                 android:layout_marginTop="16dp"
                 android:text="1"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                android:textColor="@android:color/holo_red_dark"
+                android:textColor="@color/transparentBlack60"
                 app:layout_constraintStart_toEndOf="@id/subText"
                 app:layout_constraintTop_toBottomOf="@id/priceText" />
 
@@ -114,14 +117,15 @@
 
             <TextView
                 android:id="@+id/computedPriceText"
-                android:layout_width="235dp"
-                android:layout_height="50dp"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
                 android:layout_marginStart="32dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="24dp"
                 android:layout_marginEnd="128dp"
                 android:text="Calcolato alla romana, il prezzo a testa è: "
                 android:textAlignment="viewStart"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/transparentBlack40"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.258"
                 app:layout_constraintStart_toStartOf="parent"
@@ -134,27 +138,35 @@
                 android:layout_gravity="end"
                 android:layout_marginTop="8dp"
                 android:text="8€"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="@android:color/holo_red_dark"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textColor="@color/transparentBlack60"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@id/computedPriceText"
                 app:layout_constraintTop_toBottomOf="@id/computedPriceText" />
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="16dp"
+                android:background="#c0c0c0"
+                app:layout_constraintTop_toBottomOf="@id/counterPrice" />
+
             <TextView
                 android:id="@+id/optionText"
-                android:layout_width="242dp"
-                android:layout_height="32dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
-                android:layout_marginTop="96dp"
+                android:layout_marginTop="32dp"
                 android:layout_marginEnd="128dp"
                 android:text="Opzioni di pagamento"
                 android:textAlignment="viewStart"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textColor="@color/transparentBlack60"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/computedPriceText" />
+                app:layout_constraintTop_toBottomOf="@id/counterPrice" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/paymentLayout1"
@@ -178,7 +190,7 @@
                     android:id="@+id/cashIcon"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:layout_marginStart="8dp"
+                    android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
                     android:scaleType="centerCrop"
@@ -192,12 +204,13 @@
                     android:id="@+id/cashText"
                     android:layout_width="231dp"
                     android:layout_height="29dp"
-                    android:layout_marginStart="8dp"
+                    android:layout_marginStart="24dp"
                     android:layout_marginTop="24dp"
                     android:layout_marginEnd="80dp"
                     android:layout_marginBottom="24dp"
                     android:text="Paga alla cassa"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    android:textColor="@color/transparentBlack40"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
@@ -206,11 +219,19 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="4dp"
+                android:background="#c0c0c0"
+                app:layout_constraintTop_toBottomOf="@id/paymentLayout1" />
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/paymentLayout2"
                 android:layout_width="0dp"
                 android:layout_height="72dp"
                 android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:clickable="true"
                 android:focusable="true"
@@ -225,7 +246,7 @@
                     android:id="@+id/cardIcon"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:layout_marginStart="8dp"
+                    android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
                     android:scaleType="centerCrop"
@@ -239,12 +260,13 @@
                     android:id="@+id/cardText"
                     android:layout_width="231dp"
                     android:layout_height="29dp"
-                    android:layout_marginStart="8dp"
+                    android:layout_marginStart="24dp"
                     android:layout_marginTop="24dp"
                     android:layout_marginEnd="80dp"
                     android:layout_marginBottom="24dp"
                     android:text="Paga con l'app"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    android:textColor="@color/transparentBlack40"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
@@ -253,11 +275,19 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="4dp"
+                android:background="#c0c0c0"
+                app:layout_constraintTop_toBottomOf="@id/paymentLayout2" />
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/paymentLayout3"
                 android:layout_width="0dp"
                 android:layout_height="72dp"
                 android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:clickable="true"
                 android:focusable="true"
@@ -272,7 +302,7 @@
                     android:id="@+id/collIcon"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:layout_marginStart="8dp"
+                    android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
                     android:scaleType="centerCrop"
@@ -286,12 +316,13 @@
                     android:id="@+id/collText"
                     android:layout_width="231dp"
                     android:layout_height="29dp"
-                    android:layout_marginStart="8dp"
+                    android:layout_marginStart="24dp"
                     android:layout_marginTop="24dp"
                     android:layout_marginEnd="80dp"
                     android:layout_marginBottom="24dp"
                     android:text="Fai una colletta"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    android:textColor="@color/transparentBlack40"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
@@ -299,6 +330,14 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:id="@+id/View"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="4dp"
+                android:background="#c0c0c0"
+                app:layout_constraintTop_toBottomOf="@id/paymentLayout3" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
