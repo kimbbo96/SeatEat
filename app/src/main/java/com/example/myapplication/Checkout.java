@@ -58,21 +58,21 @@ public class Checkout extends AppCompatActivity {
 
         int[] counter1 = {people};
 
-        TextView counterPeople = findViewById(R.id.counterPeopleCheck);
+        TextView counterPeople = findViewById(R.id.counterPeople);
         counterPeople.setText(String.valueOf(people));
 
         price = cart.getTotal();
 
-        TextView totalText = findViewById(R.id.priceTextCheck);
+        TextView totalText = findViewById(R.id.priceText);
         System.out.println("totalText: " + totalText);
         totalText.setText(String.valueOf(price)+"€");
 
-        TextView counterPrice = findViewById(R.id.counterPriceCheck);
+        TextView counterPrice = findViewById(R.id.counterPrice);
         System.out.println("counterPrice: " + counterPrice);
         counterPrice.setText(String.valueOf(price/people)+"€");
 
         // add people
-        ImageButton addIB = findViewById(R.id.addPeopleCheck);
+        ImageButton addIB = findViewById(R.id.addPeople);
         addIB.setOnClickListener(view -> {
             counter1[0] = counter1[0] + 1;
             counterPeople.setText(Integer.toString(counter1[0]));
@@ -80,7 +80,7 @@ public class Checkout extends AppCompatActivity {
         });
 
         // remove from (sub)cart
-        ImageButton remIB = findViewById(R.id.removePeopleCheck);
+        ImageButton remIB = findViewById(R.id.removePeople);
         remIB.setOnClickListener(view -> {
             if (counter1[0] > 0) {
                 counter1[0] = counter1[0] - 1;

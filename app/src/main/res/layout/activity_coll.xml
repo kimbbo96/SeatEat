@@ -28,7 +28,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/topTextColl"
+                android:id="@+id/topText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
@@ -42,7 +42,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/priceTextColl"
+                android:id="@+id/priceText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
@@ -53,10 +53,10 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Display1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/topTextColl" />
+                app:layout_constraintTop_toBottomOf="@id/topText" />
 
             <TextView
-                android:id="@+id/subTextColl"
+                android:id="@+id/subText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
@@ -68,10 +68,10 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.678"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/priceTextColl" />
+                app:layout_constraintTop_toBottomOf="@id/priceText" />
 
             <TextView
-                android:id="@+id/counterPeopleColl"
+                android:id="@+id/counterPeople"
                 android:layout_width="0dp"
                 android:layout_height="30dp"
                 android:layout_gravity="end"
@@ -80,11 +80,11 @@
                 android:text="1"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 android:textColor="@android:color/holo_red_dark"
-                app:layout_constraintStart_toEndOf="@+id/subTextColl"
-                app:layout_constraintTop_toBottomOf="@+id/priceTextColl" />
+                app:layout_constraintStart_toEndOf="@+id/subText"
+                app:layout_constraintTop_toBottomOf="@+id/priceText" />
 
             <TextView
-                android:id="@+id/computedpriceTextColl"
+                android:id="@+id/computedPriceText"
                 android:layout_width="235dp"
                 android:layout_height="50dp"
                 android:layout_marginStart="32dp"
@@ -96,10 +96,10 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.258"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/subTextColl" />
+                app:layout_constraintTop_toBottomOf="@id/subText" />
 
             <TextView
-                android:id="@+id/counterPriceColl"
+                android:id="@+id/counterPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
@@ -109,8 +109,8 @@
                 android:textColor="@android:color/holo_red_dark"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@id/computedpriceTextColl"
-                app:layout_constraintTop_toBottomOf="@id/computedpriceTextColl" />
+                app:layout_constraintStart_toStartOf="@id/computedPriceText"
+                app:layout_constraintTop_toBottomOf="@id/computedPriceText" />
 
             <TextView
                 android:id="@+id/collText"
@@ -125,7 +125,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/computedpriceTextColl" />
+                app:layout_constraintTop_toBottomOf="@id/computedPriceText" />
 
             <ListView
                 android:id="@+id/list_view_coll"
