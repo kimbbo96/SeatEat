@@ -79,7 +79,7 @@ public class Checkout extends AppCompatActivity {
             counterPrice.setText(price/counter1[0] + "€");
         });
 
-        // remove from (sub)cart
+        // remove people
         ImageButton remIB = findViewById(R.id.removePeople);
         remIB.setOnClickListener(view -> {
             if (counter1[0] > 0) {
@@ -106,8 +106,9 @@ public class Checkout extends AppCompatActivity {
         System.out.println("hai clikkato COLL");
         Intent intent = new Intent(this, Coll.class);
 
-        intent.putExtra("People", people); // passo l'oggetto ristorante
-        intent.putExtra("Price", price); // passo l'oggetto ristorante
+        // TODO fare in modo di passare il campo people aggiornato
+        intent.putExtra("People", people); // passo il numero di commensali
+        intent.putExtra("Price", price); // passo il costo totale del pasto
 
         startActivity(intent);
     }

@@ -63,7 +63,7 @@ public class Coll extends AppCompatActivity {
         TextView counterPeople = findViewById(R.id.counterPeople);
         counterPeople.setText(String.valueOf(people));
 
-        int price = getIntent().getIntExtra("Price", 1);
+        double price = getIntent().getDoubleExtra("Price", 1d);
 
         TextView totalText = findViewById(R.id.priceText);
         totalText.setText(String.valueOf(price)+"€");
