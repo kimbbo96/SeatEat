@@ -64,6 +64,8 @@ public class Cart implements Serializable {
                 Intent intent = new Intent("update_cart");
                 intent.putExtra("content", "new Cart");
                 LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+
+                System.out.println("REFRESH COMMAND");
             }
         };
 
@@ -196,7 +198,7 @@ public class Cart implements Serializable {
 
         save();
 
-        // se io ho aggiunto cose al carrello, invio la nuova lista di piatti al server
+        // se io ho aggiunto cose al carrello, invio la nuova lista di piatti al server (POST)
         List<CartFood> myServerCartFoods = getMyCartFoods(tmpServerCartFoods, userId);
 
         if (! myOfflineCartFoods.equals(myServerCartFoods)) {
