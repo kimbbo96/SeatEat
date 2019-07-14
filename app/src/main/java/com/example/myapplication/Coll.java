@@ -42,13 +42,17 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
+import okio.BufferedSink;
 
 
 public class Coll extends AppCompatActivity {
@@ -61,6 +65,8 @@ public class Coll extends AppCompatActivity {
     double totalShares = 0;
 
     String urlBase = "https://seateat-be.herokuapp.com";
+
+    private final String POST_URL = "https://seateat-be.herokuapp.com/api/pushcart";    // post autenticazione nell'header con cart nel body
 
     static List<Cart.CartUser> users = new ArrayList<>();
 
@@ -114,27 +120,50 @@ public class Coll extends AppCompatActivity {
         Boolean isCapotavola = preferences.getBoolean("isCapotavola",false);
 
         if (isCapotavola) {
-            OkHttpClient cl = new OkHttpClient(); // inizio la procedura di get
-            TextView errorMsg = findViewById(R.id.errorMessage);
-            String url = urlBase+"/api/example/restaurants";
-            Request request = new Request.Builder().url(url).build();
-            cl.newCall(request).enqueue(new Callback() {
-                @Override
-                public void onFailure(Call call, IOException e) {
+
+            new Thread(()->{
+
+                OkHttpClient cl = new OkHttpClient(); // inizio la procedura di get
+                TextView errorMsg = findViewById(R.id.errorMessage);
+                String url = urlBase+"/api/colletta";
+                Request request = new Request.Builder().url(url).build();
+
+                MediaType JSON = MediaType.parse("application/json;charset=utf-8");
+                String token = preferences.getString("nome", null) + ":" + preferences.getString("password", null);
+                String credenziali = preferences.getString("nome", null) + ":" + preferences.getString("password", null);
+                String BasicBase64format = "Basic " + Base64.getEncoder().encodeToString(credenziali.getBytes());
+
+                JSONObject colletta = new JSONObject();
+                try {
+                    colletta.put("quantita", 10);
+                } catch (JSONException e) {
+                    Log.d("OKHTTP3", "JSON exception");
                     e.printStackTrace();
-                    Coll.this.runOnUiThread(() -> {
-                        progressBarResList.setVisibility(View.GONE);
-                        errorMsg.setVisibility(View.VISIBLE);
-                    });
                 }
 
-                @Override
-                public void onResponse(Call call, Response response) throws IOException {
-                    if (response.isSuccessful()){
-                        System.out.println("ON RESPONSE COLL OK");
+                RequestBody bodyUp = RequestBody.create(JSON, colletta.toString());
+
+                Request uploadReq = new Request.Builder()
+                        .url(POST_URL)
+                        .post(bodyUp)
+                        .addHeader("Authorization", BasicBase64format)
+                        .build();
+                try {
+                    Response response = cl.newCall(uploadReq).execute();
+
+                    if (response.isSuccessful()) {
+                        System.out.println("CART REQUEST post SUCCESSFUL" + response.message());
+                        System.out.println("CART REQUEST post SUCCESSFUL" + response.isSuccessful());
+                    } else {
+                        System.out.println("CART REQUEST post UNSUCCESSFUL" + response.message());
+                        System.out.println("CART REQUEST post UNSUCCESSFUL" + response.isSuccessful());
                     }
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-            });
+
+            }).start();
+
 
         }
 
