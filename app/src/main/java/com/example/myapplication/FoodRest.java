@@ -8,6 +8,7 @@ import com.example.myapplication.utils.Cart;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.fragment.app.FragmentManager;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -89,15 +90,17 @@ public class FoodRest extends AppCompatActivity
             fab.setVisibility(View.GONE);
         }
 
-//        DrawerLayout drawer = findViewById(R.id.drawer_layout_food);
-//        NavigationView navigationView = findViewById(R.id.nav_view_food);
+          DrawerLayout drawer = findViewById(R.id.drawer_layout_food);
+
+
+          NavigationView navigationView = findViewById(R.id.nav_view);
 //
-//        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-//                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-//        drawer.addDrawerListener(toggle);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
 //
-//        toggle.syncState();
-//        navigationView.setNavigationItemSelectedListener(this);
+        toggle.syncState();
+        navigationView.setNavigationItemSelectedListener(this);
 
         ///////////////////////////////////
 
@@ -206,13 +209,23 @@ public class FoodRest extends AppCompatActivity
         if (id == R.id.nav_home) {
             // Handle the camera action
 
+        }  else if (id == R.id.nav_help) {
+            Intent intent = new Intent(getApplicationContext(), Help.class);
+            startActivity(intent);
+
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
 
         }
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        else if (id == R.id.nav_settings){
+            Intent intent = new Intent(getApplicationContext(), Settings.class);
+            startActivity(intent);
+
+        }
+
+        DrawerLayout drawer = findViewById(R.id.drawer_layout_food);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
