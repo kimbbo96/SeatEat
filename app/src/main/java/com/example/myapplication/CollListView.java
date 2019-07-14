@@ -26,10 +26,9 @@ import java.util.Formatter;
 import java.util.Locale;
 
 public class CollListView extends ArrayAdapter<String> {
-    private String[] names;
+    public String[] names;
     private Double[] shares;
     private Activity context;
-    //private final String path_base = "https://seateat-be.herokuapp.com";
 
     public CollListView(Activity context, String[] name, Double[] share) {
         super(context, R.layout.activity_coll_scrolling, name);
@@ -39,7 +38,7 @@ public class CollListView extends ArrayAdapter<String> {
     }
 
     public CollListView(Activity context, Cart.CartUser[] users) {
-        super(context, R.layout.activity_scrolling_restaurant, getNames(users));
+        super(context, R.layout.activity_coll_scrolling, getNames(users));
         String[] userNames = new String[users.length];
         Double[] userShares = new Double[users.length];
 
@@ -72,7 +71,7 @@ public class CollListView extends ArrayAdapter<String> {
         if (r == null)
         {
             LayoutInflater layoutInflater = context.getLayoutInflater();
-            r = layoutInflater.inflate(R.layout.activity_coll,
+            r = layoutInflater.inflate(R.layout.activity_coll_scrolling,
                     null,true);
             viewHolder = new ViewHolder(r);
             r.setTag(viewHolder);
@@ -81,9 +80,8 @@ public class CollListView extends ArrayAdapter<String> {
             viewHolder = (ViewHolder) r.getTag();
         }
         System.out.println("jjjj"+names[position]);
-        //viewHolder.ivw.setImageResource(imgId[position]);
 
-        viewHolder.tvw1.setText(names[position]);
+        viewHolder.tvw1.setText(names[position]+" ha versato ");
         viewHolder.tvw2.setText(shares[position].toString());
 
         return r;
