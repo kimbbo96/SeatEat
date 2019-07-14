@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.myapplication.utils.Cart;
@@ -45,10 +46,50 @@ public class CartActivity extends AppCompatActivity implements NavigationView.On
         ViewPager viewPager = findViewById(R.id.viewPagerCart);
         TabLayout tabLayout = findViewById(R.id.tabLayoutCart);
         SimplePagerAdapter adapter = new SimplePagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new CartTabYou(activity, restId), "I tuoi ordini");
-        adapter.addFragment(new CartTabAll(activity, restId), "Gli ordini di tutti");
+        CartTabYou cty = new CartTabYou(activity, restId);
+        CartTabAll cta = new CartTabAll(activity, restId);
+        adapter.addFragment(cty, "I tuoi ordini");
+        adapter.addFragment(cta, "Gli ordini di tutti");
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
+        tabLayout.addOnTabSelectedListener(
+                new TabLayout.ViewPagerOnTabSelectedListener(viewPager) {
+                    @Override
+                    public void onTabSelected(TabLayout.Tab tab) {
+                        super.onTabSelected(tab);
+                        int numTab = tab.getPosition();
+                        if (numTab == 0) {
+                            cty.showButtons();
+                        } else if (numTab == 1) {
+                            cta.showButtons();
+                        }
+                        System.out.println("TAB selected " + numTab);
+                    }
+
+                    @Override
+                    public void onTabUnselected(TabLayout.Tab tab) {
+                        super.onTabUnselected(tab);
+                        int numTab = tab.getPosition();
+                        if (numTab == 0) {
+                            cta.hideButtons();
+                        } else if (numTab == 1) {
+                            cty.hideButtons();
+                        }
+                        System.out.println("TAB unselected " + numTab);
+                    }
+
+                    @Override
+                    public void onTabReselected(TabLayout.Tab tab) {
+                        super.onTabReselected(tab);
+                        int numTab = tab.getPosition();
+                        if (numTab == 0) {
+                            cty.showButtons();
+                        } else if (numTab == 1) {
+                            cta.showButtons();
+                        }
+                        System.out.println("TAB reselected " + numTab);
+                    }
+                });
     }
 
     @SuppressWarnings("StatementWithEmptyBody")

@@ -175,4 +175,18 @@ class CartTabYou extends Fragment {
             participantsTvYou.setVisibility(View.GONE);
         }
     }
+
+    public void hideButtons() {
+        FloatingActionButton fabCart = activity.findViewById(R.id.fab_cart_all);
+        FloatingActionButton fabCheckout = activity.findViewById(R.id.fab_checkout_all);
+        fabCart.setVisibility(View.GONE);
+        fabCheckout.setVisibility(View.GONE);
+    }
+
+    public void showButtons() {
+        FloatingActionButton fabCart = activity.findViewById(R.id.fab_cart_all);
+        FloatingActionButton fabCheckout = activity.findViewById(R.id.fab_checkout_all);
+        fabCart.setVisibility(View.VISIBLE);
+        fabCheckout.setVisibility(View.VISIBLE);
+    }
 }
