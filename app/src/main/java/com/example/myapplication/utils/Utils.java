@@ -3,11 +3,19 @@ package com.example.myapplication.utils;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+
+import com.example.myapplication.R;
+import com.example.myapplication.Settings;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -94,4 +102,33 @@ public class Utils {
         dishes.computeIfAbsent("contorno", k -> new ArrayList<>()).add("pomodori");
         System.out.println(dishes);
     }
+
+    public static void gestisciMenu (MenuItem item, Context context, DrawerLayout drawerLayout){
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+        if (id == R.id.nav_home) {
+            // Handle the camera action
+
+        }  else if (id == R.id.nav_help) {
+
+        } else if (id == R.id.nav_share) {
+
+        } else if (id == R.id.nav_send) {
+
+        }
+
+        else if (id == R.id.nav_settings ){
+            System.out.println("sono qui maddafakka"+ context.getClass().getName()+context.getPackageName()+context.getClass().toString());
+
+            Intent intent = new Intent(context, Settings.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
+
+        }
+        drawerLayout.closeDrawer(GravityCompat.START);
+
+
+    }
+
 }
