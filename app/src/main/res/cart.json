@@ -1,38 +1,41 @@
-[
-    {
-        "id": "aaa",
-        "name": "Onigiri",
-        "price": 3.5,
-        "user": "abc123",
-        "quantity": 3,
-        "note": "",
-        "ord_num": 1,
-        "short_descr": "onigiri",
-        "long_descr": "onigiri onigiri",
-        "image": "onigiri.png",
-    },
-    {
-        "id": "aaa",
-        "name": "Onigiri",
-        "price": 3.5,
-        "user": "abc123",
-        "quantity": 2,
-        "note": "senza salsa",
-        "ord_num": 2,
-        "short_descr": "onigiri",
-        "long_descr": "onigiri onigiri",
-        "image": "onigiri.png",
-    },
-    {
-        "id": "bbb",
-        "name": "Futomaki",
-        "price": 3.0,
-        "user": "efghi",
-        "quantity": 2,
-        "note": "con soffio di drago",
-        "ord_num": 1,
-        "short_descr": "futomaki",
-        "long_descr": "futomaki futomaki",
-        "image": "futomaki.png",
-    }
-]
+{
+    "cart":
+    [
+        {
+            "id": "aaa",
+            "name": "Onigiri",
+            "price": 3.5,
+            "user": "abc123",
+            "quantity": 3,
+            "note": "",
+            "ord_num": 1,
+            "short_descr": "onigiri",
+            "long_descr": "onigiri onigiri",
+            "image": "onigiri.png"
+        },
+        {
+            "id": "aaa",
+            "name": "Onigiri",
+            "price": 3.5,
+            "user": "abc123",
+            "quantity": 2,
+            "note": "senza salsa",
+            "ord_num": 2,
+            "short_descr": "onigiri",
+            "long_descr": "onigiri onigiri",
+            "image": "onigiri.png"
+        },
+        {
+            "id": "bbb",
+            "name": "Futomaki",
+            "price": 3.0,
+            "user": "efghi",
+            "quantity": 2,
+            "note": "con soffio di drago",
+            "ord_num": 1,
+            "short_descr": "futomaki",
+            "long_descr": "futomaki futomaki",
+            "image": "futomaki.png"
+        }
+    ]
+}

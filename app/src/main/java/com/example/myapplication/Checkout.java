@@ -35,8 +35,8 @@ public class Checkout extends AppCompatActivity {
     Cart cart;
     // path_base + "/resources/menus/" + restId + "/" + foodImage[position]))
 
-    private int people = 0;
-    private double price = 0;
+    int people = 0;
+    double price = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +56,7 @@ public class Checkout extends AppCompatActivity {
 
         people = cart.getCartUsers().size();
 
-        int[] counter1 = {people};
+        //int[] counter1 = {people};
 
         TextView counterPeople = findViewById(R.id.counterPeople);
         counterPeople.setText(String.valueOf(people));
@@ -74,18 +74,18 @@ public class Checkout extends AppCompatActivity {
         // add people
         ImageButton addIB = findViewById(R.id.addPeople);
         addIB.setOnClickListener(view -> {
-            counter1[0] = counter1[0] + 1;
-            counterPeople.setText(Integer.toString(counter1[0]));
-            counterPrice.setText(price/counter1[0] + "€");
+            people++;
+            counterPeople.setText(Integer.toString(people));
+            counterPrice.setText(price/people + "€");
         });
 
         // remove people
         ImageButton remIB = findViewById(R.id.removePeople);
         remIB.setOnClickListener(view -> {
-            if (counter1[0] > 0) {
-                counter1[0] = counter1[0] - 1;
-                counterPeople.setText(Integer.toString(counter1[0]));
-                counterPrice.setText(price/counter1[0] + "€");
+            if (people > 0) {
+                people--;
+                counterPeople.setText(Integer.toString(people));
+                counterPrice.setText(price/people + "€");
             }
         });
     }
@@ -107,8 +107,10 @@ public class Checkout extends AppCompatActivity {
         Intent intent = new Intent(this, Coll.class);
 
         // TODO fare in modo di passare il campo people aggiornato
+
+        System.out.println("******PRICE: "+price);
         intent.putExtra("People", people); // passo il numero di commensali
-        intent.putExtra("Price", price); // passo il costo totale del pasto
+        intent.putExtra("Price", price); // passo il prezzo totale
 
         startActivity(intent);
     }

@@ -57,19 +57,26 @@ public class Coll extends AppCompatActivity {
         // TODO manage cart
         Activity activity = this;
 
+        //cart.load();
+
 
         int people = getIntent().getIntExtra("People", 1);
+        double price1 = getIntent().getDoubleExtra("Price", 1);
+
+        //double price2 = cart.getTotal();
+
+        System.out.println("-------- PRICE COLL: "+price1+"    ---- PRICE2 CART: ");
 
         TextView counterPeople = findViewById(R.id.counterPeople);
         counterPeople.setText(String.valueOf(people));
 
-        double price = getIntent().getDoubleExtra("Price", 1d);
-
         TextView totalText = findViewById(R.id.priceText);
-        totalText.setText(String.valueOf(price)+"€");
+        System.out.println("totalText: " + totalText);
+        totalText.setText(String.valueOf(price1)+"€");
 
         TextView counterPrice = findViewById(R.id.counterPrice);
-        counterPrice.setText(String.valueOf(price/people)+"€");
+        System.out.println("counterPrice: " + counterPrice);
+        counterPrice.setText(String.valueOf(price1/people)+"€");
 
         users.clear();
 
