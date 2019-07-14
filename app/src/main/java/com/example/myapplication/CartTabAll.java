@@ -53,9 +53,11 @@ class CartTabAll extends Fragment {
         public void onReceive(Context context, Intent intent) {
             if (intent != null && created) {
                 String content = intent.getStringExtra("content");
-                System.out.println(content);
+                System.out.println("BroadcastReceiver: " + content);
                 if (content.equals("new Cart"))
                     fillFragment();
+            } else {
+                System.out.println("BroadcastReceiver FALSE: intent = " + intent + ", created = " + created);
             }
         }
     };

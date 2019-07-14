@@ -2,7 +2,10 @@ package com.example.myapplication;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
@@ -19,6 +22,9 @@ import com.example.myapplication.utils.Cart;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
+
+import java.io.ByteArrayOutputStream;
+import java.util.Base64;
 
 public class CartActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     Cart cart;
@@ -163,6 +169,13 @@ public class CartActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_qr, menu);
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
@@ -174,6 +187,20 @@ public class CartActivity extends AppCompatActivity implements NavigationView.On
             return true;
         } else if (id == android.R.id.home) {
             onBackPressed();
+            return true;
+        } else if (id == R.id.qr_button) {
+            SharedPreferences preferences = getSharedPreferences("infoRes", MODE_PRIVATE);
+            String QREncoded = preferences.getString("QRimage",null);
+            byte[] decodedByte = Base64.getDecoder().decode(QREncoded);
+            Bitmap bmp = BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length);
+
+            Intent zoomQRIntent = new Intent(getApplicationContext(), Qr_zoom.class);
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bmp.compress(Bitmap.CompressFormat.PNG, 100, baos);
+            byte[] b = baos.toByteArray();
+            zoomQRIntent.putExtra("QRImage", b);
+            startActivity(zoomQRIntent);
+
             return true;
         }
 

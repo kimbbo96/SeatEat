@@ -2,6 +2,8 @@ package com.example.myapplication;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
 import com.example.myapplication.utils.Cart;
@@ -15,6 +17,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -26,8 +29,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -83,7 +88,7 @@ public class FoodRest extends AppCompatActivity
 //                    .setAction("Action", null).show();
                 System.out.println("hai clikkato il carrello");
                 Intent intent = new Intent(this, CartActivity.class);
-                intent.putExtra("RestId", rist.getRESTAURANT_ID()); // passo l'oggetto ristornate
+                intent.putExtra("RestId", idRest); // passo l'oggetto ristornate
                 startActivity(intent);
             });
         } else {
@@ -93,7 +98,7 @@ public class FoodRest extends AppCompatActivity
 
         NavigationView navigationView = findViewById(R.id.nav_view);
 //
-       
+
         navigationView.setNavigationItemSelectedListener(this);
 
         ///////////////////////////////////
@@ -170,12 +175,13 @@ public class FoodRest extends AppCompatActivity
         }
     }
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.MenuRest, menu);
-//        return true;
-//    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_qr, menu);
+        return true;
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         System.out.println("aaaaaa");
@@ -189,6 +195,20 @@ public class FoodRest extends AppCompatActivity
             return true;
         } else if (id == android.R.id.home) {
             onBackPressed();
+            return true;
+        } else if (id == R.id.qr_button) {
+            SharedPreferences preferences = getSharedPreferences("infoRes", MODE_PRIVATE);
+            String QREncoded = preferences.getString("QRimage",null);
+            byte[] decodedByte = Base64.getDecoder().decode(QREncoded);
+            Bitmap bmp = BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length);
+
+            Intent zoomQRIntent = new Intent(getApplicationContext(), Qr_zoom.class);
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bmp.compress(Bitmap.CompressFormat.PNG, 100, baos);
+            byte[] b = baos.toByteArray();
+            zoomQRIntent.putExtra("QRImage", b);
+            startActivity(zoomQRIntent);
+
             return true;
         }
 
