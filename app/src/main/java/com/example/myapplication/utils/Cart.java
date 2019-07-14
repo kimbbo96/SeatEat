@@ -3,11 +3,14 @@ package com.example.myapplication.utils;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
-import com.example.myapplication.CartActivity;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -17,13 +20,19 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+
+import okhttp3.Headers;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -36,6 +45,8 @@ public class Cart implements Serializable {
     String userId;
     private List<CartFood> cartFoods = new ArrayList<>();
     private List<CartUser> cartUsers = new ArrayList<>();
+    private final String GET_URL = "https://seateat-be.herokuapp.com/api/getallcart";   // get autenticazione nell'header con qr nel body
+    private final String POST_URL = "https://seateat-be.herokuapp.com/api/pushcart";    // post autenticazione nell'header con cart nel body
 
     public Cart(@NonNull Context context) {
         this.context = context;
@@ -101,9 +112,75 @@ public class Cart implements Serializable {
         load();
         List<CartFood> offlineCartFoods = getOthersCartFoods(cartFoods, userId);
         List<CartFood> myCartFoods = getCartFoods(userId);
+        SharedPreferences preferencesUser = context.getSharedPreferences("loginref", MODE_PRIVATE);
 
         // scarica l'ultima lista cartFoods dal server
         List<CartFood> serverCartFoods = new ArrayList<>();   // TODO
+        OkHttpClient client = new OkHttpClient();
+
+        MediaType JSON = MediaType.parse("application/json;charset=utf-8");
+        String token = preferencesUser.getString("nome", null) + ":" + preferencesUser.getString("password", null);
+        String basicBase64format = "Basic " + Base64.getEncoder().encodeToString(token.getBytes());
+        Headers headers = new Headers.Builder()
+                .add("Content-Length", "0")
+                .add(basicBase64format)
+                .build();
+
+        SharedPreferences preferencesRest = context.getSharedPreferences("infoRes", MODE_PRIVATE);
+        String QREncoded = preferencesRest.getString("QRimage",null);
+        JSONObject dataDown = new JSONObject();
+        try {
+            dataDown.put("token", QREncoded); // invio il QR
+        } catch (JSONException e) {
+            Log.d("OKHTTP3","JSON exception");
+            e.printStackTrace();
+        }
+        RequestBody bodyDown = RequestBody.create(JSON, dataDown.toString());
+
+        Request downloadReq = new Request.Builder()
+                .url(GET_URL)
+                .method("GET", bodyDown)
+                .headers(headers)
+                .build();
+
+        try {
+            Response response = client.newCall(downloadReq).execute();
+
+            if (response.isSuccessful()) {
+                System.out.println("CART REQUEST SUCCESSFUL" + response.message());
+                System.out.println("CART REQUEST SUCCESSFUL" + response.isSuccessful());
+
+                JSONObject responsebody = new JSONObject(response.body().string());
+                System.out.println("CART REQUEST SUCCESSFUL\n" + responsebody.toString());
+
+                JSONArray jsonCart = responsebody.getJSONArray("cart");
+                for (int i = 0 ; i< jsonCart.length(); i++) {          // per ogni FoodCart nel carrello
+                    JSONObject jsonCartFood = jsonCart.getJSONObject(i);
+                    String id = jsonCartFood.getString("id");
+                    String name = jsonCartFood.getString("name");
+                    String user = jsonCartFood.getString("user");
+                    String note = jsonCartFood.getString("note");
+                    String shortDescr = jsonCartFood.getString("short_descr");
+                    String longDescr = jsonCartFood.getString("long_descr");
+                    String image = jsonCartFood.getString("image");
+                    double price = jsonCartFood.getDouble("price");
+                    int quantity = jsonCartFood.getInt("quantity");
+                    int ordNum = jsonCartFood.getInt("ord_num");
+
+                    CartFood cf = new CartFood(id, name, price, user, quantity, note, ordNum, shortDescr, longDescr, image);
+                    serverCartFoods.add(cf);
+                }
+
+            } else {
+                System.out.println("CART REQUEST UNSUCCESSFUL" + response.message());
+                System.out.println("CART REQUEST UNSUCCESSFUL" + response.isSuccessful());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         serverCartFoods = getOthersCartFoods(serverCartFoods, userId);
 
         if (!offlineCartFoods.equals(serverCartFoods)) {
@@ -116,7 +193,51 @@ public class Cart implements Serializable {
             save();
 
             // invia la nuova lista di piatti al server
-            // TODO
+            JSONObject dataUp = new JSONObject();
+            JSONArray jsonCartFoods = new JSONArray();
+            try {
+                for (CartFood cf : newCartFoods) {
+                    JSONObject jsonCartFood = new JSONObject();
+                    jsonCartFood.put("id", cf.id);
+                    jsonCartFood.put("name", cf.name);
+                    jsonCartFood.put("user", cf.user);
+                    jsonCartFood.put("note", cf.note);
+                    jsonCartFood.put("short_descr", cf.shortDescr);
+                    jsonCartFood.put("long_descr", cf.longDescr);
+                    jsonCartFood.put("image", cf.image);
+                    jsonCartFood.put("price", cf.price);
+                    jsonCartFood.put("quantity", cf.quantity);
+                    jsonCartFood.put("ord_num", cf.ordNum);
+
+                    jsonCartFoods.put(jsonCartFood);
+                }
+                dataUp.put("cart", jsonCartFoods);
+            } catch (JSONException e) {
+                Log.d("OKHTTP3","JSON exception");
+                e.printStackTrace();
+            }
+
+            RequestBody bodyUp = RequestBody.create(JSON, dataUp.toString());
+
+            Request uploadReq = new Request.Builder()
+                    .url(POST_URL)
+                    .method("POST", bodyUp)
+                    .headers(headers)
+                    .build();
+
+            try {
+                Response response = client.newCall(uploadReq).execute();
+
+                if (response.isSuccessful()) {
+                    System.out.println("CART REQUEST SUCCESSFUL" + response.message());
+                    System.out.println("CART REQUEST SUCCESSFUL" + response.isSuccessful());
+                } else {
+                    System.out.println("CART REQUEST UNSUCCESSFUL" + response.message());
+                    System.out.println("CART REQUEST UNSUCCESSFUL" + response.isSuccessful());
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
             return true;
         } else {

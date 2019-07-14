@@ -90,16 +90,12 @@ public class FoodRest extends AppCompatActivity
             fab.setVisibility(View.GONE);
         }
 
-          DrawerLayout drawer = findViewById(R.id.drawer_layout_food);
-
-
-          NavigationView navigationView = findViewById(R.id.nav_view);
-//
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-//
-        toggle.syncState();
+//        DrawerLayout drawer = findViewById(R.id.drawer_layout_food);
+        NavigationView navigationView = findViewById(R.id.nav_view);
+//        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+//                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+//        drawer.addDrawerListener(toggle);
+//        toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
 
         ///////////////////////////////////
@@ -175,6 +171,7 @@ public class FoodRest extends AppCompatActivity
         }
     }
 
+    // TODO BOTTONE QR
 //    @Override
 //    public boolean onCreateOptionsMenu(Menu menu) {
 //        // Inflate the menu; this adds items to the action bar if it is present.
