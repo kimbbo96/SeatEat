@@ -58,6 +58,8 @@ public class Coll extends AppCompatActivity {
 
     double myShare = 0;
 
+    double totalShares = 0;
+
     String urlBase = "https://seateat-be.herokuapp.com";
 
     static List<Cart.CartUser> users = new ArrayList<>();
@@ -80,30 +82,23 @@ public class Coll extends AppCompatActivity {
         cart.load();
 
         int people = getIntent().getIntExtra("People", 1);
-        double price1 = getIntent().getDoubleExtra("Price", 1);
+        double price = getIntent().getDoubleExtra("Price", 1);
 
         TextView counterPeople = findViewById(R.id.counterPeople);
         counterPeople.setText(String.valueOf(people));
 
         TextView totalText = findViewById(R.id.priceText);
         System.out.println("totalText: " + totalText);
-        totalText.setText(String.valueOf(price1)+"€");
+        totalText.setText(String.valueOf(price)+"€");
 
         TextView counterPrice = findViewById(R.id.counterPrice);
         System.out.println("counterPrice: " + counterPrice);
-        counterPrice.setText(String.valueOf(price1/people)+"€");
+        counterPrice.setText(String.valueOf(price/people)+"€");
 
         TextView nameText = findViewById(R.id.myName);
-        nameText.setText("Tu hai versato: ");
+        nameText.setText("Quanto vuoi versare?");
 
-        /*TextView shareText = findViewById(R.id.myShare);
-        shareText.setText(String.valueOf(myShare)+"€");
-
-        ImageButton addIB = findViewById(R.id.addShare);
-        addIB.setOnClickListener(view -> {
-            myShare++;
-            shareText.setText(String.valueOf(myShare) + "€");
-        });*/
+        EditText myShareEditText = findViewById(R.id.shareEditText);
 
         users.clear();
 
@@ -133,7 +128,6 @@ public class Coll extends AppCompatActivity {
                     });
                 }
 
-
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
                     if (response.isSuccessful()){
@@ -143,6 +137,37 @@ public class Coll extends AppCompatActivity {
             });
 
         }
+
+        for (Cart.CartUser u : users) {
+            u.setShare(10.0);
+
+            totalShares += u.getShare();
+        }
+
+        TextView totalObtained = findViewById(R.id.counterTotal);
+        totalObtained.setText(totalShares+"€ su "+price+"€");
+
+        Button cancelButton = findViewById(R.id.cancel_button);
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                System.out.println("hai clikkato ANNULLA");
+                /*Intent intent = new Intent(ResDetail.this,FoodRest.class);
+                intent.putExtra("Restaurant",rist); // passo l'oggetto ristornate
+                startActivity(intent);*/
+            }
+        });
+
+
+        Button payButton = findViewById(R.id.pay_button);
+        payButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                System.out.println("hai clikkato PAGA");
+                /*Intent intent = new Intent(ResDetail.this,FoodRest.class);
+                intent.putExtra("Restaurant",rist); // passo l'oggetto ristornate
+                startActivity(intent);*/
+            }
+        });
+
 
         //costruisci CollListView
         fillList(activity, users);
