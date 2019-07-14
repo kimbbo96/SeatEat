@@ -112,14 +112,16 @@ public class Cart implements Serializable {
 
     public boolean refresh() {
         System.out.println("REFRESHHH!");
+        boolean result = false;
 
         load();
-        List<CartFood> offlineCartFoods = getOthersCartFoods(cartFoods, userId);
-        List<CartFood> myCartFoods = getCartFoods(userId);
+        List<CartFood> othersOfflineCartFoods = getOthersCartFoods(cartFoods, userId);
+        List<CartFood> myOfflineCartFoods = new ArrayList<>(getCartFoods(userId));
         SharedPreferences preferencesUser = context.getSharedPreferences("loginref", MODE_PRIVATE);
 
         // scarica l'ultima lista cartFoods dal server
-        final List<CartFood> tmpServerCartFoods = new ArrayList<>();   // TODO
+        final List<CartFood> tmpServerCartFoods = new ArrayList<>();
+
         OkHttpClient client = new OkHttpClient();
 
         MediaType JSON = MediaType.parse("application/json;charset=utf-8");
@@ -139,6 +141,8 @@ public class Cart implements Serializable {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
+                // FACCIO LA GET, per prendere il carrello degli altri
+
                 if (response.isSuccessful()) {
                     System.out.println("CART REQUEST get SUCCESSFUL" + response.message());
                     System.out.println("CART REQUEST get SUCCESSFUL" + response.isSuccessful());
@@ -175,22 +179,32 @@ public class Cart implements Serializable {
             }
         });
 
-        List<CartFood> serverCartFoods = getOthersCartFoods(tmpServerCartFoods, userId);
+        // lista del carrello aggiornata dal server
+        List<CartFood> otherServerCartFoods = getOthersCartFoods(tmpServerCartFoods, userId);
 
-        if (!offlineCartFoods.equals(serverCartFoods)) {
+        // se gli altri hanno aggiunto cose, aggiorno il mio carrello
+        if (!othersOfflineCartFoods.equals(otherServerCartFoods)) {
             System.out.println("new cart from server!");
 
             // aggiorna il carrello
-            List<CartFood> newCartFoods = new ArrayList<>(myCartFoods);
-            newCartFoods.addAll(serverCartFoods);
+            List<CartFood> newCartFoods = new ArrayList<>(myOfflineCartFoods);
+            newCartFoods.addAll(otherServerCartFoods);
             setCartFoods(newCartFoods);
-            save();
 
-            // invia la nuova lista di piatti al server
+            result = true;
+        }
+
+        save();
+
+        // se io ho aggiunto cose al carrello, invio la nuova lista di piatti al server
+        List<CartFood> myServerCartFoods = getMyCartFoods(tmpServerCartFoods, userId);
+
+        if (! myOfflineCartFoods.equals(myServerCartFoods)) {
+
             JSONObject dataUp = new JSONObject();
             JSONArray jsonCartFoods = new JSONArray();
             try {
-                for (CartFood cf : newCartFoods) {
+                for (CartFood cf : cartFoods) {
                     JSONObject jsonCartFood = new JSONObject();
 
                     int numId = Integer.valueOf(cf.id);
@@ -209,7 +223,7 @@ public class Cart implements Serializable {
                 }
                 dataUp.put("cart", jsonCartFoods);
             } catch (JSONException e) {
-                Log.d("OKHTTP3","JSON exception");
+                Log.d("OKHTTP3", "JSON exception");
                 e.printStackTrace();
             }
 
@@ -233,12 +247,9 @@ public class Cart implements Serializable {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
-            return true;
-        } else {
-            save();
-            return false;
         }
+
+        return result;
     }
 
     /**
@@ -312,7 +323,8 @@ public class Cart implements Serializable {
                     }
                 }
                 if (! existing) {
-                    oldCartFoods.add(new CartFood(cf.id, cf.name, cf.price, cf.user, cf.quantity, cf.note, 0, cf.shortDescr, cf.longDescr, cf.image));
+                    oldCartFoods.add(new CartFood(cf.id, cf.name, cf.price, cf.user, cf.quantity,
+                            cf.note, 0, cf.shortDescr, cf.longDescr, cf.image));
                 }
             }
         }
@@ -367,6 +379,16 @@ public class Cart implements Serializable {
         List<CartFood> otherCartFoods = new ArrayList<>();
         for (CartFood cf : myCartFoods) {
             if (! cf.user.equals(user)) {
+                otherCartFoods.add(cf.deepCopy());
+            }
+        }
+        return otherCartFoods;
+    }
+
+    public static List<CartFood> getMyCartFoods(List<CartFood> myCartFoods, String user) {
+        List<CartFood> otherCartFoods = new ArrayList<>();
+        for (CartFood cf : myCartFoods) {
+            if (cf.user.equals(user)) {
                 otherCartFoods.add(cf.deepCopy());
             }
         }
