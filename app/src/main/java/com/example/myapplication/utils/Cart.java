@@ -55,7 +55,7 @@ public class Cart implements Serializable {
         userId = preferences.getString("nome", "");
 
         Runnable command = () -> {
-//            System.out.println("tic tac " + System.identityHashCode(this));
+            System.out.println("tic tac " + System.identityHashCode(this));
 
             if (refresh()) {
                 // manda notifica all'interfaccia
@@ -109,6 +109,8 @@ public class Cart implements Serializable {
     }
 
     public boolean refresh() {
+        System.out.println("REFRESHHH!");
+
         load();
         List<CartFood> offlineCartFoods = getOthersCartFoods(cartFoods, userId);
         List<CartFood> myCartFoods = getCartFoods(userId);
@@ -121,10 +123,6 @@ public class Cart implements Serializable {
         MediaType JSON = MediaType.parse("application/json;charset=utf-8");
         String token = preferencesUser.getString("nome", null) + ":" + preferencesUser.getString("password", null);
         String basicBase64format = "Basic " + Base64.getEncoder().encodeToString(token.getBytes());
-        Headers headers = new Headers.Builder()
-                .add("Content-Length", "0")
-                .add(basicBase64format)
-                .build();
 
         SharedPreferences preferencesRest = context.getSharedPreferences("infoRes", MODE_PRIVATE);
         String QREncoded = preferencesRest.getString("QRimage",null);
@@ -140,7 +138,7 @@ public class Cart implements Serializable {
         Request downloadReq = new Request.Builder()
                 .url(GET_URL)
                 .method("GET", bodyDown)
-                .headers(headers)
+                .addHeader("Authorization", basicBase64format)
                 .build();
 
         try {
@@ -225,9 +223,8 @@ public class Cart implements Serializable {
             Request uploadReq = new Request.Builder()
                     .url(POST_URL)
                     .method("POST", bodyUp)
-                    .headers(headers)
+                    .addHeader("Authorization", basicBase64format)
                     .build();
-
             try {
                 Response response = client.newCall(uploadReq).execute();
 
