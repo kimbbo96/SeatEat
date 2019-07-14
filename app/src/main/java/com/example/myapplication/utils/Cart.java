@@ -120,7 +120,8 @@ public class Cart implements Serializable {
         SharedPreferences preferencesUser = context.getSharedPreferences("loginref", MODE_PRIVATE);
 
         // scarica l'ultima lista cartFoods dal server
-        final List<CartFood> tmpServerCartFoods = new ArrayList<>();   // TODO
+        final List<CartFood> tmpServerCartFoods = new ArrayList<>();
+
         OkHttpClient client = new OkHttpClient();
 
         MediaType JSON = MediaType.parse("application/json;charset=utf-8");

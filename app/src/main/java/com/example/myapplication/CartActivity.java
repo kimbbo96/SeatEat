@@ -61,7 +61,7 @@ public class CartActivity extends AppCompatActivity implements NavigationView.On
         if (isCapotavola) {
             fabCart.setOnClickListener(v -> {
                 System.out.println("hai clikkato 'invia ordine'");
-                cart.refresh();
+                new Thread( () -> cart.refresh());
                 cart.newOrder();
                 System.out.println("CARRELLO AGGIORNATO: " + cart);
                 cart.save();
