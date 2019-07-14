@@ -12,9 +12,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.myapplication.utils.Cart;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 
@@ -41,13 +43,84 @@ public class CartActivity extends AppCompatActivity implements NavigationView.On
 //        toggle.syncState();
         navigationView.setNavigationItemSelectedListener(activity);
 
+        String restId = getIntent().getStringExtra("RestId");
         ViewPager viewPager = findViewById(R.id.viewPagerCart);
         TabLayout tabLayout = findViewById(R.id.tabLayoutCart);
         SimplePagerAdapter adapter = new SimplePagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new CartTabYou(activity), "I tuoi ordini");
-        adapter.addFragment(new CartTabAll(activity), "Gli ordini di tutti");
+        CartTabYou cty = new CartTabYou(activity, restId);
+        CartTabAll cta = new CartTabAll(activity, restId);
+        adapter.addFragment(cty, "I tuoi ordini");
+        adapter.addFragment(cta, "Gli ordini di tutti");
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
+
+        SharedPreferences preferences = activity.getSharedPreferences("infoRes", MODE_PRIVATE);
+        boolean isCapotavola = preferences.getBoolean("isCapotavola",false);
+        FloatingActionButton fabCart = activity.findViewById(R.id.fab_cart);
+        FloatingActionButton fabCheckout = activity.findViewById(R.id.fab_checkout);
+        if (isCapotavola) {
+            fabCart.setOnClickListener(v -> {
+                System.out.println("hai clikkato 'invia ordine'");
+                cart.refresh();
+                cart.newOrder();
+                System.out.println("CARRELLO AGGIORNATO: " + cart);
+                cart.save();
+                finish();
+//                Intent intent = new Intent(this, CartActivity.class);
+//                intent.putExtra("Restaurant", rist); // passo l'oggetto ristornate
+//                startActivity(intent);
+            });
+            fabCheckout.setOnClickListener(v -> {
+                System.out.println("hai clikkato 'checkout'");
+
+                Intent intent = new Intent(getApplicationContext(), Checkout.class);
+//            intent.putExtra("Restaurant", rist);
+                startActivity(intent);
+                finish();
+            });
+        } else {
+            fabCart.setEnabled(false);
+            fabCheckout.setEnabled(false);
+        }
+
+//        tabLayout.addOnTabSelectedListener(
+//                new TabLayout.ViewPagerOnTabSelectedListener(viewPager) {
+//                    @Override
+//                    public void onTabSelected(TabLayout.Tab tab) {
+//                        super.onTabSelected(tab);
+//                        int numTab = tab.getPosition();
+//                        if (numTab == 0) {
+//                            cty.showButtons();
+//                        } else if (numTab == 1) {
+//                            cta.showButtons();
+//                        }
+//                        System.out.println("TAB selected " + numTab);
+//                    }
+//
+//                    @Override
+//                    public void onTabUnselected(TabLayout.Tab tab) {
+//                        super.onTabUnselected(tab);
+//                        int numTab = tab.getPosition();
+//                        if (numTab == 0) {
+//                            cta.hideButtons();
+//                        } else if (numTab == 1) {
+//                            cty.hideButtons();
+//                        }
+//                        System.out.println("TAB unselected " + numTab);
+//                    }
+//
+//                    @Override
+//                    public void onTabReselected(TabLayout.Tab tab) {
+//                        super.onTabReselected(tab);
+//                        int numTab = tab.getPosition();
+//                        if (numTab == 0) {
+//                            cty.showButtons();
+//                        } else if (numTab == 1) {
+//                            cta.showButtons();
+//                        }
+//                        System.out.println("TAB reselected " + numTab);
+//                    }
+//                });
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -107,38 +180,38 @@ public class CartActivity extends AppCompatActivity implements NavigationView.On
         return super.onOptionsItemSelected(item);
     }
 
-    class FabCartClickListener implements View.OnClickListener {
-        Cart cart;
-
-        public FabCartClickListener(Cart cart) {
-            this.cart = cart;
-        }
-
-        @Override
-        public void onClick(View view) {
-            System.out.println("hai clikkato 'invia ordine'");
-            cart.refresh();
-            cart.newOrder();
-            System.out.println("CARRELLO AGGIORNATO: " + cart);
-            cart.save();
-            finish();
-//            Intent intent = new Intent(this, CartActivity.class);
-//            intent.putExtra("Restaurant", rist); // passo l'oggetto ristornate
+//    class FabCartClickListener implements View.OnClickListener {
+//        Cart cart;
+//
+//        public FabCartClickListener(Cart cart) {
+//            this.cart = cart;
+//        }
+//
+//        @Override
+//        public void onClick(View view) {
+//            System.out.println("hai clikkato 'invia ordine'");
+//            cart.refresh();
+//            cart.newOrder();
+//            System.out.println("CARRELLO AGGIORNATO: " + cart);
+//            cart.save();
+//            finish();
+////            Intent intent = new Intent(this, CartActivity.class);
+////            intent.putExtra("Restaurant", rist); // passo l'oggetto ristornate
+////            startActivity(intent);
+//        }
+//    }
+//
+//    class FabCheckoutClickListener implements View.OnClickListener {
+//
+//        @Override
+//        public void onClick(View view) {
+//            System.out.println("hai clikkato 'checkout'");
+//
+//            Intent intent = new Intent(getApplicationContext(), Checkout.class);
+////            intent.putExtra("Restaurant", rist);
 //            startActivity(intent);
-        }
-    }
-
-    class FabCheckoutClickListener implements View.OnClickListener {
-
-        @Override
-        public void onClick(View view) {
-            System.out.println("hai clikkato 'checkout'");
-
-            Intent intent = new Intent(getApplicationContext(), Checkout.class);
-//            intent.putExtra("Restaurant", rist);
-            startActivity(intent);
-            finish();
-        }
-    }
+//            finish();
+//        }
+//    }
 
 }

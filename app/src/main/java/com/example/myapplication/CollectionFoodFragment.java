@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,6 +24,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import static android.content.Context.MODE_PRIVATE;
+
 public class CollectionFoodFragment extends Fragment {
     // When requested, this adapter returns a FoodObjectFragment,
     // representing an object in the collection.
@@ -33,11 +36,12 @@ public class CollectionFoodFragment extends Fragment {
     private Map<String, ArrayList<String>> foods = new TreeMap<>();
     private String restID;
     private String userID;
+    private boolean created = false;
 
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent != null && view != null) {
+            if (intent != null && view != null && created) {
                 String content = intent.getStringExtra("content");
                 if (content.equals("new CartUser"))
                     setParticipants(view);
@@ -67,6 +71,7 @@ public class CollectionFoodFragment extends Fragment {
         this.view = view;
         this.demoCollectionPagerAdapter = new FoodCollectionPagerAdapter(getChildFragmentManager(), foods, restID);
         this.viewPager = view.findViewById(R.id.pager_food);
+        this.created = true;
         viewPager.setAdapter(demoCollectionPagerAdapter);
         TabLayout tabLayout = view.findViewById(R.id.tab_layout_food);
         tabLayout.setupWithViewPager(viewPager);
@@ -94,14 +99,21 @@ public class CollectionFoodFragment extends Fragment {
     }
 
     private void setParticipants(View view) {
-        cart.load();
-        String fellowship = cart.getCartUsersNames();
-        System.out.println("FELLOWSHIP COLLECTIONFOODFRAGMENT " + fellowship);
+        SharedPreferences preferencesRest = view.getContext().getSharedPreferences("infoRes", MODE_PRIVATE);
+        String idRestPref = preferencesRest.getString("ID","");
         TextView fellowshipFood = view.findViewById(R.id.fellowship_food);
-        if (fellowship == null) {
-            fellowshipFood.setText("Partecipanti: tu");
+
+        if (restID.equals(idRestPref)) {
+            cart.load();
+            String fellowship = cart.getCartUsersNames();
+            System.out.println("FELLOWSHIP COLLECTIONFOODFRAGMENT " + fellowship);
+            if (fellowship == null) {
+                fellowshipFood.setText("Partecipanti: tu");
+            } else {
+                fellowshipFood.setText("Partecipanti: " + fellowship);
+            }
         } else {
-            fellowshipFood.setText("Partecipanti: " + fellowship);
+            fellowshipFood.setVisibility(View.GONE);
         }
     }
 }

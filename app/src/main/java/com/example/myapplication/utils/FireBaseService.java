@@ -42,7 +42,6 @@ public class FireBaseService extends FirebaseMessagingService {
 
         System.out.println("MESSAGE RECEIVED");
 
-        // TODO(developer): Handle FCM messages here.
         // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
         Log.d(TAG, "From: " + remoteMessage.getFrom());
         System.out.println("collapseKey:"+remoteMessage.getCollapseKey());
@@ -62,7 +61,7 @@ public class FireBaseService extends FirebaseMessagingService {
                 editor.putBoolean("isCapotavola",true);
                 editor.commit();
 
-                SharedPreferences preferencesUser = context.getSharedPreferences("loginref", MODE_PRIVATE);
+                SharedPreferences preferencesUser = getSharedPreferences("loginref", MODE_PRIVATE);
                 String userId = preferencesUser.getString("nome", "");
                 cart.load();
                 cart.addCartUser(userId, true); //utente aggiunto
