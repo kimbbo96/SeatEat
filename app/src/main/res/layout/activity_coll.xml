@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Coll"
-    android:theme="@style/Theme.MaterialComponents" >
+    tools:context=".Coll">
 
     <include
         layout="@layout/app_bar"
@@ -15,7 +14,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fadeScrollbars="false"
+        android:fadeScrollbars="true"
         android:scrollbars="vertical"
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="549dp">
@@ -52,7 +51,7 @@
                 android:text="35€"
                 android:textAlignment="center"
                 android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-                android:textColor="@color/transparentBlack40"
+                android:textColor="@color/transparentBlack60"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/topText" />
@@ -127,7 +126,7 @@
             <TextView
                 android:id="@+id/collText"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="32dp"
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="32dp"
                 android:layout_marginEnd="128dp"
@@ -140,20 +139,79 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/counterPrice" />
 
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/linearLayout_coll"
+                android:layout_width="0dp"
+                android:layout_height="52dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                android:clickable="true"
+                android:descendantFocusability="blocksDescendants"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/collText">
+
+                <TextView
+                    android:id="@+id/myName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="MIONOME"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    android:textColor="@color/transparentBlack40"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <EditText
+                    android:id="@+id/foodNotesDetail"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="128dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="24dp"
+                    android:layout_marginBottom="8dp"
+                    android:autofillHints="Quota"
+                    android:focusable="true"
+                    android:ems="10"
+                    android:fadeScrollbars="false"
+                    android:gravity="start|top"
+                    android:inputType="textMultiLine"
+                    android:nestedScrollingEnabled="true"
+                    android:textColor="@color/transparentBlack60"
+                    android:textColorHighlight="@color/colorAccent"
+                    android:textColorHint="@color/transparentBlack40"
+                    android:theme="@style/EditText"
+                    android:focusableInTouchMode="true"
+                    android:textIsSelectable="true"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/myName"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
             <ListView
                 android:id="@+id/list_view_coll"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="16dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:footerDividersEnabled="true"
+                android:headerDividersEnabled="true"
                 android:nestedScrollingEnabled="false"
-                app:layout_constraintTop_toBottomOf="@id/collText" />
+                android:clickable="false"
+                android:scrollbars="none"
+                app:layout_constraintTop_toBottomOf="@id/linearLayout_coll" />
 
             <TextView
                 android:id="@+id/totalText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="24dp"
                 android:layout_marginEnd="128dp"
                 android:text="Avete raccolto: "
                 android:textAlignment="viewStart"
@@ -167,10 +225,10 @@
             <TextView
                 android:id="@+id/counterTotal"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:layout_gravity="end"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="24dp"
                 android:text="8€"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 android:textColor="@color/transparentBlack60"
@@ -178,6 +236,32 @@
                 app:layout_constraintHorizontal_bias="0.03"
                 app:layout_constraintStart_toEndOf="@id/totalText"
                 app:layout_constraintTop_toBottomOf="@id/list_view_coll" />
+
+            <Button
+                android:id="@+id/cancel_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="64dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginBottom="24dp"
+                android:background="@color/colorAccentLight"
+                android:text="Annulla"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/totalText" />
+
+            <Button
+                android:id="@+id/pay_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="64dp"
+                android:layout_marginBottom="24dp"
+                android:background="@color/colorPrimary"
+                android:text="Paga"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/totalText" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
