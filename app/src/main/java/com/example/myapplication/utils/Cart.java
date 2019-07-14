@@ -156,7 +156,8 @@ public class Cart implements Serializable {
                 JSONArray jsonCart = responsebody.getJSONArray("cart");
                 for (int i = 0 ; i< jsonCart.length(); i++) {          // per ogni FoodCart nel carrello
                     JSONObject jsonCartFood = jsonCart.getJSONObject(i);
-                    String id = jsonCartFood.getString("id");
+                    int numId = jsonCartFood.getInt("id");
+                    String id = String.valueOf(numId);
                     String name = jsonCartFood.getString("name");
                     String user = jsonCartFood.getString("user");
                     String note = jsonCartFood.getString("note");
@@ -198,7 +199,9 @@ public class Cart implements Serializable {
             try {
                 for (CartFood cf : newCartFoods) {
                     JSONObject jsonCartFood = new JSONObject();
-                    jsonCartFood.put("id", cf.id);
+
+                    int numId = Integer.valueOf(cf.id);
+                    jsonCartFood.put("id", numId);
                     jsonCartFood.put("name", cf.name);
                     jsonCartFood.put("user", cf.user);
                     jsonCartFood.put("note", cf.note);
