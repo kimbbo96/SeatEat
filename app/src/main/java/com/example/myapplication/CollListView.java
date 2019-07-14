@@ -47,7 +47,7 @@ public class CollListView extends ArrayAdapter<String> {
 
             userNames[i] = users[i].getName();
             //userShares[i] = users[i].getShare();
-            userShares[i] = 20.0;
+            userShares[i] = users[i].getShare();
         }
 
         this.context = context;

@@ -95,12 +95,10 @@ public class FoodRest extends AppCompatActivity
             fab.setVisibility(View.GONE);
         }
 
-//        DrawerLayout drawer = findViewById(R.id.drawer_layout_food);
+
         NavigationView navigationView = findViewById(R.id.nav_view);
-//        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-//                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-//        drawer.addDrawerListener(toggle);
-//        toggle.syncState();
+//
+
         navigationView.setNavigationItemSelectedListener(this);
 
         ///////////////////////////////////
@@ -168,6 +166,7 @@ public class FoodRest extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
+        System.out.println("akallaalala");
         DrawerLayout drawer = findViewById(R.id.drawer_layout_food);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
@@ -185,6 +184,7 @@ public class FoodRest extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        System.out.println("aaaaaa");
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
@@ -220,6 +220,7 @@ public class FoodRest extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        System.out.println("uauuuu");
 
         if (id == R.id.nav_home) {
             // Handle the camera action

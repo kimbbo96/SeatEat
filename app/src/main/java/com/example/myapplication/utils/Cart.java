@@ -625,7 +625,7 @@ public class Cart implements Serializable {
 //        private String id;
         private String name;
         private boolean isTabletop;
-        private Double share;
+        private Double share = 0.0;
 
         private CartUser(String name, boolean isTabletop) {
 //            this.id = id;

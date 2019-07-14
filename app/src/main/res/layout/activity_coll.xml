@@ -142,7 +142,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/linearLayout_coll"
                 android:layout_width="0dp"
-                android:layout_height="52dp"
+                android:layout_height="60dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
@@ -167,30 +167,31 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <EditText
-                    android:id="@+id/foodNotesDetail"
-                    android:layout_width="0dp"
+                    android:id="@+id/shareEditText"
+                    android:layout_width="120dp"
                     android:layout_height="0dp"
-                    android:layout_marginStart="128dp"
                     android:layout_marginTop="8dp"
-                    android:layout_marginEnd="24dp"
+                    android:layout_marginEnd="8dp"
                     android:layout_marginBottom="8dp"
-                    android:autofillHints="Quota"
-                    android:focusable="true"
+                    android:autofillHints="notes"
                     android:ems="10"
                     android:fadeScrollbars="false"
                     android:gravity="start|top"
-                    android:inputType="textMultiLine"
+                    android:hint="0.00€"
+                    android:inputType="numberDecimal"
                     android:nestedScrollingEnabled="true"
+                    android:textAlignment="textEnd"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
                     android:textColor="@color/transparentBlack60"
                     android:textColorHighlight="@color/colorAccent"
                     android:textColorHint="@color/transparentBlack40"
                     android:theme="@style/EditText"
-                    android:focusableInTouchMode="true"
-                    android:textIsSelectable="true"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/myName"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0"
+                    tools:layout_constraintStart_toEndOf="@id/myName"
+                    tools:ignore="RtlCompat"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -198,20 +199,31 @@
                 android:id="@+id/list_view_coll"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="24dp"
+                android:clickable="false"
                 android:footerDividersEnabled="true"
                 android:headerDividersEnabled="true"
                 android:nestedScrollingEnabled="false"
-                android:clickable="false"
                 android:scrollbars="none"
-                app:layout_constraintTop_toBottomOf="@id/linearLayout_coll" />
+                app:layout_constraintTop_toBottomOf="@id/linearLayout_coll"
+                tools:layout_editor_absoluteX="0dp">
+
+            </ListView>
+
+            <View
+                android:id="@+id/view2"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="24dp"
+                android:background="#c0c0c0"
+                app:layout_constraintTop_toBottomOf="@id/list_view_coll" />
 
             <TextView
                 android:id="@+id/totalText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="48dp"
                 android:layout_marginEnd="128dp"
                 android:text="Avete raccolto: "
                 android:textAlignment="viewStart"
@@ -228,7 +240,7 @@
                 android:layout_height="0dp"
                 android:layout_gravity="end"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="48dp"
                 android:text="8€"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 android:textColor="@color/transparentBlack60"
@@ -242,7 +254,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="64dp"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="64dp"
                 android:layout_marginBottom="24dp"
                 android:background="@color/colorAccentLight"
                 android:text="Annulla"
@@ -254,7 +266,7 @@
                 android:id="@+id/pay_button"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="64dp"
                 android:layout_marginEnd="64dp"
                 android:layout_marginBottom="24dp"
                 android:background="@color/colorPrimary"
