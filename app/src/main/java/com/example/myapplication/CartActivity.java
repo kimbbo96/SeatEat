@@ -79,8 +79,8 @@ public class CartActivity extends AppCompatActivity implements NavigationView.On
                 finish();
             });
         } else {
-            fabCart.setEnabled(false);
-            fabCheckout.setEnabled(false);
+            fabCart.setVisibility(View.GONE);
+            fabCheckout.setVisibility(View.GONE);
         }
 
 //        tabLayout.addOnTabSelectedListener(
