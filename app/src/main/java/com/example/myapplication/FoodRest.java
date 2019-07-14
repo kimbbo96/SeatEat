@@ -83,7 +83,7 @@ public class FoodRest extends AppCompatActivity
 //                    .setAction("Action", null).show();
                 System.out.println("hai clikkato il carrello");
                 Intent intent = new Intent(this, CartActivity.class);
-                intent.putExtra("RestId", rist.getRESTAURANT_ID()); // passo l'oggetto ristornate
+                intent.putExtra("RestId", idRest); // passo l'oggetto ristornate
                 startActivity(intent);
             });
         } else {
