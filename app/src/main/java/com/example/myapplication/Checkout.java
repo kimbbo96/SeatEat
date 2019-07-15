@@ -72,7 +72,7 @@ public class Checkout extends AppCompatActivity {
         TextView counterPeople = findViewById(R.id.counterPeople);
         counterPeople.setText(String.valueOf(people));
 
-        price = cart.getTotal();
+        price = cart.getTotalCheckout();
 
         TextView totalText = findViewById(R.id.priceText);
         System.out.println("totalText: " + totalText);

@@ -133,7 +133,7 @@ public class Coll extends AppCompatActivity {
 //        }
 
         int people = users.size();
-        double price = getIntent().getDoubleExtra("Price", 1);
+        double price = cart.getTotalCheckout();
 
         TextView counterPeople = findViewById(R.id.counterPeople);
         counterPeople.setText(String.valueOf(people));
@@ -174,6 +174,8 @@ public class Coll extends AppCompatActivity {
                 new EditText.OnEditorActionListener() {
                     @Override
                     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                        System.out.println("oneditoractionlistener - id=" + actionId + ", event=" + event);
+
                         if (actionId == EditorInfo.IME_ACTION_SEARCH ||
                                 actionId == EditorInfo.IME_ACTION_DONE ||
                                 event != null &&
