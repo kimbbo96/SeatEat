@@ -105,6 +105,20 @@ public class FireBaseService extends FirebaseMessagingService {
                 LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
                 break;
             }
+
+            case "quota_inviata": {
+                String user = remoteMessage.getData().get("user");
+                double quantity = Double.valueOf(remoteMessage.getData().get("quantita"));
+
+                cart.load();
+                cart.setShare(user, quantity);
+                cart.save();
+
+                Intent intent = new Intent("new_share");
+                intent.putExtra("content", "new Share");
+                LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
+                break;
+            }
         }
 
         // Check if message contains a data payload.

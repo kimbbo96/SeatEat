@@ -480,6 +480,23 @@ public class Cart implements Serializable {
         return res.isEmpty() ? null : res.substring(0, res.length()-2);
     }
 
+    public double getShare(String user) {
+        for (CartUser cu : cartUsers) {
+            if (cu.name.equals(user)) {
+                return cu.share;
+            }
+        }
+        return -1;
+    }
+
+    public void setShare(String user, double share) {
+        for (CartUser cu : cartUsers) {
+            if (cu.name.equals(user)) {
+                cu.setShare(share);
+            }
+        }
+    }
+
     @Override
     public String toString() {
         return "Cart{" +

@@ -42,12 +42,14 @@ public class CollListView extends ArrayAdapter<String> {
         String[] userNames = new String[users.length];
         Double[] userShares = new Double[users.length];
 
+        Cart cart = new Cart(context);
+        cart.load();
+
         for (int i = 0; i < users.length; i++) {
             System.out.println(users[i]);
 
             userNames[i] = users[i].getName();
-            //userShares[i] = users[i].getShare();
-            userShares[i] = users[i].getShare();
+            userShares[i] = cart.getShare(users[i].getName());
         }
 
         this.context = context;
