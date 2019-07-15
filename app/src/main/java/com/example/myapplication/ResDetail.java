@@ -289,7 +289,7 @@ public class ResDetail extends AppCompatActivity  implements NavigationView.OnNa
             });
 
         }
-        else if (!ResID.equals(rist.getRESTAURANT_ID()) && !ResID.equals("")){ // associato con un altro ristorante
+        else if (!isCapotavola && !ResID.equals("")){ // associato con un altro ristorante
             cameraimg.setVisibility(View.GONE);
             cameraInfo.setVisibility(View.GONE);
             qrImg.setImageResource(R.drawable.noqr);
