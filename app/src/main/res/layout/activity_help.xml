@@ -203,7 +203,7 @@
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="24dp"
                     android:layout_marginBottom="2dp"
-                    android:text="Se non sei il capotavola, per partecipare all'ordine scannerizza il suo codice QR"
+                    android:text="Se non sei il capotavola, per partecipare all'ordine scannerizzando il suo codice QR"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     app:layout_constraintBottom_toTopOf="@id/des4"
                     app:layout_constraintEnd_toEndOf="parent"

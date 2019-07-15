@@ -6,9 +6,13 @@ import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -41,6 +45,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
@@ -104,7 +110,57 @@ public class Coll extends AppCompatActivity {
         TextView nameText = findViewById(R.id.myName);
         nameText.setText("Quanto vuoi versare?");
 
-        EditText myShareEditText = findViewById(R.id.shareEditText);
+        EditText editText = (EditText) findViewById(R.id.shareEditText);
+        /*editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s != null && s.length() > 0) {
+                    myShare = Double.parseDouble(s.toString());
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });*/
+
+        totalShares += myShare;
+
+        editText.setOnEditorActionListener(
+                new EditText.OnEditorActionListener() {
+                    @Override
+                    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                        if (actionId == EditorInfo.IME_ACTION_SEARCH ||
+                                actionId == EditorInfo.IME_ACTION_DONE ||
+                                event != null &&
+                                        event.getAction() == KeyEvent.ACTION_DOWN &&
+                                        event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+                            if (event == null || !event.isShiftPressed()) {
+                                // the user is done typing.
+
+                                totalShares -= myShare;
+
+                                myShare = Double.parseDouble(editText.getText().toString());
+
+                                System.out.println("MY NEW SHARE IS "+myShare);
+
+                                totalShares += myShare;
+
+                                return true; // consume.
+                            }
+                        }
+                        return false; // pass on to other listeners.
+                    }
+                }
+        );
+
+
+
 
         users.clear();
 
@@ -152,11 +208,11 @@ public class Coll extends AppCompatActivity {
                     Response response = cl.newCall(uploadReq).execute();
 
                     if (response.isSuccessful()) {
-                        System.out.println("CART REQUEST post SUCCESSFUL" + response.message());
-                        System.out.println("CART REQUEST post SUCCESSFUL" + response.isSuccessful());
+                        System.out.println("COLLETTA REQUEST post SUCCESSFUL" + response.message());
+                        System.out.println("COLLETTA REQUEST post SUCCESSFUL" + response.isSuccessful());
                     } else {
-                        System.out.println("CART REQUEST post UNSUCCESSFUL" + response.message());
-                        System.out.println("CART REQUEST post UNSUCCESSFUL" + response.isSuccessful());
+                        System.out.println("COLLETTA REQUEST post UNSUCCESSFUL" + response.message());
+                        System.out.println("COLLETTA REQUEST post UNSUCCESSFUL" + response.isSuccessful());
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -168,7 +224,7 @@ public class Coll extends AppCompatActivity {
         }
 
         for (Cart.CartUser u : users) {
-            u.setShare(10.0);
+            u.setShare(10.0); //dovremmo mettere quanto ricevuto dalla notifica
 
             totalShares += u.getShare();
         }
@@ -196,7 +252,6 @@ public class Coll extends AppCompatActivity {
                 startActivity(intent);*/
             }
         });
-
 
         //costruisci CollListView
         fillList(activity, users);
