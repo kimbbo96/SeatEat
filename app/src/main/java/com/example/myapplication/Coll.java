@@ -118,7 +118,21 @@ public class Coll extends AppCompatActivity {
         cart.load();
         myShare = cart.getShare(userName);
 
-        int people = getIntent().getIntExtra("People", 1);
+        users.clear();
+
+        // riempi lista users
+
+        users.addAll(cart.getCartUsers());
+
+        System.out.println("CART USERS: "+cart.getCartUsersNames());
+
+//        for (Cart.CartUser u : users) {
+//            u.setShare(10.0); //dovremmo mettere quanto ricevuto dalla notifica
+//
+//            totalShares += u.getShare();
+//        }
+
+        int people = users.size();
         double price = getIntent().getDoubleExtra("Price", 1);
 
         TextView counterPeople = findViewById(R.id.counterPeople);
@@ -232,22 +246,6 @@ public class Coll extends AppCompatActivity {
                     }
                 }
         );
-
-        users.clear();
-
-        // riempi lista users
-
-        users.addAll(cart.getCartUsers());
-
-        System.out.println("CART USERS: "+cart.getCartUsersNames());
-
-        ProgressBar progressBarResList = findViewById(R.id.progressBarResList);
-
-//        for (Cart.CartUser u : users) {
-//            u.setShare(10.0); //dovremmo mettere quanto ricevuto dalla notifica
-//
-//            totalShares += u.getShare();
-//        }
 
         TextView totalObtained = findViewById(R.id.counterTotal);
         totalObtained.setText(totalShares+"€ su "+price+"€");
