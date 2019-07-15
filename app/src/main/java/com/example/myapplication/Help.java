@@ -7,14 +7,25 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestBuilder;
+import com.bumptech.glide.signature.ObjectKey;
 import com.example.myapplication.utils.Utils;
 import com.google.android.material.navigation.NavigationView;
 
 public class Help extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    SharedPreferences preferences;
+    String urlBase = "https://seateat-be.herokuapp.com";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +54,27 @@ public class Help extends AppCompatActivity
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        preferences = getSharedPreferences("loginref", MODE_PRIVATE);
+        TextView name_tab = findViewById(R.id.usr_name_tab);
+        name_tab.setText( preferences.getString("nome", null));
+
+        ImageView profile_image = findViewById(R.id.profile_image);
+        System.out.println(urlBase+preferences.getString("immagine",null));
+        RequestBuilder<Drawable> error = Glide.with(this).load(R.drawable.no_internet);
+        Glide.with(this).load(urlBase+"/"+preferences.getString("immagine",null)).error(error)
+                .signature(new ObjectKey(String.valueOf(System.currentTimeMillis())))
+                .fitCenter().into(profile_image);
+
+
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_rest, menu);
+        return true;
     }
 
     @Override

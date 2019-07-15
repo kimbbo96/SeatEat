@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
 import com.example.myapplication.utils.Cart;
+import com.example.myapplication.utils.Utils;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
@@ -219,30 +220,7 @@ public class FoodRest extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
-        int id = item.getItemId();
-        System.out.println("uauuuu");
-
-        if (id == R.id.nav_home) {
-            // Handle the camera action
-
-        }  else if (id == R.id.nav_help) {
-            Intent intent = new Intent(getApplicationContext(), Help.class);
-            startActivity(intent);
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
-        }
-
-        else if (id == R.id.nav_settings){
-            Intent intent = new Intent(getApplicationContext(), Settings.class);
-            startActivity(intent);
-
-        }
-
-        DrawerLayout drawer = findViewById(R.id.drawer_layout_food);
-        drawer.closeDrawer(GravityCompat.START);
+        Utils.gestisciMenu(item,this,findViewById(R.id.drawer_layout_food));
         return true;
     }
 }
