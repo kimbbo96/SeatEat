@@ -105,7 +105,7 @@ public class Coll extends AppCompatActivity {
         created = true;
 
         LocalBroadcastManager lbm = LocalBroadcastManager.getInstance(activity);
-        lbm.registerReceiver(receiverShare, new IntentFilter("add_user"));
+        lbm.registerReceiver(receiverShare, new IntentFilter("new_share"));
 
         SharedPreferences preferences = activity.getSharedPreferences("infoRes", MODE_PRIVATE);
         SharedPreferences preferencesLogin = activity.getSharedPreferences("loginref", MODE_PRIVATE);
