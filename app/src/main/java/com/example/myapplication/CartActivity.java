@@ -40,7 +40,6 @@ public class CartActivity extends AppCompatActivity implements NavigationView.On
     Cart cart;
     CartActivity activity;
     private final String POST_URL = "https://seateat-be.herokuapp.com/api/sendOrder";
-    SharedPreferences preferencesLogin = activity.getSharedPreferences("loginref", MODE_PRIVATE);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +75,8 @@ public class CartActivity extends AppCompatActivity implements NavigationView.On
         boolean isCapotavola = preferences.getBoolean("isCapotavola",false);
         FloatingActionButton fabCart = activity.findViewById(R.id.fab_cart);
         FloatingActionButton fabCheckout = activity.findViewById(R.id.fab_checkout);
+        SharedPreferences preferencesLogin = activity.getSharedPreferences("loginref", MODE_PRIVATE);
+
         if (isCapotavola) {
             fabCart.setOnClickListener(v -> {
                 System.out.println("hai clikkato 'invia ordine'");
