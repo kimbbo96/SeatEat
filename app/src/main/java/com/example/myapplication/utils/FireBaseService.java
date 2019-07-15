@@ -11,6 +11,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import com.example.myapplication.CartActivity;
 import com.example.myapplication.Coll;
 import com.example.myapplication.FoodRest;
+import com.example.myapplication.MenuRest;
 import com.example.myapplication.R;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -128,6 +129,24 @@ public class FireBaseService extends FirebaseMessagingService {
                 cart.shutDown();
 
                 Intent intent = new Intent(context, Coll.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
+                break;
+            }
+
+            case "triggerfatto": {
+                System.out.println("TRIGGER FATTO");
+
+                Intent intent = new Intent(context, MenuRest.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
+                break;
+            }
+
+            case "triggerannulla": {
+                System.out.println("TRIGGER ANNULLA");
+
+                Intent intent = new Intent(context, CartActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
                 break;

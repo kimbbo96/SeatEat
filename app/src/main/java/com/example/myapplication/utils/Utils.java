@@ -151,4 +151,13 @@ public class Utils {
 
     }
 
+    public static void cleanResPreferences(Context context) {
+        SharedPreferences preferences = context.getSharedPreferences("infoRes", MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("QRimage",null);
+        editor.putBoolean("isCapotavola",false);
+        editor.putString("ID", "");
+        editor.commit();
+    }
+
 }

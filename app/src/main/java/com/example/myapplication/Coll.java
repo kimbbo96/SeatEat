@@ -75,10 +75,7 @@ public class Coll extends AppCompatActivity {
     boolean created = false;
 
     double myShare = 0;
-    double totalShares = 0;
     double price;
-
-    String urlBase = "https://seateat-be.herokuapp.com";
 
     private final String POST_URL = "https://seateat-be.herokuapp.com/api/colletta";    // post autenticazione nell'header con cart nel body
     private final String PAY_URL = "https://seateat-be.herokuapp.com/api/triggerfatto";
@@ -129,11 +126,6 @@ public class Coll extends AppCompatActivity {
 
         System.out.println("CART USERS: "+cart.getCartUsersNames());
 
-//        for (Cart.CartUser u : users) {
-//            u.setShare(10.0); //dovremmo mettere quanto ricevuto dalla notifica
-//
-//            totalShares += u.getShare();
-//        }
 
         int people = users.size();
         price = cart.getTotalCheckout();
@@ -153,25 +145,6 @@ public class Coll extends AppCompatActivity {
         nameText.setText("Quanto vuoi versare?");
 
         EditText editText = (EditText) findViewById(R.id.shareEditText);
-        /*editText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s != null && s.length() > 0) {
-                    myShare = Double.parseDouble(s.toString());
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });*/
-
-//        totalShares += myShare;
 
         editText.setOnEditorActionListener(
                 new EditText.OnEditorActionListener() {
@@ -190,19 +163,15 @@ public class Coll extends AppCompatActivity {
                                 InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
                                 imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
 
-//                                totalShares -= myShare;
-
                                 myShare = Double.parseDouble(editText.getText().toString());
 
                                 System.out.println("MY NEW SHARE IS "+myShare);
-
 
                                 // aggiorna myShare nel carrello
                                 cart.load();
                                 cart.setShare(userName, myShare);
                                 cart.save();
 
-//                                totalShares += myShare;
                                 fillTotal();
 
                                 new Thread(() -> {
@@ -255,58 +224,73 @@ public class Coll extends AppCompatActivity {
         fillTotal();
 
         Button cancelButton = findViewById(R.id.cancel_button);
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                System.out.println("hai clikkato ANNULLA");
-                /*Intent intent = new Intent(ResDetail.this,FoodRest.class);
-                intent.putExtra("Restaurant",rist); // passo l'oggetto ristornate
-                startActivity(intent);*/
-            }
-        });
-
-
         Button payButton = findViewById(R.id.pay_button);
-        payButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                System.out.println("hai clikkato PAGA");
-                /*Intent intent = new Intent(ResDetail.this,FoodRest.class);
-                intent.putExtra("Restaurant",rist); // passo l'oggetto ristornate
-                startActivity(intent);*/
+        double total = cart.getTotalShares();
+        if (total < price) {
+            payButton.setEnabled(false);
+            payButton.setBackgroundColor(getColor(R.color.grey));
+            payButton.setElevation(0);
+        } else {
+            payButton.setEnabled(false);
+            payButton.setBackgroundColor(getColor(R.color.colorPrimary));
+            payButton.setElevation(2);
+        }
+
+        if (isCapotavola) {
+
+            cancelButton.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    System.out.println("hai clikkato ANNULLA");
+
+                    Intent intent = new Intent(activity, CartActivity.class);
+                    startActivity(intent);
+                }
+            });
 
 
+            payButton.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    System.out.println("hai clikkato PAGA");
 
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        OkHttpClient client = new OkHttpClient();
-                        String token = preferencesLogin.getString("nome", null) + ":" + preferencesLogin.getString("password", null);
-                        String basicBase64format = "Basic " + Base64.getEncoder().encodeToString(token.getBytes());
+                    Intent intent = new Intent(activity, MenuRest.class);
+                    startActivity(intent);
 
-                        Request.Builder builder = new Request.Builder();
-                        builder.url(PAY_URL);
-                        builder.addHeader("Authorization", basicBase64format);
-                        Request downloadReq = builder.build();
+                    // pulisci carrello e preferenze
+                    cart.clear();
+                    Utils.cleanResPreferences(activity);
 
-                        client.newCall(downloadReq).enqueue(new Callback() {
-                            @Override
-                            public void onFailure(Call call, IOException e) {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            OkHttpClient client = new OkHttpClient();
+                            String token = preferencesLogin.getString("nome", null) + ":" + preferencesLogin.getString("password", null);
+                            String basicBase64format = "Basic " + Base64.getEncoder().encodeToString(token.getBytes());
 
-                                System.err.println("errore invio al server");
-                            }
+                            Request.Builder builder = new Request.Builder();
+                            builder.url(PAY_URL);
+                            builder.addHeader("Authorization", basicBase64format);
+                            Request downloadReq = builder.build();
 
-                            @Override
-                            public void onResponse(Call call, Response response) throws IOException {
-                                System.out.println("trigger del bottone paga inviato con successo");
-                            }
-                        });
-                    }
-                }).start();
+                            client.newCall(downloadReq).enqueue(new Callback() {
+                                @Override
+                                public void onFailure(Call call, IOException e) {
 
+                                    System.err.println("errore invio al server");
+                                }
 
-
-
-            }
-        });
+                                @Override
+                                public void onResponse(Call call, Response response) throws IOException {
+                                    System.out.println("trigger del bottone paga inviato con successo");
+                                }
+                            });
+                        }
+                    }).start();
+                }
+            });
+        } else {
+            cancelButton.setVisibility(View.GONE);
+            payButton.setVisibility(View.GONE);
+        }
 
         //costruisci CollListView
         fillList(activity);
@@ -346,6 +330,17 @@ public class Coll extends AppCompatActivity {
         System.out.println("fill total: " + total);
         TextView totalObtained = findViewById(R.id.counterTotal);
         totalObtained.setText(total + "€ su " + price + "€");
+
+        Button payButton = findViewById(R.id.pay_button);
+        if (total < price) {
+            payButton.setEnabled(false);
+            payButton.setBackgroundColor(getColor(R.color.grey));
+            payButton.setElevation(0);
+        } else {
+            payButton.setEnabled(false);
+            payButton.setBackgroundColor(getColor(R.color.colorPrimary));
+            payButton.setElevation(2);
+        }
     }
 
     @Override
