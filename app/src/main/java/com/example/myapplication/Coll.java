@@ -1,7 +1,10 @@
 package com.example.myapplication;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -28,6 +31,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomViewTarget;
@@ -62,8 +66,11 @@ import okio.BufferedSink;
 
 
 public class Coll extends AppCompatActivity {
-    private String path_base = "https://seateat-be.herokuapp.com/resources/menus/";
+
     Cart cart;
+    Activity activity;
+    boolean created = false;
+
     // path_base + "/resources/menus/" + restId + "/" + foodImage[position]))
 
     double myShare = 0;
@@ -72,26 +79,44 @@ public class Coll extends AppCompatActivity {
 
     String urlBase = "https://seateat-be.herokuapp.com";
 
-    private final String POST_URL = "https://seateat-be.herokuapp.com/api/pushcart";    // post autenticazione nell'header con cart nel body
+    private final String POST_URL = "https://seateat-be.herokuapp.com/api/colletta";    // post autenticazione nell'header con cart nel body
 
     static List<Cart.CartUser> users = new ArrayList<>();
 
+    private BroadcastReceiver receiverShare = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent != null && created) {
+                String content = intent.getStringExtra("content");
+                if (content.equals("new CartUser")) {
+                    fillList(activity, users);
+                }
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        activity = this;
+        created = true;
 
-        cart = new Cart(this);
+        LocalBroadcastManager lbm = LocalBroadcastManager.getInstance(activity);
+        lbm.registerReceiver(receiverShare, new IntentFilter("add_user"));
+
+        SharedPreferences preferences = activity.getSharedPreferences("infoRes", MODE_PRIVATE);
+        SharedPreferences preferencesLogin = activity.getSharedPreferences("loginref", MODE_PRIVATE);
+        boolean isCapotavola = preferences.getBoolean("isCapotavola",false);
+        String userName = preferencesLogin.getString("nome", "");
 
         setContentView(R.layout.activity_coll);
         Toolbar toolbar = findViewById(R.id.tool_bar_simple);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        // TODO manage cart
-        Activity activity = this;
-
+        cart = new Cart(activity);
         cart.load();
+        myShare = cart.getShare(userName);
 
         int people = getIntent().getIntExtra("People", 1);
         double price = getIntent().getDoubleExtra("Price", 1);
@@ -151,6 +176,55 @@ public class Coll extends AppCompatActivity {
 
                                 totalShares += myShare;
 
+                                // aggiorna myShare nel carrello
+                                cart.load();
+                                cart.setShare(userName, myShare);
+                                cart.save();
+
+                                if (isCapotavola) {
+
+                                    new Thread(() -> {
+
+                                        OkHttpClient cl = new OkHttpClient(); // inizio la procedura di get
+                                        TextView errorMsg = findViewById(R.id.errorMessage);
+                                        String url = urlBase + "/api/colletta";
+
+                                        MediaType JSON = MediaType.parse("application/json;charset=utf-8");
+                                        String credenziali = preferencesLogin.getString("nome", null) + ":" + preferencesLogin.getString("password", null);
+                                        String BasicBase64format = "Basic " + Base64.getEncoder().encodeToString(credenziali.getBytes());
+
+                                        JSONObject colletta = new JSONObject();
+                                        try {
+                                            colletta.put("quantita", myShare);
+                                        } catch (JSONException e) {
+                                            Log.d("OKHTTP3", "JSON exception");
+                                            e.printStackTrace();
+                                        }
+
+                                        RequestBody bodyUp = RequestBody.create(JSON, colletta.toString());
+
+                                        Request uploadReq = new Request.Builder()
+                                                .url(POST_URL)
+                                                .post(bodyUp)
+                                                .addHeader("Authorization", BasicBase64format)
+                                                .build();
+                                        try {
+                                            Response response = cl.newCall(uploadReq).execute();
+
+                                            if (response.isSuccessful()) {
+                                                System.out.println("COLLETTA REQUEST post SUCCESSFUL" + response.message());
+                                                System.out.println("COLLETTA REQUEST post SUCCESSFUL" + response.isSuccessful());
+                                            } else {
+                                                System.out.println("COLLETTA REQUEST post UNSUCCESSFUL" + response.message());
+                                                System.out.println("COLLETTA REQUEST post UNSUCCESSFUL" + response.isSuccessful());
+                                            }
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
+
+                                    }).start();
+                                }
+
                                 return true; // consume.
                             }
                         }
@@ -159,12 +233,9 @@ public class Coll extends AppCompatActivity {
                 }
         );
 
-
-
-
         users.clear();
 
-        //TODO riempi lista users
+        // riempi lista users
 
         users.addAll(cart.getCartUsers());
 
@@ -172,62 +243,11 @@ public class Coll extends AppCompatActivity {
 
         ProgressBar progressBarResList = findViewById(R.id.progressBarResList);
 
-        SharedPreferences preferences = activity.getSharedPreferences("infoRes", MODE_PRIVATE);
-        Boolean isCapotavola = preferences.getBoolean("isCapotavola",false);
-
-        if (isCapotavola) {
-
-            new Thread(()->{
-
-                OkHttpClient cl = new OkHttpClient(); // inizio la procedura di get
-                TextView errorMsg = findViewById(R.id.errorMessage);
-                String url = urlBase+"/api/colletta";
-                Request request = new Request.Builder().url(url).build();
-
-                MediaType JSON = MediaType.parse("application/json;charset=utf-8");
-                String token = preferences.getString("nome", null) + ":" + preferences.getString("password", null);
-                String credenziali = preferences.getString("nome", null) + ":" + preferences.getString("password", null);
-                String BasicBase64format = "Basic " + Base64.getEncoder().encodeToString(credenziali.getBytes());
-
-                JSONObject colletta = new JSONObject();
-                try {
-                    colletta.put("quantita", 10);
-                } catch (JSONException e) {
-                    Log.d("OKHTTP3", "JSON exception");
-                    e.printStackTrace();
-                }
-
-                RequestBody bodyUp = RequestBody.create(JSON, colletta.toString());
-
-                Request uploadReq = new Request.Builder()
-                        .url(POST_URL)
-                        .post(bodyUp)
-                        .addHeader("Authorization", BasicBase64format)
-                        .build();
-                try {
-                    Response response = cl.newCall(uploadReq).execute();
-
-                    if (response.isSuccessful()) {
-                        System.out.println("COLLETTA REQUEST post SUCCESSFUL" + response.message());
-                        System.out.println("COLLETTA REQUEST post SUCCESSFUL" + response.isSuccessful());
-                    } else {
-                        System.out.println("COLLETTA REQUEST post UNSUCCESSFUL" + response.message());
-                        System.out.println("COLLETTA REQUEST post UNSUCCESSFUL" + response.isSuccessful());
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-            }).start();
-
-
-        }
-
-        for (Cart.CartUser u : users) {
-            u.setShare(10.0); //dovremmo mettere quanto ricevuto dalla notifica
-
-            totalShares += u.getShare();
-        }
+//        for (Cart.CartUser u : users) {
+//            u.setShare(10.0); //dovremmo mettere quanto ricevuto dalla notifica
+//
+//            totalShares += u.getShare();
+//        }
 
         TextView totalObtained = findViewById(R.id.counterTotal);
         totalObtained.setText(totalShares+"€ su "+price+"€");
@@ -298,4 +318,11 @@ public class Coll extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        fillList(activity, users);
+    }
+
 }
