@@ -71,7 +71,7 @@ public class Cart implements Serializable {
 
         if (timer == null || timer.isShutdown() || timer.isTerminated() || timer.isTerminating()) {
             timer = new ScheduledThreadPoolExecutor(1);
-            timer.scheduleAtFixedRate(command, 2, 2, TimeUnit.SECONDS);
+            timer.scheduleAtFixedRate(command, 2, 10, TimeUnit.SECONDS);
         }
     }
 
@@ -117,6 +117,7 @@ public class Cart implements Serializable {
         boolean result = false;
 
         load();
+        System.out.println("REFRESH carrello locale: " + cartFoods);
         List<CartFood> othersOfflineCartFoods = getOthersCartFoods(cartFoods, userId);
         List<CartFood> myOfflineCartFoods = new ArrayList<>(getCartFoods(userId));
         SharedPreferences preferencesUser = context.getSharedPreferences("loginref", MODE_PRIVATE);
@@ -125,7 +126,6 @@ public class Cart implements Serializable {
         final List<CartFood> tmpServerCartFoods = new ArrayList<>();
 
         OkHttpClient client = new OkHttpClient();
-
         MediaType JSON = MediaType.parse("application/json;charset=utf-8");
         String token = preferencesUser.getString("nome", null) + ":" + preferencesUser.getString("password", null);
         String basicBase64format = "Basic " + Base64.getEncoder().encodeToString(token.getBytes());
@@ -146,12 +146,12 @@ public class Cart implements Serializable {
                 // FACCIO LA GET, per prendere il carrello degli altri
 
                 if (response.isSuccessful()) {
-                    System.out.println("CART REQUEST get SUCCESSFUL" + response.message());
-                    System.out.println("CART REQUEST get SUCCESSFUL" + response.isSuccessful());
+                    System.out.println("CART REQUEST get SUCCESSFUL " + response.message());
+                    System.out.println("CART REQUEST get SUCCESSFUL " + response.isSuccessful());
 
                     try {
                         JSONObject responsebody = new JSONObject(response.body().string());
-                        System.out.println("CART REQUEST json SUCCESSFUL\n" + responsebody.toString());
+                        System.out.println("REFRESH carrello server (GET): " + responsebody.toString());
 
                         JSONArray jsonCart = responsebody.getJSONArray("cart");
                         for (int i = 0; i < jsonCart.length(); i++) {          // per ogni FoodCart nel carrello
@@ -182,21 +182,24 @@ public class Cart implements Serializable {
         });
 
         // lista del carrello aggiornata dal server
+        System.out.println("REFRESH carrello server (convertita): " + tmpServerCartFoods);
         List<CartFood> otherServerCartFoods = getOthersCartFoods(tmpServerCartFoods, userId);
 
         // se gli altri hanno aggiunto cose, aggiorno il mio carrello
-        if (!othersOfflineCartFoods.equals(otherServerCartFoods)) {
+        if (! othersOfflineCartFoods.equals(otherServerCartFoods)) {
             System.out.println("new cart from server!");
 
             // aggiorna il carrello
             List<CartFood> newCartFoods = new ArrayList<>(myOfflineCartFoods);
             newCartFoods.addAll(otherServerCartFoods);
             setCartFoods(newCartFoods);
+            save();
+
+            System.out.println("REFRESH carrello aggiornato: " + cartFoods);
 
             result = true;
         }
 
-        save();
 
         // se io ho aggiunto cose al carrello, invio la nuova lista di piatti al server (POST)
         List<CartFood> myServerCartFoods = getMyCartFoods(tmpServerCartFoods, userId);
@@ -599,7 +602,7 @@ public class Cart implements Serializable {
 
         @Override
         public boolean equals(Object o) {
-            if (this == o) return true;
+            if (this == o) return true;  // TODO check
             if (o == null || getClass() != o.getClass()) return false;
             CartFood cartFood = (CartFood) o;
             return Double.compare(cartFood.price, price) == 0 &&
