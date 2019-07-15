@@ -89,7 +89,8 @@ public class Coll extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             if (intent != null && created) {
                 String content = intent.getStringExtra("content");
-                if (content.equals("new CartUser")) {
+                System.out.println(content + " ALL");
+                if (content.equals("new Share")) {
                     fillList(activity);
                 }
             }
@@ -278,6 +279,8 @@ public class Coll extends AppCompatActivity {
     }
 
     private void fillList(Activity activity) {
+        System.out.println("FILL LIST COLL");
+
         cart.load();
         List<Cart.CartUser> users = cart.getCartUsers();
 

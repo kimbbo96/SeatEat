@@ -113,7 +113,7 @@ public class CollectionFoodFragment extends Fragment {
                 fellowshipFood.setText("Partecipanti: " + fellowship);
             }
         } else {
-            fellowshipFood.setVisibility(View.GONE);
+            fellowshipFood.setVisibility(View.INVISIBLE);
         }
     }
 }

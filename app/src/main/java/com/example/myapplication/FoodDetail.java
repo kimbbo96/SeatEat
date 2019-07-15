@@ -88,7 +88,6 @@ public class FoodDetail extends AppCompatActivity {
             protected void onResourceCleared(@Nullable Drawable placeholder) {}
         });
 
-        // TODO manage cart
         SharedPreferences preferences = activity.getSharedPreferences("loginref", MODE_PRIVATE);
         String userId = preferences.getString("nome", "");
         int[] counter = {quantity};
