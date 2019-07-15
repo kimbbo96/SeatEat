@@ -1,22 +1,30 @@
 package com.example.myapplication;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
-public class Help extends AppCompatActivity {
+import com.example.myapplication.utils.Utils;
+import com.google.android.material.navigation.NavigationView;
+
+public class Help extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_help);
-        Toolbar toolbar = findViewById(R.id.include);
+        Toolbar toolbar = findViewById(R.id.tool_bar_simple);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
     }
 
     @Override
@@ -37,4 +45,10 @@ public class Help extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        // Handle navigation view item clicks here.
+        Utils.gestisciMenu(item,this,findViewById(R.id.drawer_layout_help));
+        return true;
+    }
 }

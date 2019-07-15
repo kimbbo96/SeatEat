@@ -3,11 +3,21 @@ package com.example.myapplication.utils;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+
+import com.example.myapplication.Help;
+import com.example.myapplication.MenuRest;
+import com.example.myapplication.R;
+import com.example.myapplication.Settings;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -94,4 +104,40 @@ public class Utils {
         dishes.computeIfAbsent("contorno", k -> new ArrayList<>()).add("pomodori");
         System.out.println(dishes);
     }
+
+    public static void gestisciMenu (MenuItem item, Context context, DrawerLayout drawerLayout){
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+        String contextName = context.getClass().getName().split("\\.")
+                [context.getClass().toString().split("\\.").length-1];
+
+        if (id == R.id.nav_home && !contextName.equals("MenuRest")) {
+            Intent intent = new Intent(context, MenuRest.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
+
+        }  else if (id == R.id.nav_help && !contextName.equals("Help")) {
+            Intent intent = new Intent(context, Help.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
+
+        } else if (id == R.id.nav_share && !contextName.equals("Share")) {
+
+        } else if (id == R.id.nav_send && !contextName.equals("Send")) {
+
+        }
+
+        else if (id == R.id.nav_settings && !contextName.equals("Settings")){
+
+
+            Intent intent = new Intent(context, Settings.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
+
+        }
+        drawerLayout.closeDrawer(GravityCompat.START);
+
+
+    }
+
 }

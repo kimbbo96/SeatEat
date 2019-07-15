@@ -9,6 +9,7 @@ import android.os.Bundle;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.signature.ObjectKey;
+import com.example.myapplication.utils.Utils;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -229,30 +230,7 @@ public class MenuRest extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        if (id == R.id.nav_home) {
-            // Handle the camera action
-
-        }  else if (id == R.id.nav_help) {
-            Intent intent = new Intent(getApplicationContext(), Help.class);
-            startActivity(intent);
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
-        }
-
-        else if (id == R.id.nav_settings){
-            Intent intent = new Intent(getApplicationContext(), Settings.class);
-            startActivity(intent);
-
-        }
-
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
+        Utils.gestisciMenu(item,this,findViewById(R.id.drawer_layout));
         return true;
     }
 }
