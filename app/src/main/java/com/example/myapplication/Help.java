@@ -71,9 +71,6 @@ public class Help extends AppCompatActivity
                 .signature(new ObjectKey(String.valueOf(System.currentTimeMillis())))
                 .fitCenter().into(profile_image);
 
-
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_rest, menu);
         return true;
     }
 

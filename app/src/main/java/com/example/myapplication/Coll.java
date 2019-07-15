@@ -16,6 +16,7 @@ import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -184,6 +185,9 @@ public class Coll extends AppCompatActivity {
                             if (event == null || !event.isShiftPressed()) {
                                 // the user is done typing.
 
+                                InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+                                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+
                                 totalShares -= myShare;
 
                                 myShare = Double.parseDouble(editText.getText().toString());
@@ -197,49 +201,44 @@ public class Coll extends AppCompatActivity {
                                 cart.setShare(userName, myShare);
                                 cart.save();
 
-                                if (isCapotavola) {
+                                new Thread(() -> {
 
-                                    new Thread(() -> {
+                                    OkHttpClient cl = new OkHttpClient(); // inizio la procedura di get
 
-                                        OkHttpClient cl = new OkHttpClient(); // inizio la procedura di get
-                                        TextView errorMsg = findViewById(R.id.errorMessage);
-                                        String url = urlBase + "/api/colletta";
+                                    MediaType JSON = MediaType.parse("application/json;charset=utf-8");
+                                    String credenziali = preferencesLogin.getString("nome", null) + ":" + preferencesLogin.getString("password", null);
+                                    String BasicBase64format = "Basic " + Base64.getEncoder().encodeToString(credenziali.getBytes());
 
-                                        MediaType JSON = MediaType.parse("application/json;charset=utf-8");
-                                        String credenziali = preferencesLogin.getString("nome", null) + ":" + preferencesLogin.getString("password", null);
-                                        String BasicBase64format = "Basic " + Base64.getEncoder().encodeToString(credenziali.getBytes());
+                                    JSONObject colletta = new JSONObject();
+                                    try {
+                                        colletta.put("quantita", myShare);
+                                    } catch (JSONException e) {
+                                        Log.d("OKHTTP3", "JSON exception");
+                                        e.printStackTrace();
+                                    }
 
-                                        JSONObject colletta = new JSONObject();
-                                        try {
-                                            colletta.put("quantita", myShare);
-                                        } catch (JSONException e) {
-                                            Log.d("OKHTTP3", "JSON exception");
-                                            e.printStackTrace();
+                                    RequestBody bodyUp = RequestBody.create(JSON, colletta.toString());
+
+                                    Request uploadReq = new Request.Builder()
+                                            .url(POST_URL)
+                                            .post(bodyUp)
+                                            .addHeader("Authorization", BasicBase64format)
+                                            .build();
+                                    try {
+                                        Response response = cl.newCall(uploadReq).execute();
+
+                                        if (response.isSuccessful()) {
+                                            System.out.println("COLLETTA REQUEST post SUCCESSFUL" + response.message());
+                                            System.out.println("COLLETTA REQUEST post SUCCESSFUL" + response.isSuccessful());
+                                        } else {
+                                            System.out.println("COLLETTA REQUEST post UNSUCCESSFUL" + response.message());
+                                            System.out.println("COLLETTA REQUEST post UNSUCCESSFUL" + response.isSuccessful());
                                         }
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
 
-                                        RequestBody bodyUp = RequestBody.create(JSON, colletta.toString());
-
-                                        Request uploadReq = new Request.Builder()
-                                                .url(POST_URL)
-                                                .post(bodyUp)
-                                                .addHeader("Authorization", BasicBase64format)
-                                                .build();
-                                        try {
-                                            Response response = cl.newCall(uploadReq).execute();
-
-                                            if (response.isSuccessful()) {
-                                                System.out.println("COLLETTA REQUEST post SUCCESSFUL" + response.message());
-                                                System.out.println("COLLETTA REQUEST post SUCCESSFUL" + response.isSuccessful());
-                                            } else {
-                                                System.out.println("COLLETTA REQUEST post UNSUCCESSFUL" + response.message());
-                                                System.out.println("COLLETTA REQUEST post UNSUCCESSFUL" + response.isSuccessful());
-                                            }
-                                        } catch (IOException e) {
-                                            e.printStackTrace();
-                                        }
-
-                                    }).start();
-                                }
+                                }).start();
 
                                 return true; // consume.
                             }
