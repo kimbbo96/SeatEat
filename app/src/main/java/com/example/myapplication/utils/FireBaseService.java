@@ -85,6 +85,15 @@ public class FireBaseService extends FirebaseMessagingService {
                 intent.putExtra("content", "new CartUser");
                 LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
                 break;
+            }case "ordine_inviato": {
+                cart.load();
+                int lastOrdNum = Integer.valueOf(remoteMessage.getData().get("ord_num"));
+                int currOrdNum = cart.getOrdNum();
+                for (int i=0; i<lastOrdNum-currOrdNum; i++) {
+                    cart.newOrder();
+                }
+                cart.save();
+                break;
             }
         }
 

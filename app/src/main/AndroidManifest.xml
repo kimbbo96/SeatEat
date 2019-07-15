@@ -46,7 +46,6 @@
             android:name=".Coll"
             android:parentActivityName=".Checkout"
             android:windowSoftInputMode="adjustPan" />
-        />
 
         <service android:name=".utils.FireBaseService">
             <intent-filter>
