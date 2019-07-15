@@ -28,6 +28,7 @@ public class Settings extends AppCompatActivity implements NavigationView.OnNavi
     String urlBase = "https://seateat-be.herokuapp.com";
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
