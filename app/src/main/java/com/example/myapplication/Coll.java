@@ -296,7 +296,7 @@ public class Coll extends AppCompatActivity {
 
                             @Override
                             public void onResponse(Call call, Response response) throws IOException {
-                                System.out.println("trigger della colletta inviato con successo");
+                                System.out.println("trigger del bottone paga inviato con successo");
                             }
                         });
                     }
