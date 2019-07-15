@@ -90,7 +90,7 @@ public class Coll extends AppCompatActivity {
             if (intent != null && created) {
                 String content = intent.getStringExtra("content");
                 if (content.equals("new CartUser")) {
-                    fillList(activity, users);
+                    fillList(activity);
                 }
             }
         }
@@ -273,11 +273,14 @@ public class Coll extends AppCompatActivity {
         });
 
         //costruisci CollListView
-        fillList(activity, users);
+        fillList(activity);
 
     }
 
-    static void fillList(Activity activity, List<Cart.CartUser> users) {
+    private void fillList(Activity activity) {
+        cart.load();
+        List<Cart.CartUser> users = cart.getCartUsers();
+
         ListView listView = activity.findViewById(R.id.list_view_coll);
         System.out.println(listView);
 
@@ -321,7 +324,7 @@ public class Coll extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-        fillList(activity, users);
+        fillList(activity);
     }
 
 }
