@@ -20,6 +20,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.Iterator;
 import java.util.List;
@@ -44,7 +45,8 @@ public class Cart implements Serializable {
     private static int ordNum = 1;
     private static ScheduledThreadPoolExecutor timer = null;
     private boolean fake = false;
-    String userId;
+    private boolean[] doRefresh = {false};
+    private String userId;
     private List<CartFood> cartFoods = new ArrayList<>();
     private List<CartUser> cartUsers = new ArrayList<>();
     private final String GET_URL = "https://seateat-be.herokuapp.com/api/getallcart";   // get autenticazione nell'header con qr nel body
@@ -59,7 +61,8 @@ public class Cart implements Serializable {
         Runnable command = () -> {
             System.out.println("tic tac " + System.identityHashCode(this));
 
-            if (refresh()) {
+            refresh();
+            if (doRefresh[0]) {
                 // manda notifica all'interfaccia
                 Intent intent = new Intent("update_cart");
                 intent.putExtra("content", "new Cart");
@@ -112,9 +115,8 @@ public class Cart implements Serializable {
         }
     }
 
-    public boolean refresh() {
+    public void refresh() {
         System.out.println("REFRESHHH!");
-        boolean[] result = {false};
 
         load();
         System.out.println("REFRESH carrello locale: " + cartFoods);
@@ -171,11 +173,11 @@ public class Cart implements Serializable {
                             CartFood cf = new CartFood(id, name, price, user, quantity, note, ordNum, shortDescr, longDescr, image);
                             tmpServerCartFoods.add(cf);
                             System.out.println("cartFood: " + cf);
-                            System.out.println("tmpServerCartFoods: " + tmpServerCartFoods);
+//                            System.out.println("tmpServerCartFoods: " + tmpServerCartFoods);
                         }
 
                         // lista del carrello aggiornata dal server
-                        System.out.println("REFRESH carrello server (convertita): " + tmpServerCartFoods);
+//                        System.out.println("REFRESH carrello server (convertita): " + tmpServerCartFoods);
                         List<CartFood> otherServerCartFoods = getOthersCartFoods(tmpServerCartFoods, userId);
 
                         // se gli altri hanno aggiunto cose, aggiorno il mio carrello
@@ -190,7 +192,11 @@ public class Cart implements Serializable {
 
                             System.out.println("REFRESH carrello aggiornato: " + cartFoods);
 
-                            result[0] = true;
+                            doRefresh[0] = true;
+                            System.out.println("REFRESH RESULT = " + Arrays.toString(doRefresh));
+                        } else {
+                            doRefresh[0] = false;
+                            System.out.println("REFRESH RESULT = " + Arrays.toString(doRefresh));
                         }
 
                         // se io ho aggiunto cose al carrello, invio la nuova lista di piatti al server (POST)
@@ -254,7 +260,6 @@ public class Cart implements Serializable {
                 }
             }
         });
-        return result[0];
     }
 
     /**
