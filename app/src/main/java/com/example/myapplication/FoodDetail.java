@@ -98,18 +98,23 @@ public class FoodDetail extends AppCompatActivity {
         // add to (sub)cart
         ImageButton addIB = findViewById(R.id.addFoodButtonDetail);
         addIB.setOnClickListener(view -> {
-            counter[0] = counter[0] + 1;
-            counterDetail.setText(Integer.toString(counter[0]));
+            counter[0] += 1;
+            counterDetail.setText("x"+counter[0]);
             // vh.cartButton.setText("Totale: " + cart.getTotal() + "€");
         });
 
         // remove from (sub)cart
         ImageButton remIB = findViewById(R.id.removeFoodButtonDetail);
         remIB.setOnClickListener(view -> {
-            if (counter[0] > 0) {
-                counter[0] = counter[0] - 1;
-                counterDetail.setText(Integer.toString(counter[0]));
-//            vh.cartButton.setText("Totale: " + cart.getTotal() + "€");
+
+            counter[0] -= 1;
+
+            if (counter[0] <= 0) {
+                counterDetail.setText("");
+                counter[0] = 0;
+            }
+            else {
+                counterDetail.setText("x"+counter[0]);
             }
         });
 
