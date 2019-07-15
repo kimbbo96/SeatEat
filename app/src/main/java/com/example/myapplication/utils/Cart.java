@@ -114,7 +114,7 @@ public class Cart implements Serializable {
 
     public boolean refresh() {
         System.out.println("REFRESHHH!");
-        boolean result = false;
+        boolean[] result = {false};
 
         load();
         System.out.println("REFRESH carrello locale: " + cartFoods);
@@ -170,6 +170,80 @@ public class Cart implements Serializable {
 
                             CartFood cf = new CartFood(id, name, price, user, quantity, note, ordNum, shortDescr, longDescr, image);
                             tmpServerCartFoods.add(cf);
+                            System.out.println("cartFood: " + cf);
+                            System.out.println("tmpServerCartFoods: " + tmpServerCartFoods);
+                        }
+
+                        // lista del carrello aggiornata dal server
+                        System.out.println("REFRESH carrello server (convertita): " + tmpServerCartFoods);
+                        List<CartFood> otherServerCartFoods = getOthersCartFoods(tmpServerCartFoods, userId);
+
+                        // se gli altri hanno aggiunto cose, aggiorno il mio carrello
+                        if (! othersOfflineCartFoods.equals(otherServerCartFoods)) {
+                            System.out.println("new cart from server!");
+
+                            // aggiorna il carrello
+                            List<CartFood> newCartFoods = new ArrayList<>(myOfflineCartFoods);
+                            newCartFoods.addAll(otherServerCartFoods);
+                            setCartFoods(newCartFoods);
+                            save();
+
+                            System.out.println("REFRESH carrello aggiornato: " + cartFoods);
+
+                            result[0] = true;
+                        }
+
+                        // se io ho aggiunto cose al carrello, invio la nuova lista di piatti al server (POST)
+                        List<CartFood> myServerCartFoods = getMyCartFoods(tmpServerCartFoods, userId);
+
+                        if (! myOfflineCartFoods.equals(myServerCartFoods)) {
+
+                            JSONObject dataUp = new JSONObject();
+                            JSONArray jsonCartFoods = new JSONArray();
+                            try {
+                                for (CartFood cf : cartFoods) {
+                                    JSONObject jsonCartFood = new JSONObject();
+
+                                    int numId = Integer.valueOf(cf.id);
+                                    jsonCartFood.put("id", numId);
+                                    jsonCartFood.put("name", cf.name);
+                                    jsonCartFood.put("user", cf.user);
+                                    jsonCartFood.put("note", cf.note);
+                                    jsonCartFood.put("short_descr", cf.shortDescr);
+                                    jsonCartFood.put("long_descr", cf.longDescr);
+                                    jsonCartFood.put("image", cf.image);
+                                    jsonCartFood.put("price", cf.price);
+                                    jsonCartFood.put("quantity", cf.quantity);
+                                    jsonCartFood.put("ord_num", cf.ordNum);
+
+                                    jsonCartFoods.put(jsonCartFood);
+                                }
+                                dataUp.put("cart", jsonCartFoods);
+                            } catch (JSONException e) {
+                                Log.d("OKHTTP3", "JSON exception");
+                                e.printStackTrace();
+                            }
+
+                            RequestBody bodyUp = RequestBody.create(JSON, dataUp.toString());
+
+                            Request uploadReq = new Request.Builder()
+                                    .url(POST_URL)
+                                    .post(bodyUp)
+                                    .addHeader("Authorization", basicBase64format)
+                                    .build();
+                            try {
+                                Response responseUP = client.newCall(uploadReq).execute();
+
+                                if (responseUP.isSuccessful()) {
+                                    System.out.println("CART REQUEST post SUCCESSFUL" + responseUP.message());
+                                    System.out.println("CART REQUEST post SUCCESSFUL" + responseUP.isSuccessful());
+                                } else {
+                                    System.out.println("CART REQUEST post UNSUCCESSFUL" + responseUP.message());
+                                    System.out.println("CART REQUEST post UNSUCCESSFUL" + responseUP.isSuccessful());
+                                }
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -180,81 +254,7 @@ public class Cart implements Serializable {
                 }
             }
         });
-
-        // lista del carrello aggiornata dal server
-        System.out.println("REFRESH carrello server (convertita): " + tmpServerCartFoods);
-        List<CartFood> otherServerCartFoods = getOthersCartFoods(tmpServerCartFoods, userId);
-
-        // se gli altri hanno aggiunto cose, aggiorno il mio carrello
-        if (! othersOfflineCartFoods.equals(otherServerCartFoods)) {
-            System.out.println("new cart from server!");
-
-            // aggiorna il carrello
-            List<CartFood> newCartFoods = new ArrayList<>(myOfflineCartFoods);
-            newCartFoods.addAll(otherServerCartFoods);
-            setCartFoods(newCartFoods);
-            save();
-
-            System.out.println("REFRESH carrello aggiornato: " + cartFoods);
-
-            result = true;
-        }
-
-
-        // se io ho aggiunto cose al carrello, invio la nuova lista di piatti al server (POST)
-        List<CartFood> myServerCartFoods = getMyCartFoods(tmpServerCartFoods, userId);
-
-        if (! myOfflineCartFoods.equals(myServerCartFoods)) {
-
-            JSONObject dataUp = new JSONObject();
-            JSONArray jsonCartFoods = new JSONArray();
-            try {
-                for (CartFood cf : cartFoods) {
-                    JSONObject jsonCartFood = new JSONObject();
-
-                    int numId = Integer.valueOf(cf.id);
-                    jsonCartFood.put("id", numId);
-                    jsonCartFood.put("name", cf.name);
-                    jsonCartFood.put("user", cf.user);
-                    jsonCartFood.put("note", cf.note);
-                    jsonCartFood.put("short_descr", cf.shortDescr);
-                    jsonCartFood.put("long_descr", cf.longDescr);
-                    jsonCartFood.put("image", cf.image);
-                    jsonCartFood.put("price", cf.price);
-                    jsonCartFood.put("quantity", cf.quantity);
-                    jsonCartFood.put("ord_num", cf.ordNum);
-
-                    jsonCartFoods.put(jsonCartFood);
-                }
-                dataUp.put("cart", jsonCartFoods);
-            } catch (JSONException e) {
-                Log.d("OKHTTP3", "JSON exception");
-                e.printStackTrace();
-            }
-
-            RequestBody bodyUp = RequestBody.create(JSON, dataUp.toString());
-
-            Request uploadReq = new Request.Builder()
-                    .url(POST_URL)
-                    .post(bodyUp)
-                    .addHeader("Authorization", basicBase64format)
-                    .build();
-            try {
-                Response response = client.newCall(uploadReq).execute();
-
-                if (response.isSuccessful()) {
-                    System.out.println("CART REQUEST post SUCCESSFUL" + response.message());
-                    System.out.println("CART REQUEST post SUCCESSFUL" + response.isSuccessful());
-                } else {
-                    System.out.println("CART REQUEST post UNSUCCESSFUL" + response.message());
-                    System.out.println("CART REQUEST post UNSUCCESSFUL" + response.isSuccessful());
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        return result;
+        return result[0];
     }
 
     /**
@@ -602,7 +602,7 @@ public class Cart implements Serializable {
 
         @Override
         public boolean equals(Object o) {
-            if (this == o) return true;  // TODO check
+            if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
             CartFood cartFood = (CartFood) o;
             return Double.compare(cartFood.price, price) == 0 &&
