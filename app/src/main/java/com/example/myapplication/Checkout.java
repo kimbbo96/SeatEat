@@ -29,6 +29,15 @@ import com.example.myapplication.db_obj.Restaurant;
 import com.example.myapplication.utils.Cart;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.io.IOException;
+import java.util.Base64;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
 
 public class Checkout extends AppCompatActivity {
     private String path_base = "https://seateat-be.herokuapp.com/resources/menus/";
@@ -37,6 +46,8 @@ public class Checkout extends AppCompatActivity {
 
     int people = 0;
     double price = 0;
+    private final String GET_CHECKOUT_OUT = "https://seateat-be.herokuapp.com/api/triggercolletta";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +81,8 @@ public class Checkout extends AppCompatActivity {
         TextView counterPrice = findViewById(R.id.counterPrice);
         System.out.println("counterPrice: " + counterPrice);
         counterPrice.setText(String.valueOf(price/people)+"€");
+
+
 
         // add people
         ImageButton addIB = findViewById(R.id.addPeople);
@@ -105,6 +118,37 @@ public class Checkout extends AppCompatActivity {
     public void payWithColl(View view) {
         System.out.println("hai clikkato COLL");
         Intent intent = new Intent(this, Coll.class);
+        SharedPreferences preferencesLogin = getSharedPreferences("loginref", MODE_PRIVATE);
+
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                OkHttpClient client = new OkHttpClient();
+                String token = preferencesLogin.getString("nome", null) + ":" + preferencesLogin.getString("password", null);
+                String basicBase64format = "Basic " + Base64.getEncoder().encodeToString(token.getBytes());
+
+                Request.Builder builder = new Request.Builder();
+                builder.url(GET_CHECKOUT_OUT);
+                builder.addHeader("Authorization", basicBase64format);
+                Request downloadReq = builder.build();
+
+                client.newCall(downloadReq).enqueue(new Callback() {
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+
+                        System.err.println("errore invio al server");
+                    }
+
+                    @Override
+                    public void onResponse(Call call, Response response) throws IOException {
+                        System.out.println("trigger della colletta inviato con successo");
+                    }
+                });
+            }
+        }).start();
+
+
 
         // TODO fare in modo di passare il campo people aggiornato
 

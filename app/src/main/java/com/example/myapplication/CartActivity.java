@@ -30,6 +30,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Base64;
 
+import okhttp3.Call;
+import okhttp3.Callback;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -41,11 +43,13 @@ public class CartActivity extends AppCompatActivity implements NavigationView.On
     CartActivity activity;
     private final String POST_URL = "https://seateat-be.herokuapp.com/api/sendOrder";
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity = this;
         cart = new Cart(activity);
+        SharedPreferences preferencesLogin = activity.getSharedPreferences("loginref", MODE_PRIVATE);
         setContentView(R.layout.activity_cart);
         Toolbar toolbar = findViewById(R.id.tool_bar_simple);
         setSupportActionBar(toolbar);
@@ -75,7 +79,7 @@ public class CartActivity extends AppCompatActivity implements NavigationView.On
         boolean isCapotavola = preferences.getBoolean("isCapotavola",false);
         FloatingActionButton fabCart = activity.findViewById(R.id.fab_cart);
         FloatingActionButton fabCheckout = activity.findViewById(R.id.fab_checkout);
-        SharedPreferences preferencesLogin = activity.getSharedPreferences("loginref", MODE_PRIVATE);
+        preferencesLogin = activity.getSharedPreferences("loginref", MODE_PRIVATE);
 
         if (isCapotavola) {
             fabCart.setOnClickListener(v -> {
@@ -102,6 +106,7 @@ public class CartActivity extends AppCompatActivity implements NavigationView.On
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
+                        SharedPreferences preferencesLogin = activity.getSharedPreferences("loginref", MODE_PRIVATE);
 
                         RequestBody bodyUp = RequestBody.create(JSON, dataUp.toString());
                         String credenziali = preferencesLogin.getString("nome", null) + ":" + preferencesLogin.getString("password", null);
@@ -137,11 +142,10 @@ public class CartActivity extends AppCompatActivity implements NavigationView.On
             });
 
 
-
-
-
-
+            SharedPreferences finalPreferencesLogin = preferencesLogin;
             fabCheckout.setOnClickListener(v -> {
+
+
                 System.out.println("hai clikkato 'checkout'");
 
                 Intent intent = new Intent(getApplicationContext(), Checkout.class);
