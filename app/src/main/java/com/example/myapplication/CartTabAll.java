@@ -88,13 +88,10 @@ class CartTabAll extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        LocalBroadcastManager lbmUser = LocalBroadcastManager.getInstance(activity);
-        lbmUser.registerReceiver(receiverUser, new IntentFilter("add_user"));
-
-        LocalBroadcastManager lbmCart = LocalBroadcastManager.getInstance(activity);
-        lbmCart.registerReceiver(receiverCart, new IntentFilter("update_cart"));
-
-        lbmCart.registerReceiver(receiverOrdNum, new IntentFilter("new_ord_num"));
+        LocalBroadcastManager lbm = LocalBroadcastManager.getInstance(activity);
+        lbm.registerReceiver(receiverUser, new IntentFilter("add_user"));
+        lbm.registerReceiver(receiverCart, new IntentFilter("update_cart"));
+        lbm.registerReceiver(receiverOrdNum, new IntentFilter("new_ord_num"));
     }
 
     @Override
