@@ -15,6 +15,7 @@ import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
 
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.view.View;
@@ -25,6 +26,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.load.model.LazyHeaders;
@@ -34,6 +36,8 @@ import com.bumptech.glide.request.transition.Transition;
 import com.bumptech.glide.signature.ObjectKey;
 import com.example.myapplication.db_obj.Restaurant;
 import com.example.myapplication.utils.Cart;
+import com.example.myapplication.utils.Utils;
+import com.google.android.material.navigation.NavigationView;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -51,10 +55,11 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class ResDetail extends AppCompatActivity {
+public class ResDetail extends AppCompatActivity  implements NavigationView.OnNavigationItemSelectedListener{
     private String path_base = "https://seateat-be.herokuapp.com";
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
+    String urlBase = "https://seateat-be.herokuapp.com";
 
 
     @Override
@@ -64,6 +69,8 @@ public class ResDetail extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.tool_bar_simple);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
 
         final Restaurant rist = (Restaurant) getIntent().getSerializableExtra("Restaurant");
         System.out.println("RistID"+rist.getRESTAURANT_ID());
@@ -331,6 +338,28 @@ public class ResDetail extends AppCompatActivity {
         }
     }
 
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        preferences = getSharedPreferences("loginref", MODE_PRIVATE);
+        TextView name_tab = findViewById(R.id.usr_name_tab);
+        name_tab.setText( preferences.getString("nome", null));
+
+        ImageView profile_image = findViewById(R.id.profile_image);
+        System.out.println(urlBase+preferences.getString("immagine",null));
+        RequestBuilder<Drawable> error = Glide.with(this).load(R.drawable.no_internet);
+        Glide.with(this).load(urlBase+"/"+preferences.getString("immagine",null)).error(error)
+                .signature(new ObjectKey(String.valueOf(System.currentTimeMillis())))
+                .fitCenter().into(profile_image);
+
+
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_rest, menu);
+        return true;
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -347,5 +376,12 @@ public class ResDetail extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        // Handle navigation view item clicks here.
+        Utils.gestisciMenu(item,this,findViewById(R.id.drawer_layout_res_detail));
+        return true;
     }
 }

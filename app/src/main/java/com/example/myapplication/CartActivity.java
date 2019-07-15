@@ -104,7 +104,8 @@ public class CartActivity extends AppCompatActivity implements NavigationView.On
                         }
 
                         RequestBody bodyUp = RequestBody.create(JSON, dataUp.toString());
-                        String credenziali = preferencesLogin.getString("nome", null) + ":" + preferences.getString("password", null);
+                        String credenziali = preferencesLogin.getString("nome", null) + ":" + preferencesLogin.getString("password", null);
+
                         String BasicBase64format = "Basic " + Base64.getEncoder().encodeToString(credenziali.getBytes());
 
                         Request uploadReq = new Request.Builder()
