@@ -207,7 +207,8 @@ public class Cart implements Serializable {
                             JSONObject dataUp = new JSONObject();
                             JSONArray jsonCartFoods = new JSONArray();
                             try {
-                                for (CartFood cf : cartFoods) {
+//                                for (CartFood cf : cartFoods) {
+                                for (CartFood cf : myOfflineCartFoods) {
                                     JSONObject jsonCartFood = new JSONObject();
 
                                     int numId = Integer.valueOf(cf.id);
