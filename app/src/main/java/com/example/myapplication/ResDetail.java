@@ -239,6 +239,68 @@ public class ResDetail extends AppCompatActivity  implements NavigationView.OnNa
         });
     }
 
+
+
+
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        System.out.println("onrsume invocato");
+
+        ProgressBar QRprogressBar = findViewById(R.id.progressBarQR);
+        final Restaurant rist = (Restaurant) getIntent().getSerializableExtra("Restaurant");
+        ImageView qrImg = findViewById(R.id.imageView3);
+        preferences = getSharedPreferences("infoRes", MODE_PRIVATE);
+        TextView textQR = findViewById(R.id.textQR);
+        Boolean isCapotavola = preferences.getBoolean("isCapotavola",false);
+        String ResID = preferences.getString("ID","");
+        ImageView cameraimg = findViewById(R.id.camera);
+        TextView cameraInfo = findViewById(R.id.cameraInfo);
+        System.out.println("RESID su onresume --> "+ ResID);
+         if(ResID.equals(rist.getRESTAURANT_ID()) && isCapotavola) { // se sono il capotavola e sono nel ristorante associato
+            cameraimg.setVisibility(View.GONE);
+            cameraInfo.setVisibility(View.GONE);
+            System.out.println("schermata capotavola");
+            String QREncoded = preferences.getString("QRimage",null);
+            byte[] decodedByte = Base64.getDecoder().decode(QREncoded);
+            Bitmap bmp = BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length);
+            qrImg.setImageBitmap(bmp); // setto il qr del capotavola salvato
+            qrImg.setVisibility(View.VISIBLE);
+            QRprogressBar.setVisibility(View.GONE);
+            System.out.println("ho impostato il QR salvato");
+            textQR.setText("Sei il capotavola. \n Fai scansionare questo QR ai tuoi amici. \n Buon appetito!");
+
+            Intent zoomQRIntent = new Intent(getApplicationContext(), Qr_zoom.class);
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    bmp.compress(Bitmap.CompressFormat.PNG, 100, baos);
+                    byte[] b = baos.toByteArray();
+                    zoomQRIntent.putExtra("QRImage", b);
+                }
+            }).start();
+            qrImg.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    startActivity(zoomQRIntent);
+                }
+            });
+
+        }
+        else if (!ResID.equals(rist.getRESTAURANT_ID()) && !ResID.equals("")){ // associato con un altro ristorante
+            cameraimg.setVisibility(View.GONE);
+            cameraInfo.setVisibility(View.GONE);
+            qrImg.setImageResource(R.drawable.noqr);
+            qrImg.setVisibility(View.VISIBLE);
+            QRprogressBar.setVisibility(View.GONE);
+            textQR.setText("Sei già associato ad un altro ristorante. \n Buon appetito!");
+
+        }
+
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode,resultCode,data);
@@ -326,8 +388,6 @@ public class ResDetail extends AppCompatActivity  implements NavigationView.OnNa
 
                         }
 
-
-
                     }
                 }).start();
             }
@@ -337,6 +397,7 @@ public class ResDetail extends AppCompatActivity  implements NavigationView.OnNa
             super.onActivityResult(requestCode, resultCode, data);
         }
     }
+
 
 
 
@@ -381,4 +442,5 @@ public class ResDetail extends AppCompatActivity  implements NavigationView.OnNa
         Utils.gestisciMenu(item,this,findViewById(R.id.drawer_layout_res_detail));
         return true;
     }
+
 }
