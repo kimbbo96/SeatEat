@@ -231,9 +231,9 @@ public class Coll extends AppCompatActivity {
             payButton.setBackgroundColor(getColor(R.color.grey));
             payButton.setElevation(0);
         } else {
-            payButton.setEnabled(false);
+            payButton.setEnabled(true);
             payButton.setBackgroundColor(getColor(R.color.colorPrimary));
-            payButton.setElevation(2);
+            payButton.setElevation(8);
         }
 
         if (isCapotavola) {
@@ -242,8 +242,9 @@ public class Coll extends AppCompatActivity {
                 public void onClick(View v) {
                     System.out.println("hai clikkato ANNULLA");
 
-                    Intent intent = new Intent(activity, CartActivity.class);
-                    startActivity(intent);
+//                    Intent intent = new Intent(activity, CartActivity.class);
+//                    startActivity(intent);
+                    onBackPressed();
                 }
             });
 
@@ -337,9 +338,9 @@ public class Coll extends AppCompatActivity {
             payButton.setBackgroundColor(getColor(R.color.grey));
             payButton.setElevation(0);
         } else {
-            payButton.setEnabled(false);
+            payButton.setEnabled(true);
             payButton.setBackgroundColor(getColor(R.color.colorPrimary));
-            payButton.setElevation(2);
+            payButton.setElevation(8);
         }
     }
 
