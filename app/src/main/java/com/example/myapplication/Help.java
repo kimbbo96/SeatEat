@@ -81,6 +81,26 @@ public class Help extends AppCompatActivity
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         Utils.gestisciMenu(item,this,findViewById(R.id.drawer_layout_help));
+        int id = item.getItemId();
+        System.out.println("contexto"+getApplicationContext().getClass().getSimpleName());
+        if (id == R.id.nav_home) {
+            // Handle the camera action
+
+        }  else if (id == R.id.nav_help) {
+
+        } else if (id == R.id.nav_share) {
+
+        } else if (id == R.id.nav_send) {
+
+        }
+        else if (id == R.id.nav_settings){
+            Intent intent = new Intent(getApplicationContext(), Settings.class);
+            startActivity(intent);
+
+        }
+
+        DrawerLayout drawer = findViewById(R.id.drawer_layout_help);
+        drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 }

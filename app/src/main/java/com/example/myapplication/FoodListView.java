@@ -101,6 +101,7 @@ class FoodListView extends ArrayAdapter<String> {
         viewHolder.tvw1.setText(foodName[position]);
         viewHolder.tvw2.setText(foodDesc[position]);
         viewHolder.tvw3.setText(foodPrice[position] + "€");
+        viewHolder.counter.setText("");
 
         /* for the image --- offline */
 //        int imgId = -1;
@@ -123,6 +124,12 @@ class FoodListView extends ArrayAdapter<String> {
 
         ImageButton addIB = viewHolder.addButton;
         ImageButton remIB = viewHolder.removeButton;
+
+        cart.load();
+
+        final int quantity = 0;
+        int[] counter = {quantity};
+
         if (restId.equals(restIdPref)) {
             // TODO manage cart (add)
             addIB.setOnClickListener(view -> {
@@ -131,6 +138,9 @@ class FoodListView extends ArrayAdapter<String> {
                 cart.addCartFood(food.getFOOD_ID(), food.getFOOD_TITLE(), food.getFOOD_PRICE(), userId, "",
                         food.getFOOD_SHORT_DESCR(), food.getFOOD_LONG_DESCR(), food.getFOOD_IMAGE());
                 cart.save();
+
+                counter[0] += 1;
+                vh.counter.setText("x"+counter[0]);
                 vh.cartButton.setText("Totale: " + cart.getTotal() + "€");
             });
 
@@ -139,9 +149,20 @@ class FoodListView extends ArrayAdapter<String> {
                 cart.load();
                 cart.removeCartFood(foodId[position], userId, "");
                 cart.save();
+
+                counter[0] -= 1;
+
+                if (counter[0] <= 0) {
+                    vh.counter.setText("");
+                    counter[0] = 0;
+                }
+                else {
+                    vh.counter.setText("x"+counter[0]);
+                }
                 vh.cartButton.setText("Totale: " + cart.getTotal() + "€");
             });
         } else {
+            vh.counter.setVisibility(View.GONE);
             addIB.setVisibility(View.GONE);
             remIB.setVisibility(View.GONE);
         }
@@ -162,6 +183,7 @@ class FoodListView extends ArrayAdapter<String> {
         ImageButton addButton;
         ImageButton removeButton;
         ExtendedFloatingActionButton cartButton;
+        TextView counter;
 
         ViewHolder(View v, ViewGroup parent){
             tvw1 = v.findViewById(R.id.foodName);
@@ -170,6 +192,7 @@ class FoodListView extends ArrayAdapter<String> {
             ivw = v.findViewById(R.id.foodImg);
             addButton = v.findViewById(R.id.addFoodButton);
             removeButton = v.findViewById(R.id.removeFoodButton);
+            counter = v.findViewById(R.id.foodCounter);
             ViewGroup newParent = (ViewGroup) parent.getParent().getParent().getParent().getParent().getParent();
 //            System.out.println("parent: " + newParent);
             cartButton = newParent.findViewById(R.id.fab_food);

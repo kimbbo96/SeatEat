@@ -105,6 +105,16 @@ public class ResDetail extends AppCompatActivity {
         TextView cameraInfo = findViewById(R.id.cameraInfo);
         System.out.println("id in preferences "+ResID);
 
+        Button button = findViewById(R.id.menu_button);
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                System.out.println("hai clikkato MENU");
+                Intent intent = new Intent(ResDetail.this,FoodRest.class);
+                intent.putExtra("Restaurant",rist); // passo l'oggetto ristornate
+                startActivity(intent);
+            }
+        });
+
         if (ResID.equals("")) { // se non è impostato nessun ristorante allora genera il QR
 
             preferences = getSharedPreferences("loginref", MODE_PRIVATE);
@@ -172,7 +182,7 @@ public class ResDetail extends AppCompatActivity {
             qrImg.setVisibility(View.VISIBLE);
             QRprogressBar.setVisibility(View.GONE);
             System.out.println("ho impostato il QR salvato");
-            textQR.setText("Sei Il capotavola, fai scansionare questo QR ai tuoi amici. buon pasto!");
+            textQR.setText("Sei il capotavola. \n Fai scansionare questo QR ai tuoi amici. \n Buon appetito!");
 
             Intent zoomQRIntent = new Intent(getApplicationContext(), Qr_zoom.class);
             new Thread(new Runnable() {
@@ -198,23 +208,13 @@ public class ResDetail extends AppCompatActivity {
             qrImg.setImageResource(R.drawable.noqr);
             qrImg.setVisibility(View.VISIBLE);
             QRprogressBar.setVisibility(View.GONE);
-            textQR.setText("Sei già associato con un ristorante, buon pasto!");
+            textQR.setText("Sei già associato ad un altro ristorante. \n Buon appetito!");
 
         }
 
         RatingBar ratingBar = findViewById(R.id.ratingBar2);
         ratingBar.setEnabled(false);
         ratingBar.setRating(rist.getRESTAURANT_RATING());
-
-        Button button = findViewById(R.id.menu_button);
-        button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                System.out.println("hai clikkato MENU");
-                Intent intent = new Intent(ResDetail.this,FoodRest.class);
-                intent.putExtra("Restaurant",rist); // passo l'oggetto ristornate
-                startActivity(intent);
-            }
-        });
 
         cameraimg.setOnClickListener(new View.OnClickListener() {
             @Override

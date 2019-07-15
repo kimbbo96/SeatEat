@@ -139,73 +139,70 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/counterPrice" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/linearLayout_coll"
-                android:layout_width="0dp"
-                android:layout_height="60dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="8dp"
-                android:clickable="true"
-                android:descendantFocusability="blocksDescendants"
-                app:layout_constraintEnd_toEndOf="parent"
+            <TextView
+                android:id="@+id/myName"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="24dp"
+                android:text="MIONOME"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textColor="@color/transparentBlack40"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/collText">
+                app:layout_constraintTop_toBottomOf="@id/collText" />
 
-                <TextView
-                    android:id="@+id/myName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:text="MIONOME"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                    android:textColor="@color/transparentBlack40"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+            <EditText
+                android:id="@+id/shareEditText"
+                android:layout_width="0dp"
+                android:layout_height="44dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="16dp"
+                android:autofillHints="notes"
+                android:ems="10"
+                android:fadeScrollbars="false"
+                android:gravity="start|top"
+                android:hint="0.00"
+                android:inputType="numberDecimal"
+                android:nestedScrollingEnabled="true"
+                android:textAlignment="textEnd"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textColor="@color/transparentBlack60"
+                android:textColorHighlight="@color/colorAccent"
+                android:textColorHint="@color/transparentBlack40"
+                android:theme="@style/EditText"
+                app:layout_constraintEnd_toStartOf="@+id/moneySymbol"
+                app:layout_constraintStart_toEndOf="@+id/myName"
+                app:layout_constraintTop_toBottomOf="@id/collText"
+                tools:ignore="RtlCompat"
+                tools:layout_constraintStart_toEndOf="@id/myName" />
 
-                <EditText
-                    android:id="@+id/shareEditText"
-                    android:layout_width="120dp"
-                    android:layout_height="0dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:autofillHints="notes"
-                    android:ems="10"
-                    android:fadeScrollbars="false"
-                    android:gravity="start|top"
-                    android:hint="0.00€"
-                    android:inputType="numberDecimal"
-                    android:nestedScrollingEnabled="true"
-                    android:textAlignment="textEnd"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                    android:textColor="@color/transparentBlack60"
-                    android:textColorHighlight="@color/colorAccent"
-                    android:textColorHint="@color/transparentBlack40"
-                    android:theme="@style/EditText"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.0"
-                    tools:layout_constraintStart_toEndOf="@id/myName"
-                    tools:ignore="RtlCompat"/>
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/moneySymbol"
+                android:layout_width="wrap_content"
+                android:layout_height="27dp"
+                android:layout_gravity="end"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="32dp"
+                android:text="€"
+                android:textAlignment="textEnd"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textColor="@color/transparentBlack60"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/shareEditText"
+                app:layout_constraintTop_toBottomOf="@id/collText" />
 
             <ListView
                 android:id="@+id/list_view_coll"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="32dp"
                 android:clickable="false"
                 android:footerDividersEnabled="true"
                 android:headerDividersEnabled="true"
                 android:nestedScrollingEnabled="false"
                 android:scrollbars="none"
-                app:layout_constraintTop_toBottomOf="@id/linearLayout_coll"
+                app:layout_constraintTop_toBottomOf="@+id/myName"
                 tools:layout_editor_absoluteX="0dp">
 
             </ListView>
@@ -232,7 +229,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/list_view_coll" />
+                app:layout_constraintTop_toBottomOf="@id/view2" />
 
             <TextView
                 android:id="@+id/counterTotal"
@@ -247,7 +244,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.03"
                 app:layout_constraintStart_toEndOf="@id/totalText"
-                app:layout_constraintTop_toBottomOf="@id/list_view_coll" />
+                app:layout_constraintTop_toBottomOf="@id/view2" />
 
             <Button
                 android:id="@+id/cancel_button"
