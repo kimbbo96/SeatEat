@@ -200,7 +200,7 @@ class CartTabAll extends Fragment {
                 participantsTvAll.setText("Partecipanti: " + fellowship);
             }
         } else {
-            participantsTvAll.setVisibility(View.GONE);
+            participantsTvAll.setVisibility(View.INVISIBLE);
         }
     }
 

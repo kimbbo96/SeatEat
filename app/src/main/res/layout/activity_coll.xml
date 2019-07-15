@@ -163,6 +163,8 @@
                 android:gravity="start|top"
                 android:hint="0.00"
                 android:inputType="numberDecimal"
+                android:imeOptions="actionDone"
+                android:maxLines="1"
                 android:nestedScrollingEnabled="true"
                 android:textAlignment="textEnd"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
