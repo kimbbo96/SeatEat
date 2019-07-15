@@ -74,7 +74,7 @@ public class Cart implements Serializable {
 
         if (timer == null || timer.isShutdown() || timer.isTerminated() || timer.isTerminating()) {
             timer = new ScheduledThreadPoolExecutor(1);
-            timer.scheduleAtFixedRate(command, 2, 10, TimeUnit.SECONDS);
+            timer.scheduleAtFixedRate(command, 2, 2, TimeUnit.SECONDS);
         }
     }
 
@@ -113,6 +113,10 @@ public class Cart implements Serializable {
             ex.printStackTrace();
             System.out.println("Cart class not found");
         }
+    }
+
+    public void shutDown() {
+        timer.shutdown();
     }
 
     public void refresh() {

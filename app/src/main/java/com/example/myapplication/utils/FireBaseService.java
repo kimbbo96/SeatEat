@@ -9,6 +9,7 @@ import android.util.Log;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.example.myapplication.CartActivity;
+import com.example.myapplication.Coll;
 import com.example.myapplication.FoodRest;
 import com.example.myapplication.R;
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -110,6 +111,8 @@ public class FireBaseService extends FirebaseMessagingService {
                 String user = remoteMessage.getData().get("user");
                 double quantity = Double.valueOf(remoteMessage.getData().get("quantita"));
 
+                System.out.println("QUOTA INVIATO " + user + " - " + quantity);
+
                 cart.load();
                 cart.setShare(user, quantity);
                 cart.save();
@@ -117,6 +120,16 @@ public class FireBaseService extends FirebaseMessagingService {
                 Intent intent = new Intent("new_share");
                 intent.putExtra("content", "new Share");
                 LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
+                break;
+            }
+
+            case "triggercolletta": {
+                System.out.println("TRIGGER COLLETTA");
+                cart.shutDown();
+
+                Intent intent = new Intent(context, Coll.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
                 break;
             }
         }
