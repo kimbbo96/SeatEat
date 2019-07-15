@@ -4,16 +4,24 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestBuilder;
+import com.bumptech.glide.signature.ObjectKey;
 import com.example.myapplication.Help;
 import com.example.myapplication.MenuRest;
 import com.example.myapplication.R;
@@ -24,6 +32,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static android.content.Context.MODE_PRIVATE;
 
 public class Utils {
 
@@ -104,6 +114,7 @@ public class Utils {
         dishes.computeIfAbsent("contorno", k -> new ArrayList<>()).add("pomodori");
         System.out.println(dishes);
     }
+
 
     public static void gestisciMenu (MenuItem item, Context context, DrawerLayout drawerLayout){
         // Handle navigation view item clicks here.
