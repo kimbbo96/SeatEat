@@ -1,23 +1,36 @@
 package com.example.myapplication;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestBuilder;
+import com.bumptech.glide.signature.ObjectKey;
 import com.example.myapplication.utils.Cart;
+import com.example.myapplication.utils.Utils;
+import com.google.android.material.navigation.NavigationView;
 
-public class Settings extends AppCompatActivity {
+public class Settings extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
+    String urlBase = "https://seateat-be.herokuapp.com";
+
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
@@ -61,6 +74,26 @@ public class Settings extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        preferences = getSharedPreferences("loginref", MODE_PRIVATE);
+        TextView name_tab = findViewById(R.id.usr_name_tab);
+        name_tab.setText( preferences.getString("nome", null));
+
+        ImageView profile_image = findViewById(R.id.profile_image);
+        System.out.println(urlBase+preferences.getString("immagine",null));
+        RequestBuilder<Drawable> error = Glide.with(this).load(R.drawable.no_internet);
+        Glide.with(this).load(urlBase+"/"+preferences.getString("immagine",null)).error(error)
+                .signature(new ObjectKey(String.valueOf(System.currentTimeMillis())))
+                .fitCenter().into(profile_image);
+
+
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_rest, menu);
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
@@ -76,5 +109,12 @@ public class Settings extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        Utils.gestisciMenu(item,this,findViewById(R.id.drawer_layout_settings));
+
+        return true;
     }
 }
