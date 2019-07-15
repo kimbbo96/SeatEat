@@ -54,7 +54,9 @@ import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Formatter;
 import java.util.List;
+import java.util.Locale;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -194,13 +196,14 @@ public class Coll extends AppCompatActivity {
 
                                 System.out.println("MY NEW SHARE IS "+myShare);
 
-//                                totalShares += myShare;
-                                fillTotal();
 
                                 // aggiorna myShare nel carrello
                                 cart.load();
                                 cart.setShare(userName, myShare);
                                 cart.save();
+
+//                                totalShares += myShare;
+                                fillTotal();
 
                                 new Thread(() -> {
 
@@ -335,6 +338,10 @@ public class Coll extends AppCompatActivity {
         super.onResume();
         fillList(activity);
         fillTotal();
+        if (myShare != 0) {
+            EditText et = findViewById(R.id.shareEditText);
+            et.setText(new Formatter().format(Locale.ITALIAN, "%.2f", myShare).toString());
+        }
     }
 
 }
