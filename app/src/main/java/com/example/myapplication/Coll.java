@@ -195,6 +195,7 @@ public class Coll extends AppCompatActivity {
                                 System.out.println("MY NEW SHARE IS "+myShare);
 
 //                                totalShares += myShare;
+                                fillTotal();
 
                                 // aggiorna myShare nel carrello
                                 cart.load();
@@ -273,7 +274,6 @@ public class Coll extends AppCompatActivity {
 
         //costruisci CollListView
         fillList(activity);
-
     }
 
     private void fillList(Activity activity) {
