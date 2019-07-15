@@ -89,9 +89,10 @@ public class Coll extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             if (intent != null && created) {
                 String content = intent.getStringExtra("content");
-                System.out.println(content + " ALL");
+                System.out.println(content + "coll");
                 if (content.equals("new Share")) {
                     fillList(activity);
+                    fillTotal();
                 }
             }
         }
@@ -249,8 +250,7 @@ public class Coll extends AppCompatActivity {
                 }
         );
 
-        TextView totalObtained = findViewById(R.id.counterTotal);
-        totalObtained.setText(totalShares+"€ su "+price+"€");
+        fillTotal();
 
         Button cancelButton = findViewById(R.id.cancel_button);
         cancelButton.setOnClickListener(new View.OnClickListener() {
@@ -306,6 +306,13 @@ public class Coll extends AppCompatActivity {
         Utils.justifyListViewHeight(listView);
     }
 
+    private void fillTotal() {
+        cart.load();
+        double total = cart.getTotalCheckout();
+        TextView totalObtained = findViewById(R.id.counterTotal);
+        totalObtained.setText(totalShares+"€ su "+total+"€");
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -328,6 +335,7 @@ public class Coll extends AppCompatActivity {
     public void onResume() {
         super.onResume();
         fillList(activity);
+        fillTotal();
     }
 
 }
