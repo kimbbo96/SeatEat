@@ -304,6 +304,10 @@ public class Cart implements Serializable {
         }).sum();
     }
 
+    public double getTotalShares() {
+        return cartUsers.stream().mapToDouble(CartUser::getShare).sum();
+    }
+
     public int getOrdNum() {
         return ordNum;
     }

@@ -72,11 +72,9 @@ public class Coll extends AppCompatActivity {
     Activity activity;
     boolean created = false;
 
-    // path_base + "/resources/menus/" + restId + "/" + foodImage[position]))
-
     double myShare = 0;
-
     double totalShares = 0;
+    double price;
 
     String urlBase = "https://seateat-be.herokuapp.com";
 
@@ -136,7 +134,7 @@ public class Coll extends AppCompatActivity {
 //        }
 
         int people = users.size();
-        double price = cart.getTotalCheckout();
+        price = cart.getTotalCheckout();
 
         TextView counterPeople = findViewById(R.id.counterPeople);
         counterPeople.setText(String.valueOf(people));
@@ -171,7 +169,7 @@ public class Coll extends AppCompatActivity {
             }
         });*/
 
-        totalShares += myShare;
+//        totalShares += myShare;
 
         editText.setOnEditorActionListener(
                 new EditText.OnEditorActionListener() {
@@ -190,13 +188,13 @@ public class Coll extends AppCompatActivity {
                                 InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
                                 imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
 
-                                totalShares -= myShare;
+//                                totalShares -= myShare;
 
                                 myShare = Double.parseDouble(editText.getText().toString());
 
                                 System.out.println("MY NEW SHARE IS "+myShare);
 
-                                totalShares += myShare;
+//                                totalShares += myShare;
 
                                 // aggiorna myShare nel carrello
                                 cart.load();
@@ -308,9 +306,10 @@ public class Coll extends AppCompatActivity {
 
     private void fillTotal() {
         cart.load();
-        double total = cart.getTotalCheckout();
+        double total = cart.getTotalShares();
+        System.out.println("fill total: " + total);
         TextView totalObtained = findViewById(R.id.counterTotal);
-        totalObtained.setText(totalShares+"€ su "+total+"€");
+        totalObtained.setText(total + "€ su " + price + "€");
     }
 
     @Override
