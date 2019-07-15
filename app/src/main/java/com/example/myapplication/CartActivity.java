@@ -23,12 +23,24 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.Base64;
+
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class CartActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     Cart cart;
     CartActivity activity;
+    private final String POST_URL = "https://seateat-be.herokuapp.com/api/sendOrder";
+    SharedPreferences preferencesLogin = activity.getSharedPreferences("loginref", MODE_PRIVATE);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,13 +81,64 @@ public class CartActivity extends AppCompatActivity implements NavigationView.On
                 System.out.println("hai clikkato 'invia ordine'");
                 new Thread( () -> cart.refresh());
                 cart.newOrder();
+                int lasOrdNum = cart.getOrdNum();
                 System.out.println("CARRELLO AGGIORNATO: " + cart);
                 cart.save();
                 finish();
+
+
+
+
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        MediaType JSON = MediaType.parse("application/json;charset=utf-8");
+                        OkHttpClient cl = new OkHttpClient(); // inizio la procedura di get
+
+                        JSONObject dataUp = new JSONObject();
+                        try {
+                            dataUp.put("ord_num", lasOrdNum);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        RequestBody bodyUp = RequestBody.create(JSON, dataUp.toString());
+                        String credenziali = preferencesLogin.getString("nome", null) + ":" + preferences.getString("password", null);
+                        String BasicBase64format = "Basic " + Base64.getEncoder().encodeToString(credenziali.getBytes());
+
+                        Request uploadReq = new Request.Builder()
+                                .url(POST_URL)
+                                .post(bodyUp)
+                                .addHeader("Authorization", BasicBase64format)
+                                .build();
+                        try {
+                            Response response = cl.newCall(uploadReq).execute();
+
+                            if (response.isSuccessful()) {
+                                System.out.println("NUOVO NUMERO DEL CARRELLO INVIATO CON SUCCESSO " + response.message());
+
+                            } else {
+                                System.out.println("INVIO NUMERO ORDINE UNSUCCESSFUL" + response.message());
+                            }
+
+
 //                Intent intent = new Intent(this, CartActivity.class);
 //                intent.putExtra("Restaurant", rist); // passo l'oggetto ristornate
 //                startActivity(intent);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }).start();
+
             });
+
+
+
+
+
+
             fabCheckout.setOnClickListener(v -> {
                 System.out.println("hai clikkato 'checkout'");
 
