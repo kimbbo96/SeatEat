@@ -4,8 +4,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestBuilder;
+import com.bumptech.glide.signature.ObjectKey;
 import com.example.myapplication.utils.Cart;
 import com.example.myapplication.utils.Utils;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
@@ -21,6 +25,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.myapplication.db_obj.Food;
@@ -46,7 +51,7 @@ import okhttp3.Response;
 
 public class FoodRest extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
+    SharedPreferences preferences;
     String urlBase = "https://seateat-be.herokuapp.com";
     Cart cart;
 
@@ -178,8 +183,21 @@ public class FoodRest extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
+        preferences = getSharedPreferences("loginref", MODE_PRIVATE);
+        TextView name_tab = findViewById(R.id.usr_name_tab);
+        name_tab.setText( preferences.getString("nome", null));
+
+        ImageView profile_image = findViewById(R.id.profile_image);
+        System.out.println(urlBase+preferences.getString("immagine",null));
+        RequestBuilder<Drawable> error = Glide.with(this).load(R.drawable.no_internet);
+        Glide.with(this).load(urlBase+"/"+preferences.getString("immagine",null)).error(error)
+                .signature(new ObjectKey(String.valueOf(System.currentTimeMillis())))
+                .fitCenter().into(profile_image);
+
+
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_qr, menu);
+        getMenuInflater().inflate(R.menu.menu_rest, menu);
         return true;
     }
 
