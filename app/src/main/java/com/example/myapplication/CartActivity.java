@@ -64,7 +64,10 @@ public class CartActivity extends AppCompatActivity implements NavigationView.On
 //        toggle.syncState();
         navigationView.setNavigationItemSelectedListener(activity);
 
-        String restId = getIntent().getStringExtra("RestId");
+        SharedPreferences preferencesRest = this.getSharedPreferences("infoRes", MODE_PRIVATE);
+        String idRestPref = preferencesRest.getString("ID","");
+        String rid = getIntent().getStringExtra("RestID");
+        String restId = rid == null ? idRestPref : rid;
         ViewPager viewPager = findViewById(R.id.viewPagerCart);
         TabLayout tabLayout = findViewById(R.id.tabLayoutCart);
         SimplePagerAdapter adapter = new SimplePagerAdapter(getSupportFragmentManager());

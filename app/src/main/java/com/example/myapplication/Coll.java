@@ -6,11 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
@@ -19,39 +15,20 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.CustomViewTarget;
-import com.bumptech.glide.request.transition.Transition;
-import com.example.myapplication.db_obj.Food;
-import com.example.myapplication.db_obj.Restaurant;
 import com.example.myapplication.utils.Cart;
 import com.example.myapplication.utils.Utils;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.snackbar.Snackbar;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.text.DecimalFormat;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Formatter;
@@ -65,7 +42,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-import okio.BufferedSink;
 
 
 public class Coll extends AppCompatActivity {
@@ -233,7 +209,7 @@ public class Coll extends AppCompatActivity {
         } else {
             payButton.setEnabled(true);
             payButton.setBackgroundColor(getColor(R.color.colorPrimary));
-            payButton.setElevation(8);
+            payButton.setElevation(6);
         }
 
         if (isCapotavola) {
@@ -242,9 +218,9 @@ public class Coll extends AppCompatActivity {
                 public void onClick(View v) {
                     System.out.println("hai clikkato ANNULLA");
 
-//                    Intent intent = new Intent(activity, CartActivity.class);
-//                    startActivity(intent);
-                    onBackPressed();
+                    Intent intent = new Intent(activity, CartActivity.class);
+                    startActivity(intent);
+//                    onBackPressed();
                 }
             });
 
@@ -258,7 +234,7 @@ public class Coll extends AppCompatActivity {
 
                     // pulisci carrello e preferenze
                     cart.clear();
-                    Utils.cleanResPreferences(activity);
+                    Utils.clearResPreferences(activity);
 
                     new Thread(new Runnable() {
                         @Override
@@ -340,7 +316,7 @@ public class Coll extends AppCompatActivity {
         } else {
             payButton.setEnabled(true);
             payButton.setBackgroundColor(getColor(R.color.colorPrimary));
-            payButton.setElevation(8);
+            payButton.setElevation(6);
         }
     }
 

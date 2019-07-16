@@ -151,7 +151,7 @@ public class Utils {
 
     }
 
-    public static void cleanResPreferences(Context context) {
+    public static void clearResPreferences(Context context) {
         SharedPreferences preferences = context.getSharedPreferences("infoRes", MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString("QRimage",null);

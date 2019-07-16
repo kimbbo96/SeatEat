@@ -1,6 +1,5 @@
 package com.example.myapplication.utils;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,7 +11,6 @@ import com.example.myapplication.CartActivity;
 import com.example.myapplication.Coll;
 import com.example.myapplication.FoodRest;
 import com.example.myapplication.MenuRest;
-import com.example.myapplication.R;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -22,8 +20,6 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.Base64;
 
-import okhttp3.Call;
-import okhttp3.Callback;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -136,6 +132,9 @@ public class FireBaseService extends FirebaseMessagingService {
 
             case "triggerfatto": {
                 System.out.println("TRIGGER FATTO");
+
+                cart.clear();
+                Utils.clearResPreferences(context);
 
                 Intent intent = new Intent(context, MenuRest.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
