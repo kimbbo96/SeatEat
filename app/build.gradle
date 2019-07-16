@@ -43,4 +43,5 @@ dependencies {
     implementation 'androidx.navigation:navigation-ui:2.1.0-alpha06'
     implementation 'com.google.zxing:core:3.2.1'
     implementation 'com.journeyapps:zxing-android-embedded:3.2.0@aar'
+    implementation 'com.shamanland:xdroid-toaster:0.3.0'
 }

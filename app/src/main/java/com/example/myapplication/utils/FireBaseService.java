@@ -13,6 +13,7 @@ import com.example.myapplication.CartActivity;
 import com.example.myapplication.Coll;
 import com.example.myapplication.FoodRest;
 import com.example.myapplication.MenuRest;
+import com.example.myapplication.R;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -29,6 +30,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
+import static xdroid.toaster.Toaster.toastLong;
 
 public class FireBaseService extends FirebaseMessagingService {
 
@@ -129,9 +131,7 @@ public class FireBaseService extends FirebaseMessagingService {
                 Intent intent = new Intent(context, Coll.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
-                ((Activity) context).runOnUiThread(() -> {
-                    Toast.makeText(context, "Il capotavola ha avviato la colletta", Toast.LENGTH_LONG).show();
-                });
+                toastLong("Il capotavola ha avviato la colletta");
                 break;
             }
 
