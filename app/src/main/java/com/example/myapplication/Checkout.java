@@ -51,6 +51,7 @@ public class Checkout extends AppCompatActivity {
     int people = 0;
     double price = 0;
     private final String GET_CHECKOUT_OUT = "https://seateat-be.herokuapp.com/api/triggercolletta";
+    private final String PAY_URL = "https://seateat-be.herokuapp.com/api/triggerfatto";
 
 
     @Override
@@ -114,6 +115,34 @@ public class Checkout extends AppCompatActivity {
 //            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
             Toast.makeText(context, "Grazie per aver usato la nostra app!", Toast.LENGTH_LONG).show();
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    OkHttpClient client = new OkHttpClient();
+                    SharedPreferences preferencesLogin = getSharedPreferences("loginref", MODE_PRIVATE);
+                    String token = preferencesLogin.getString("nome", null) + ":" + preferencesLogin.getString("password", null);
+                    String basicBase64format = "Basic " + Base64.getEncoder().encodeToString(token.getBytes());
+
+                    Request.Builder builder = new Request.Builder();
+                    builder.url(PAY_URL);
+                    builder.addHeader("Authorization", basicBase64format);
+                    Request downloadReq = builder.build();
+
+                    client.newCall(downloadReq).enqueue(new Callback() {
+                        @Override
+                        public void onFailure(Call call, IOException e) {
+
+                            System.err.println("errore invio al server");
+                        }
+
+                        @Override
+                        public void onResponse(Call call, Response response) throws IOException {
+                            System.out.println("trigger del bottone paga inviato con successo");
+                        }
+                    });
+                }
+            }).start();
         }
     };
 
