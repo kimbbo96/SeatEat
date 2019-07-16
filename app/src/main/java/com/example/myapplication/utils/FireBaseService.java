@@ -144,7 +144,7 @@ public class FireBaseService extends FirebaseMessagingService {
                 Intent intent = new Intent(context, MenuRest.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
-                Toast.makeText(context, "Grazie per aver usato la nostra app!", Toast.LENGTH_LONG).show();
+                toastLong("Grazie per aver usato la nostra app!");
                 break;
             }
 
@@ -154,7 +154,7 @@ public class FireBaseService extends FirebaseMessagingService {
                 Intent intent = new Intent(context, CartActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
-                Toast.makeText(context, "Il capotavola ha annullato la colletta", Toast.LENGTH_LONG).show();
+                toastLong("Il capotavola ha annullato la colletta");
                 break;
             }
         }
