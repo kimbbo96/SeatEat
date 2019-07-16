@@ -24,11 +24,9 @@
             android:layout_marginTop="?actionBarSize"
             android:minHeight="?actionBarSize"
             app:tabGravity="fill"
-            app:tabIndicatorColor="@color/colorAccent"
+            app:tabIndicatorColor="@color/colorPrimaryDark"
             app:tabIndicatorHeight="4dp"
-            app:tabBackground="@color/colorPrimaryLight"
-            app:tabMode="fixed">
-        </com.google.android.material.tabs.TabLayout>
+            app:tabMode="fixed"></com.google.android.material.tabs.TabLayout>
     </androidx.viewpager.widget.ViewPager>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
