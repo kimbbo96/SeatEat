@@ -275,6 +275,7 @@ public class Cart implements Serializable {
         cartUsers.clear();
         cartFoods.clear();
         timer.shutdown();
+        save();
     }
 
     /**

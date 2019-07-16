@@ -200,8 +200,8 @@ public class Checkout extends AppCompatActivity {
     public void payWithCard(View view) {
         System.out.println("hai clikkato CARD");
 
-        Utils.showDialog(this, "Paga con carta",
-                "Vai alla cassa.\nAndando avanti terminerai il pasto e non potrai aggiungere nuovi ordini",
+        Utils.showDialog(this, "Paga con l'app",
+                "Pagherai con il conto associato all'app.\nAndando avanti terminerai il pasto e non potrai aggiungere nuovi ordini",
                 "Conferma", payWithCashListener, "Annulla", null);
     }
 
