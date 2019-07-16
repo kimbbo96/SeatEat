@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/qr_button"
-        android:icon="@drawable/qr_icon"
+        android:icon="@drawable/qr_white"
         android:orderInCategory="300"
         android:title="User"
         app:showAsAction="ifRoom" />
