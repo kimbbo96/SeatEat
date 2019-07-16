@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -112,6 +113,7 @@ public class Checkout extends AppCompatActivity {
             Intent intent = new Intent(context, MenuRest.class);
 //            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
+            Toast.makeText(context, "Grazie per aver usato la nostra app!", Toast.LENGTH_LONG).show();
         }
     };
 

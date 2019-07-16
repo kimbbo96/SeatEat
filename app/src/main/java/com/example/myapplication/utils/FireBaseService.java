@@ -1,5 +1,6 @@
 package com.example.myapplication.utils;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -128,7 +129,9 @@ public class FireBaseService extends FirebaseMessagingService {
                 Intent intent = new Intent(context, Coll.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
-                Toast.makeText(context, "Il capotavola ha avviato la colletta", Toast.LENGTH_LONG).show();
+                ((Activity) context).runOnUiThread(() -> {
+                    Toast.makeText(context, "Il capotavola ha avviato la colletta", Toast.LENGTH_LONG).show();
+                });
                 break;
             }
 
