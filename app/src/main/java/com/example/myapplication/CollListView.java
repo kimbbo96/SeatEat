@@ -97,5 +97,10 @@ public class CollListView extends ArrayAdapter<String> {
             tvw2 = v.findViewById(R.id.userShare);
         }
     }
+
+    @Override
+    public boolean isEnabled(int position) {
+        return false;
+    }
 }
 

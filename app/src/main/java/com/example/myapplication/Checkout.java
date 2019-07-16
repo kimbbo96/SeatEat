@@ -1,6 +1,8 @@
 package com.example.myapplication;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
@@ -27,6 +29,7 @@ import com.bumptech.glide.request.transition.Transition;
 import com.example.myapplication.db_obj.Food;
 import com.example.myapplication.db_obj.Restaurant;
 import com.example.myapplication.utils.Cart;
+import com.example.myapplication.utils.Utils;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.io.IOException;
@@ -40,9 +43,9 @@ import okhttp3.Response;
 
 
 public class Checkout extends AppCompatActivity {
-    private String path_base = "https://seateat-be.herokuapp.com/resources/menus/";
+    Context context;
     Cart cart;
-    // path_base + "/resources/menus/" + restId + "/" + foodImage[position]))
+
 
     int people = 0;
     double price = 0;
@@ -53,6 +56,7 @@ public class Checkout extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        context = this;
         cart = new Cart(this);
 
         setContentView(R.layout.activity_checkout);
@@ -60,14 +64,9 @@ public class Checkout extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        // TODO manage cart
-        Activity activity = this;
-
         cart.load();
 
         people = cart.getCartUsers().size();
-
-        //int[] counter1 = {people};
 
         TextView counterPeople = findViewById(R.id.counterPeople);
         counterPeople.setText(String.valueOf(people));
@@ -103,59 +102,84 @@ public class Checkout extends AppCompatActivity {
         });
     }
 
+    private DialogInterface.OnClickListener payWithCashListener = new DialogInterface.OnClickListener() {
+
+        @Override
+        public void onClick(DialogInterface dialogInterface, int i) {
+            cart.clear();
+            Utils.clearResPreferences(context);
+
+            Intent intent = new Intent(context, MenuRest.class);
+//            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
+        }
+    };
+
+    private DialogInterface.OnClickListener payWithCollListener = new DialogInterface.OnClickListener() {
+
+        @Override
+        public void onClick(DialogInterface dialogInterface, int i) {
+            Intent intent = new Intent(context, Coll.class);
+            SharedPreferences preferencesLogin = getSharedPreferences("loginref", MODE_PRIVATE);
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    OkHttpClient client = new OkHttpClient();
+                    String token = preferencesLogin.getString("nome", null) + ":" + preferencesLogin.getString("password", null);
+                    String basicBase64format = "Basic " + Base64.getEncoder().encodeToString(token.getBytes());
+
+                    Request.Builder builder = new Request.Builder();
+                    builder.url(GET_CHECKOUT_OUT);
+                    builder.addHeader("Authorization", basicBase64format);
+                    Request downloadReq = builder.build();
+
+                    client.newCall(downloadReq).enqueue(new Callback() {
+                        @Override
+                        public void onFailure(Call call, IOException e) {
+
+                            System.err.println("errore invio al server");
+                        }
+
+                        @Override
+                        public void onResponse(Call call, Response response) throws IOException {
+                            System.out.println("trigger della colletta inviato con successo");
+                        }
+                    });
+                }
+            }).start();
+
+//        //  fare in modo di passare il campo people aggiornato
+//
+//        intent.putExtra("People", people); // passo il numero di commensali
+//        intent.putExtra("Price", price); // passo il prezzo totale
+
+            startActivity(intent);
+        }
+    };
+
     public void payWithCash(View view) {
         System.out.println("hai clikkato CASH");
-        /*Intent intent = new Intent(this, Help.class);
-        startActivity(intent);*/
+
+        Utils.showDialog(this, "Paga in contanti",
+                "Vai alla cassa.\nAndando avanti terminerai il pasto e non potrai aggiungere nuovi ordini",
+                "Conferma", payWithCashListener, "Annulla", null);
     }
 
     public void payWithCard(View view) {
         System.out.println("hai clikkato CARD");
-        /*Intent intent = new Intent(this, Help.class);
-        startActivity(intent);*/
+
+        Utils.showDialog(this, "Paga con carta",
+                "Vai alla cassa.\nAndando avanti terminerai il pasto e non potrai aggiungere nuovi ordini",
+                "Conferma", payWithCashListener, "Annulla", null);
     }
 
     public void payWithColl(View view) {
         System.out.println("hai clikkato COLL");
-        Intent intent = new Intent(this, Coll.class);
-        SharedPreferences preferencesLogin = getSharedPreferences("loginref", MODE_PRIVATE);
 
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                OkHttpClient client = new OkHttpClient();
-                String token = preferencesLogin.getString("nome", null) + ":" + preferencesLogin.getString("password", null);
-                String basicBase64format = "Basic " + Base64.getEncoder().encodeToString(token.getBytes());
-
-                Request.Builder builder = new Request.Builder();
-                builder.url(GET_CHECKOUT_OUT);
-                builder.addHeader("Authorization", basicBase64format);
-                Request downloadReq = builder.build();
-
-                client.newCall(downloadReq).enqueue(new Callback() {
-                    @Override
-                    public void onFailure(Call call, IOException e) {
-
-                        System.err.println("errore invio al server");
-                    }
-
-                    @Override
-                    public void onResponse(Call call, Response response) throws IOException {
-                        System.out.println("trigger della colletta inviato con successo");
-                    }
-                });
-            }
-        }).start();
-
-
-
-        // TODO fare in modo di passare il campo people aggiornato
-
-        intent.putExtra("People", people); // passo il numero di commensali
-        intent.putExtra("Price", price); // passo il prezzo totale
-
-        startActivity(intent);
+        Utils.showDialog(this, "Paga facendo una colletta nell'app",
+                "Andando avanti terminerai il pasto e non potrai aggiungere nuovi ordini",
+                "Conferma", payWithCollListener, "Annulla", null);
     }
 
     @Override

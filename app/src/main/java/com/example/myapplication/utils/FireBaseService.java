@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
@@ -127,6 +128,7 @@ public class FireBaseService extends FirebaseMessagingService {
                 Intent intent = new Intent(context, Coll.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
+                Toast.makeText(context, "Il capotavola ha avviato la colletta", Toast.LENGTH_LONG).show();
                 break;
             }
 
@@ -139,6 +141,7 @@ public class FireBaseService extends FirebaseMessagingService {
                 Intent intent = new Intent(context, MenuRest.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
+                Toast.makeText(context, "Grazie per aver usato la nostra app!", Toast.LENGTH_LONG).show();
                 break;
             }
 
@@ -148,6 +151,7 @@ public class FireBaseService extends FirebaseMessagingService {
                 Intent intent = new Intent(context, CartActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
+                Toast.makeText(context, "Il capotavola ha annullato la colletta", Toast.LENGTH_LONG).show();
                 break;
             }
         }

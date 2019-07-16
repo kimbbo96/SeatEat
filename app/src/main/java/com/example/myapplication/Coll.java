@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -55,6 +56,7 @@ public class Coll extends AppCompatActivity {
 
     private final String POST_URL = "https://seateat-be.herokuapp.com/api/colletta";    // post autenticazione nell'header con cart nel body
     private final String PAY_URL = "https://seateat-be.herokuapp.com/api/triggerfatto";
+    private final String CANCEL_URL = "https://seateat-be.herokuapp.com/api/triggerannulla";
     static List<Cart.CartUser> users = new ArrayList<>();
 
     private BroadcastReceiver receiverShare = new BroadcastReceiver() {
@@ -221,6 +223,33 @@ public class Coll extends AppCompatActivity {
                     Intent intent = new Intent(activity, CartActivity.class);
                     startActivity(intent);
 //                    onBackPressed();
+
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            OkHttpClient client = new OkHttpClient();
+                            String token = preferencesLogin.getString("nome", null) + ":" + preferencesLogin.getString("password", null);
+                            String basicBase64format = "Basic " + Base64.getEncoder().encodeToString(token.getBytes());
+
+                            Request.Builder builder = new Request.Builder();
+                            builder.url(CANCEL_URL);
+                            builder.addHeader("Authorization", basicBase64format);
+                            Request downloadReq = builder.build();
+
+                            client.newCall(downloadReq).enqueue(new Callback() {
+                                @Override
+                                public void onFailure(Call call, IOException e) {
+
+                                    System.err.println("errore invio al server");
+                                }
+
+                                @Override
+                                public void onResponse(Call call, Response response) throws IOException {
+                                    System.out.println("trigger del bottone annulla inviato con successo");
+                                }
+                            });
+                        }
+                    }).start();
                 }
             });
 
@@ -231,6 +260,7 @@ public class Coll extends AppCompatActivity {
 
                     Intent intent = new Intent(activity, MenuRest.class);
                     startActivity(intent);
+                    Toast.makeText(activity, "Grazie per aver usato la nostra app!", Toast.LENGTH_LONG).show();
 
                     // pulisci carrello e preferenze
                     cart.clear();

@@ -1,8 +1,10 @@
 package com.example.myapplication.utils;
 
+import android.app.AlertDialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
@@ -158,6 +160,23 @@ public class Utils {
         editor.putBoolean("isCapotavola",false);
         editor.putString("ID", "");
         editor.commit();
+    }
+
+    public static void showDialog(Context context, String title, CharSequence message,
+                                  String posButtonText, DialogInterface.OnClickListener posButtonListener,
+                                  String negButtonText, DialogInterface.OnClickListener negButtonListener) {
+        // setup the alert builder
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        if (title != null) builder.setTitle(title);
+        builder.setMessage(message);
+
+        // add the buttons
+        builder.setPositiveButton(posButtonText, posButtonListener);
+        builder.setNegativeButton(negButtonText, negButtonListener);
+
+        // create and show the alert dialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
 }
