@@ -35,6 +35,8 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.io.IOException;
 import java.util.Base64;
+import java.util.Formatter;
+import java.util.Locale;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -77,31 +79,31 @@ public class Checkout extends AppCompatActivity {
 
         TextView totalText = findViewById(R.id.priceText);
         System.out.println("totalText: " + totalText);
-        totalText.setText(String.valueOf(price)+"€");
+        totalText.setText(new Formatter().format(Locale.ITALIAN, "%.2f€", price).toString());
 
         TextView counterPrice = findViewById(R.id.counterPrice);
         System.out.println("counterPrice: " + counterPrice);
-        counterPrice.setText(String.valueOf(price/people)+"€");
+        counterPrice.setText(new Formatter().format(Locale.ITALIAN, "%.2f€", price/people).toString());
 
 
 
         // add people
-        ImageButton addIB = findViewById(R.id.addPeople);
-        addIB.setOnClickListener(view -> {
-            people++;
-            counterPeople.setText(Integer.toString(people));
-            counterPrice.setText(price/people + "€");
-        });
+//        ImageButton addIB = findViewById(R.id.addPeople);
+//        addIB.setOnClickListener(view -> {
+//            people++;
+//            counterPeople.setText(Integer.toString(people));
+//            counterPrice.setText(new Formatter().format(Locale.ITALIAN, "%.2f€", price/people).toString());
+//        });
 
         // remove people
-        ImageButton remIB = findViewById(R.id.removePeople);
-        remIB.setOnClickListener(view -> {
-            if (people > 0) {
-                people--;
-                counterPeople.setText(Integer.toString(people));
-                counterPrice.setText(price/people + "€");
-            }
-        });
+//        ImageButton remIB = findViewById(R.id.removePeople);
+//        remIB.setOnClickListener(view -> {
+//            if (people > 0) {
+//                people--;
+//                counterPeople.setText(Integer.toString(people));
+//                counterPrice.setText(new Formatter().format(Locale.ITALIAN, "%.2f€", price/people).toString());
+//            }
+//        });
     }
 
     private DialogInterface.OnClickListener payWithCashListener = new DialogInterface.OnClickListener() {

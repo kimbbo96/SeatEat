@@ -83,38 +83,6 @@
                 app:layout_constraintStart_toEndOf="@id/subText"
                 app:layout_constraintTop_toBottomOf="@id/priceText" />
 
-            <ImageButton
-                android:id="@+id/addPeople"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_gravity="end"
-                android:layout_marginStart="32dp"
-                android:layout_marginTop="16dp"
-                android:contentDescription="add people"
-                android:elevation="6dp"
-                android:padding="0dp"
-                android:scaleType="centerCrop"
-                android:stateListAnimator="@animator/button_elevation"
-                app:layout_constraintStart_toEndOf="@id/counterPeople"
-                app:layout_constraintTop_toBottomOf="@id/priceText"
-                app:srcCompat="@drawable/plus_new" />
-
-            <ImageButton
-                android:id="@+id/removePeople"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_gravity="end"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:contentDescription="remove people"
-                android:elevation="6dp"
-                android:padding="0dp"
-                android:scaleType="centerCrop"
-                android:stateListAnimator="@animator/button_elevation"
-                app:layout_constraintStart_toEndOf="@id/addPeople"
-                app:layout_constraintTop_toBottomOf="@id/priceText"
-                app:srcCompat="@drawable/minus_new" />
-
             <TextView
                 android:id="@+id/computedPriceText"
                 android:layout_width="0dp"

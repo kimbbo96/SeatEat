@@ -113,11 +113,11 @@ public class Coll extends AppCompatActivity {
 
         TextView totalText = findViewById(R.id.priceText);
         System.out.println("totalText: " + totalText);
-        totalText.setText(String.valueOf(price)+"€");
+        totalText.setText(new Formatter().format(Locale.ITALIAN, "%.2f€", price).toString());
 
         TextView counterPrice = findViewById(R.id.counterPrice);
         System.out.println("counterPrice: " + counterPrice);
-        counterPrice.setText(String.valueOf(price/people)+"€");
+        counterPrice.setText(new Formatter().format(Locale.ITALIAN, "%.2f€", price/people).toString());
 
         TextView nameText = findViewById(R.id.myName);
         nameText.setText("Quanto vuoi versare?");
@@ -336,7 +336,7 @@ public class Coll extends AppCompatActivity {
         double total = cart.getTotalShares();
         System.out.println("fill total: " + total);
         TextView totalObtained = findViewById(R.id.counterTotal);
-        totalObtained.setText(total + "€ su " + price + "€");
+        totalObtained.setText(new Formatter().format(Locale.ITALIAN, "%.2f€ su %2f€", total, price).toString());
 
         Button payButton = findViewById(R.id.pay_button);
         if (total < price) {
