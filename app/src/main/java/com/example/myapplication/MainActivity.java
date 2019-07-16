@@ -29,8 +29,8 @@ public class MainActivity extends AppCompatActivity {
     public static Location here = new Location("");
     static {
         // If the first registered position isn't the real one, we can approximate with a likely one
-        here.setLatitude(DEFAULT_POS[0]);
-        here.setLongitude(DEFAULT_POS[1]);
+        here.setLatitude(SAPI_POS[0]);
+        here.setLongitude(SAPI_POS[1]);
     }
 
     private LocationManager lm;
