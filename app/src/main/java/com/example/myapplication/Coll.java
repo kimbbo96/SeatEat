@@ -336,7 +336,7 @@ public class Coll extends AppCompatActivity {
         double total = cart.getTotalShares();
         System.out.println("fill total: " + total);
         TextView totalObtained = findViewById(R.id.counterTotal);
-        totalObtained.setText(new Formatter().format(Locale.ITALIAN, "%.2f€ su %2f€", total, price).toString());
+        totalObtained.setText(new Formatter().format(Locale.ITALIAN, "%.2f€ su %.2f€", total, price).toString());
 
         Button payButton = findViewById(R.id.pay_button);
         if (total < price) {
