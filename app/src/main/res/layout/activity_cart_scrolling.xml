@@ -69,10 +69,9 @@
             android:padding="0dp"
             android:scaleType="centerCrop"
             android:stateListAnimator="@animator/button_elevation"
-            android:tint="@color/colorPrimaryDark"
             app:layout_constraintStart_toEndOf="@+id/foodCartName"
             app:layout_constraintTop_toTopOf="@+id/foodCartName"
-            app:srcCompat="@drawable/add_circle_black" />
+            app:srcCompat="@drawable/plus_new" />
 
         <ImageButton
             android:id="@+id/removeFoodCartButton"
@@ -85,11 +84,10 @@
             android:padding="0dp"
             android:scaleType="centerCrop"
             android:stateListAnimator="@animator/button_elevation"
-            android:tint="@color/colorPrimaryDark"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/addFoodCartButton"
             app:layout_constraintTop_toTopOf="@+id/foodCartName"
-            app:srcCompat="@drawable/remove_circle_black" />
+            app:srcCompat="@drawable/minus_new" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
