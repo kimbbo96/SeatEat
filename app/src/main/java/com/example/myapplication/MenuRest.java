@@ -161,7 +161,7 @@ public class MenuRest extends AppCompatActivity
 
         listView.setOnItemClickListener((adapterView, view, i, l) -> {
             System.out.println("hai clikkato "+i);
-            Intent intent = new Intent(activity, ResDetail.class);
+            Intent intent = new Intent(activity, FoodRest.class);
             intent.putExtra("Restaurant", restaurants.get(i)); // passo l'oggetto ristorante
             activity.startActivity(intent);
         });
