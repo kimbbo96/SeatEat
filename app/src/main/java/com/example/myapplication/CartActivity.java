@@ -40,7 +40,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class CartActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class CartActivity extends AppCompatActivity {
     Cart cart;
     CartActivity activity;
     private final String POST_URL = "https://seateat-be.herokuapp.com/api/sendOrder";
@@ -58,13 +58,11 @@ public class CartActivity extends AppCompatActivity implements NavigationView.On
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // TODO gestire sto coso
-        NavigationView navigationView = findViewById(R.id.nav_view_cart);
 //        DrawerLayout drawer = findViewById(R.id.drawer_layout_cart);
 //        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
 //                activity, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
 //        drawer.addDrawerListener(toggle);
 //        toggle.syncState();
-        navigationView.setNavigationItemSelectedListener(activity);
 
         SharedPreferences preferencesRest = this.getSharedPreferences("infoRes", MODE_PRIVATE);
         String idRestPref = preferencesRest.getString("ID","");
@@ -212,34 +210,7 @@ public class CartActivity extends AppCompatActivity implements NavigationView.On
 //                });
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
 
-        if (id == R.id.nav_home) {
-            // Handle the camera action
-
-        }  else if (id == R.id.nav_help) {
-            Intent intent = new Intent(getApplicationContext(), Help.class);
-            startActivity(intent);
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
-        }
-
-        else if (id == R.id.nav_settings){
-            Intent intent = new Intent(getApplicationContext(), Settings.class);
-            startActivity(intent);
-        }
-
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
 
     @Override
     public void onBackPressed() {
@@ -250,78 +221,5 @@ public class CartActivity extends AppCompatActivity implements NavigationView.On
             super.onBackPressed();
         }
     }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_qr, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        } else if (id == android.R.id.home) {
-            onBackPressed();
-            return true;
-        } else if (id == R.id.qr_button) {
-            SharedPreferences preferences = getSharedPreferences("infoRes", MODE_PRIVATE);
-            String QREncoded = preferences.getString("QRimage",null);
-            byte[] decodedByte = Base64.getDecoder().decode(QREncoded);
-            Bitmap bmp = BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length);
-
-            Intent zoomQRIntent = new Intent(getApplicationContext(), Qr_zoom.class);
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            bmp.compress(Bitmap.CompressFormat.PNG, 100, baos);
-            byte[] b = baos.toByteArray();
-            zoomQRIntent.putExtra("QRImage", b);
-            startActivity(zoomQRIntent);
-
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-//    class FabCartClickListener implements View.OnClickListener {
-//        Cart cart;
-//
-//        public FabCartClickListener(Cart cart) {
-//            this.cart = cart;
-//        }
-//
-//        @Override
-//        public void onClick(View view) {
-//            System.out.println("hai clikkato 'invia ordine'");
-//            cart.refresh();
-//            cart.newOrder();
-//            System.out.println("CARRELLO AGGIORNATO: " + cart);
-//            cart.save();
-//            finish();
-////            Intent intent = new Intent(this, CartActivity.class);
-////            intent.putExtra("Restaurant", rist); // passo l'oggetto ristornate
-////            startActivity(intent);
-//        }
-//    }
-//
-//    class FabCheckoutClickListener implements View.OnClickListener {
-//
-//        @Override
-//        public void onClick(View view) {
-//            System.out.println("hai clikkato 'checkout'");
-//
-//            Intent intent = new Intent(getApplicationContext(), Checkout.class);
-////            intent.putExtra("Restaurant", rist);
-//            startActivity(intent);
-//            finish();
-//        }
-//    }
 
 }

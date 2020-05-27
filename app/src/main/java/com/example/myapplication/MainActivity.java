@@ -87,15 +87,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
 
-        Utils.createNotificationChannel(this);
-        Bundle b = getIntent().getExtras();
-        System.out.println("ONCREATE MAIN EXTRAS: " + b);
-        if (b!=null) {
-            String type = b.getString("type");
-            String id = b.getString("id");
-            String capotavola = b.getString("isCapotavola");
-            System.out.println("ONCREATE MAIN type=" + type + " id=" + id + ", capotavola=" + capotavola);
-        }
 
         // Get location or location permission
         lm = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
@@ -119,24 +110,10 @@ public class MainActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         }
 
-        // Handle login
-        preferences = getSharedPreferences("loginref", MODE_PRIVATE);
-        boolean savelogin = preferences.getBoolean("savelogin", false);
-        if (savelogin) {
-            System.out.println("true valore"+ preferences.getString("nome",null));
-            Toast.makeText(this, "ciao " + preferences.getString("nome", null), Toast.LENGTH_LONG).show();
-            System.out.println(preferences.getString("nome", null));
 
-            setContentView(R.layout.activity_main);
-        }
-        else {
-            // Session management
-            Toast.makeText(this,"prima volta", Toast.LENGTH_LONG).show();
-            Intent i = new Intent(MainActivity.this, Login.class);
-            startActivity(i);
-            finish();
 
-        }
+        setContentView(R.layout.activity_main);
+
     }
 
     @Override
@@ -149,8 +126,7 @@ public class MainActivity extends AppCompatActivity {
         if (b!=null) {
             String type = b.getString("type");
             String id = b.getString("id");
-            String capotavola = b.getString("isCapotavola");
-            System.out.println("ONRESUME MAIN type=" + type + " id=" + id + ", capotavola=" + capotavola);
+            System.out.println("ONRESUME MAIN type=" + type + " id=" + id );
         }
     }
 
