@@ -46,32 +46,9 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class MenuRest extends AppCompatActivity
-       {
-    SharedPreferences preferences;
-
-
-//    Restaurant r1 = new Restaurant("1","Trattoria IV Secolo",
-//            "Trattoria, Italiano",(float)6,"image", new Double[] {42.002780, 12.384011});
-//    Restaurant r2 = new Restaurant("2","Panizzeri",
-//            "Panineria, Italiano",(float)4,"image", new Double[] {41.968043, 12.537057});
-//    Restaurant r3 = new Restaurant("3","Ristorante Jinja",
-//            "Giapponese, Cinese",(float)1,"image", new Double[] {41.927775, 12.480815});
-
-    private static Restaurant r1 = new Restaurant("1","Trattoria IV Secolo",
-            "Trattoria, Italiano",(float)6,"iv_secolo_logo", new Double[] {42.002780, 12.384011});
-    private static Restaurant r2 = new Restaurant("2","Panizzeri",
-            "Paninoteca, Italiano",(float)4,"panizzeri_logo", new Double[] {41.968043, 12.537057});
-    private static Restaurant r3 = new Restaurant("3","Ristorante Jinja",
-            "Giapponese, Cinese",(float)1,"jinja_logo", new Double[] {41.927775, 12.480815});
-
-//    static Restaurant[] restaurants = {r1, r2, r3};
+public class MenuRest extends AppCompatActivity {
     String urlBase = "https://seateat-be.herokuapp.com";
-    //static Restaurant[] restaurants;
-
     static List<Restaurant> restaurants = new ArrayList<>();
-
-//    List<Restaurant> list = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,15 +104,6 @@ public class MenuRest extends AppCompatActivity
 
                                 }
                                 System.out.println("okoko"+restaurants.size());
-//                              restaurants =  restaurants.toArray(new Restaurant[0]);
-
-//                                fab.setOnClickListener(new View.OnClickListener() {
-//                                    @Override
-//                                    public void onClick(View view) {
-//                                        Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                                                .setAction("Action", null).show();
-//                                    }
-//                                });
 
                                 progressBarResList.setVisibility(View.GONE);
                                 fillList(activity, restaurants);
@@ -157,10 +125,13 @@ public class MenuRest extends AppCompatActivity
 
         System.out.println("aaaaaaaaaaas"+customListView+ listView);
         listView.setAdapter(customListView);
-//        final List<Restaurant> resList = new ArrayList<>(Arrays.asList(restaurants));
 
         listView.setOnItemClickListener((adapterView, view, i, l) -> {
             System.out.println("hai clikkato "+i);
+            SharedPreferences preferencesRest = activity.getSharedPreferences("infoRes", MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferencesRest.edit();
+            editor.putString("ID", String.valueOf(i+1));
+            editor.commit();
             Intent intent = new Intent(activity, FoodRest.class);
             intent.putExtra("Restaurant", restaurants.get(i)); // passo l'oggetto ristorante
             activity.startActivity(intent);
@@ -177,15 +148,11 @@ public class MenuRest extends AppCompatActivity
         }
     }
 
-
-
-
     private boolean handleFilter() {
         BottomSheetDialogFragment filtersDialog = new FiltersDialogFragment();
         filtersDialog.show(getSupportFragmentManager(), "filtersDialog");
 
         return true;
     }
-
 
 }

@@ -18,11 +18,10 @@ import android.widget.Toast;
 import com.example.myapplication.utils.Utils;
 
 import java.util.List;
+import java.util.Random;
 
 
 public class MainActivity extends AppCompatActivity {
-
-    SharedPreferences preferences;
 
     private static int TIME_OUT = 500;
     private static double[] PDR_POS = {41.971655, 12.540330};
@@ -71,13 +70,10 @@ public class MainActivity extends AppCompatActivity {
             se.printStackTrace();
         } finally {
             // Show logo
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    Intent i = new Intent(MainActivity.this, MenuRest.class);
-                    startActivity(i);
-                    finish();
-                }
+            new Handler().postDelayed(() -> {
+                Intent i = new Intent(MainActivity.this, MenuRest.class);
+                startActivity(i);
+                finish();
             }, TIME_OUT);
         }
     }
@@ -86,7 +82,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
+        // Fake login
+        SharedPreferences preferences = getSharedPreferences("loginref", MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        String nome = String.valueOf(new Random().nextLong()) + new Random().nextLong();
+        System.out.println("nome:" + nome);
+        editor.putString("nome", (nome));
+        editor.putBoolean("savelogin", true);
+        editor.commit();
 
         // Get location or location permission
         lm = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
@@ -95,22 +98,16 @@ public class MainActivity extends AppCompatActivity {
             MainActivity.here = getLastKnownLocation();
             System.out.println("99 " + MainActivity.here);
 
-
             // Show logo
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    Intent i = new Intent(MainActivity.this, MenuRest.class);
-                    startActivity(i);
-                    finish();
-                }
+            new Handler().postDelayed(() -> {
+                Intent i = new Intent(MainActivity.this, MenuRest.class);
+                startActivity(i);
+                finish();
             }, TIME_OUT);
 
         } catch (SecurityException se) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         }
-
-
 
         setContentView(R.layout.activity_main);
 

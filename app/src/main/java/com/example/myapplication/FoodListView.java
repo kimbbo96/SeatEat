@@ -103,18 +103,6 @@ class FoodListView extends ArrayAdapter<String> {
         viewHolder.tvw3.setText(foodPrice[position] + "€");
         viewHolder.counter.setText("");
 
-        /* for the image --- offline */
-//        int imgId = -1;
-//        try {
-//            Class res = R.drawable.class;
-//            Field field = res.getField(foodImage[position]);
-//            imgId = field.getInt(null);
-//        }
-//        catch (Exception e) {
-//            System.out.println("Restaurant image not found: " + foodImage[position] + ", " + imgId + "\n" + e);
-//        }
-//        viewHolder.ivw.setImageResource(imgId);
-
         /* for the image --- online */
         Glide.with(context)
                 .load(Uri.parse(path_base + "/resources/menus/" + restId + "/" + foodImage[position]))
@@ -129,6 +117,8 @@ class FoodListView extends ArrayAdapter<String> {
 
         final int quantity = 0;
         int[] counter = {quantity};
+
+        System.out.println("rest ids: " + restId + " - " + restIdPref);
 
         if (restId.equals(restIdPref)) {
             // TODO manage cart (add)

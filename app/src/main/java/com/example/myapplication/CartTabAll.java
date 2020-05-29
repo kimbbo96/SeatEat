@@ -29,7 +29,7 @@ import java.util.Locale;
 import static android.content.Context.MODE_PRIVATE;
 import static com.example.myapplication.utils.Utils.justifyListViewHeight;
 
-class CartTabAll extends Fragment {
+public class CartTabAll extends Fragment {
     private CartActivity activity;
     private Cart cart;
     private String restId;
@@ -41,9 +41,6 @@ class CartTabAll extends Fragment {
             if (intent != null && created) {
                 String content = intent.getStringExtra("content");
                 System.out.println(content + " ALL");
-                if (content.equals("new CartUser")) {
-                    setParticipants();
-                }
             }
         }
     };
@@ -144,12 +141,12 @@ class CartTabAll extends Fragment {
         System.out.println("ordNum: " + ordNum);
         List<Cart.CartFood> foods = cart.getCartFoods(ordNum);
         System.out.println("foods ora-tutti: " + foods);
-        CartListView customListView = new CartListView(activity, foods, false, false);
+        CartListView customListView = new CartListView(activity, foods, false, true);
 
         ListView listViewOld = activity.findViewById(R.id.list_view_cart_old_all);
         List<Cart.CartFood> foodsOld = cart.getOldCartFoods(ordNum);
         System.out.println("foods prima-tutti: " + foodsOld);
-        CartListView customListViewOld = new CartListView(activity, foodsOld, true, false);
+        CartListView customListViewOld = new CartListView(activity, foodsOld, true, true);
 
         listView.setAdapter(customListView);
         justifyListViewHeight(listView);
@@ -181,40 +178,6 @@ class CartTabAll extends Fragment {
             intent.putExtra("Mode", "edit");
             activity.startActivity(intent);
         });
-
-        setParticipants();
     }
 
-    private void setParticipants() {
-        SharedPreferences preferencesRest = activity.getSharedPreferences("infoRes", MODE_PRIVATE);
-        String restIdPref = preferencesRest.getString("ID","");
-        TextView participantsTvAll = activity.findViewById(R.id.fellowship_cart_all);
-
-        if (restId.equals(restIdPref)) {
-            cart.load();
-            String fellowship = cart.getCartUsersNames();
-            System.out.println("FELLOWSHIP CARTTABALL " + fellowship);
-            if (fellowship == null) {
-                participantsTvAll.setText("Partecipanti: tu");
-            } else {
-                participantsTvAll.setText("Partecipanti: " + fellowship);
-            }
-        } else {
-            participantsTvAll.setVisibility(View.INVISIBLE);
-        }
-    }
-
-//    public void hideButtons() {
-//        FloatingActionButton fabCart = activity.findViewById(R.id.fab_cart_all);
-//        FloatingActionButton fabCheckout = activity.findViewById(R.id.fab_checkout_all);
-//        fabCart.setVisibility(View.GONE);
-//        fabCheckout.setVisibility(View.GONE);
-//    }
-//
-//    public void showButtons() {
-//        FloatingActionButton fabCart = activity.findViewById(R.id.fab_cart_all);
-//        FloatingActionButton fabCheckout = activity.findViewById(R.id.fab_checkout_all);
-//        fabCart.setVisibility(View.VISIBLE);
-//        fabCheckout.setVisibility(View.VISIBLE);
-//    }
 }

@@ -38,24 +38,11 @@ public class CollectionFoodFragment extends Fragment {
     private String userID;
     private boolean created = false;
 
-    private BroadcastReceiver receiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (intent != null && view != null && created) {
-                String content = intent.getStringExtra("content");
-                if (content.equals("new CartUser"))
-                    setParticipants(view);
-            }
-        }
-    };
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         cart = new Cart(getContext());
-        LocalBroadcastManager lbm = LocalBroadcastManager.getInstance(getContext());
-        lbm.registerReceiver(receiver, new IntentFilter("add_user"));
     }
 
     @Nullable
@@ -75,8 +62,6 @@ public class CollectionFoodFragment extends Fragment {
         viewPager.setAdapter(demoCollectionPagerAdapter);
         TabLayout tabLayout = view.findViewById(R.id.tab_layout_food);
         tabLayout.setupWithViewPager(viewPager);
-
-        setParticipants(view);
     }
 
     @Override
@@ -95,25 +80,5 @@ public class CollectionFoodFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        setParticipants(view);
-    }
-
-    private void setParticipants(View view) {
-        SharedPreferences preferencesRest = view.getContext().getSharedPreferences("infoRes", MODE_PRIVATE);
-        String idRestPref = preferencesRest.getString("ID","");
-        TextView fellowshipFood = view.findViewById(R.id.fellowship_food);
-
-        if (restID.equals(idRestPref)) {
-            cart.load();
-            String fellowship = cart.getCartUsersNames();
-            System.out.println("FELLOWSHIP COLLECTIONFOODFRAGMENT " + fellowship);
-            if (fellowship == null) {
-                fellowshipFood.setText("Partecipanti: tu");
-            } else {
-                fellowshipFood.setText("Partecipanti: " + fellowship);
-            }
-        } else {
-            fellowshipFood.setText("Partecipanti: /");
-        }
     }
 }

@@ -29,7 +29,7 @@ import java.util.Locale;
 import static android.content.Context.MODE_PRIVATE;
 import static com.example.myapplication.utils.Utils.justifyListViewHeight;
 
-class CartTabYou extends Fragment {
+public class CartTabYou extends Fragment {
     private CartActivity activity;
     private Cart cart;
     private String userId;
@@ -42,8 +42,6 @@ class CartTabYou extends Fragment {
             if (intent != null && created) {
                 String content = intent.getStringExtra("content");
                 System.out.println(content + " YOU");
-                if (content.equals("new CartUser"))
-                    setParticipants();
             }
         }
     };
@@ -168,40 +166,5 @@ class CartTabYou extends Fragment {
             intent.putExtra("Mode", "edit");
             activity.startActivity(intent);
         });
-
-        setParticipants();
     }
-
-    private void setParticipants() {
-        SharedPreferences preferencesRest = activity.getSharedPreferences("infoRes", MODE_PRIVATE);
-        String restIdPref = preferencesRest.getString("ID","");
-        TextView participantsTvYou = activity.findViewById(R.id.fellowship_cart_you);
-
-        if (restId.equals(restIdPref)) {
-            cart.load();
-            String fellowship = cart.getCartUsersNames();
-            System.out.println("FELLOWSHIP CARTTABYOU " + fellowship);
-            if (fellowship == null) {
-                participantsTvYou.setText("Partecipanti: tu");
-            } else {
-                participantsTvYou.setText("Partecipanti: " + fellowship);
-            }
-        } else {
-            participantsTvYou.setVisibility(View.INVISIBLE);
-        }
-    }
-
-//    public void hideButtons() {
-//        FloatingActionButton fabCart = activity.findViewById(R.id.fab_cart_all);
-//        FloatingActionButton fabCheckout = activity.findViewById(R.id.fab_checkout_all);
-//        fabCart.setVisibility(View.GONE);
-//        fabCheckout.setVisibility(View.GONE);
-//    }
-//
-//    public void showButtons() {
-//        FloatingActionButton fabCart = activity.findViewById(R.id.fab_cart_all);
-//        FloatingActionButton fabCheckout = activity.findViewById(R.id.fab_checkout_all);
-//        fabCart.setVisibility(View.VISIBLE);
-//        fabCheckout.setVisibility(View.VISIBLE);
-//    }
 }

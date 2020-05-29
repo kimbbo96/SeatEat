@@ -23,9 +23,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomViewTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.example.myapplication.db_obj.Food;
-import com.example.myapplication.db_obj.Restaurant;
 import com.example.myapplication.utils.Cart;
-import com.google.android.material.snackbar.Snackbar;
 
 
 public class FoodDetail extends AppCompatActivity {
