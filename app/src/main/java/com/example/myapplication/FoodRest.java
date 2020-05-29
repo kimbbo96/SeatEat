@@ -1,5 +1,8 @@
 package com.example.myapplication;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -49,17 +52,11 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class FoodRest extends AppCompatActivity
-        {
-    SharedPreferences preferences;
+public class FoodRest extends AppCompatActivity {
     String urlBase = "https://seateat-be.herokuapp.com";
     Cart cart;
+    Activity context = this;
 
-//    private static Food f1 = new Food("1", "Supplì", "Riso, mozzarella, pomodoro...", 1, "suppli");
-//    private static Food f2 = new Food("2", "Crocchetta", "Patate, mozzarella...", 2, "crocchette");
-//    private static Food f3 = new Food("3", "Fiore di zucca", "Fiore di zucca, mozzarella, alici...", 3, "fiori");
-
-//    static Food[] foods = {f1, f2, f3};
     List<Food> foods = new ArrayList<>();
     Map<String, ArrayList<String>> dishes = new TreeMap<>();
 
@@ -67,7 +64,7 @@ public class FoodRest extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        cart = new Cart(this);
+        cart = new Cart(context);
         setContentView(R.layout.activity_food_rest);
 
         SharedPreferences preferencesLogin = this.getSharedPreferences("loginref", MODE_PRIVATE);
@@ -87,7 +84,7 @@ public class FoodRest extends AppCompatActivity
             fab.setText("Totale: " + cart.getTotal() + "€");
             fab.setOnClickListener(view -> {
                 System.out.println("hai clikkato il carrello");
-                Intent intent = new Intent(this, CartActivity.class);
+                Intent intent = new Intent(context, CartActivity.class);
                 intent.putExtra("RestId", idRest); // passo l'oggetto ristorante
                 startActivity(intent);
             });
@@ -158,13 +155,54 @@ public class FoodRest extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        System.out.println("akallaalala");
-        DrawerLayout drawer = findViewById(R.id.drawer_layout_food);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
+        if (cart.getCartFoods().isEmpty()) {
             super.onBackPressed();
+        } else {
+            cartAlert(context);
         }
+//        DrawerLayout drawer = findViewById(R.id.drawer_layout_food);
+//        if (drawer.isDrawerOpen(GravityCompat.START)) {
+//            drawer.closeDrawer(GravityCompat.START);
+//        } else {
+//            super.onBackPressed();
+//        }
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        if (id == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void cartAlert(Context context) {
+        CharSequence message = "Cliccando su 'Termina ordinazione', la tua lista di ordini sarà cancellata.";
+        String posButtonText = "Termina ordinazione";
+        DialogInterface.OnClickListener posButtonListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                System.out.println("ADDIO CARRELLOOOO!!!");
+                cart.clear();
+                cart.save();
+                FoodRest.super.onBackPressed();
+            }
+        };
+        String negButtonText = "Prosegui ordinazione";
+        DialogInterface.OnClickListener negButtonListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        };
+
+        Utils.showDialog(context, "Attenzione!", message, posButtonText, posButtonListener, negButtonText, negButtonListener);
+    }
 }
