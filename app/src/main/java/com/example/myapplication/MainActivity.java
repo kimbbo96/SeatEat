@@ -17,8 +17,6 @@ import android.widget.Toast;
 
 import com.example.myapplication.utils.Utils;
 
-import java.util.List;
-
 
 public class MainActivity extends AppCompatActivity {
 
@@ -65,8 +63,6 @@ public class MainActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         try {
             lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
-            MainActivity.here = getLastKnownLocation();
-            System.out.println(MainActivity.here+ "66");
         } catch (SecurityException se) {
             se.printStackTrace();
         } finally {
@@ -101,9 +97,6 @@ public class MainActivity extends AppCompatActivity {
         lm = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         try {
             lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
-            MainActivity.here = getLastKnownLocation();
-            System.out.println("99 " + MainActivity.here);
-
 
             // Show logo
             new Handler().postDelayed(new Runnable() {
@@ -153,31 +146,4 @@ public class MainActivity extends AppCompatActivity {
             System.out.println("ONRESUME MAIN type=" + type + " id=" + id + ", capotavola=" + capotavola);
         }
     }
-
-
-
-
-    private Location getLastKnownLocation() {
-        List<String> providers = lm.getProviders(true);
-        Location bestLocation = null;
-        for (String provider : providers) {
-            try {
-                Location l = lm.getLastKnownLocation(provider);
-
-
-                if (l == null) {
-                    continue;
-                }
-                if (bestLocation == null || l.getAccuracy() < bestLocation.getAccuracy()) {
-                    // Found best last known location: %s", l);
-                    bestLocation = l;
-                }
-            } catch (SecurityException se) {
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-            }
-        }
-        return bestLocation;
-    }
-
-
 }
