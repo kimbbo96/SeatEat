@@ -50,7 +50,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class FoodRest extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        {
     SharedPreferences preferences;
     String urlBase = "https://seateat-be.herokuapp.com";
     Cart cart;
@@ -102,10 +102,8 @@ public class FoodRest extends AppCompatActivity
         }
 
 
-        NavigationView navigationView = findViewById(R.id.nav_view);
 //
 
-        navigationView.setNavigationItemSelectedListener(this);
 
         ///////////////////////////////////
 
@@ -181,65 +179,4 @@ public class FoodRest extends AppCompatActivity
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-
-        preferences = getSharedPreferences("loginref", MODE_PRIVATE);
-        TextView name_tab = findViewById(R.id.usr_name_tab);
-        name_tab.setText( preferences.getString("nome", null));
-
-        ImageView profile_image = findViewById(R.id.profile_image);
-        System.out.println(urlBase+preferences.getString("immagine",null));
-        RequestBuilder<Drawable> error = Glide.with(this).load(R.drawable.no_internet);
-        Glide.with(this).load(urlBase+"/"+preferences.getString("immagine",null)).error(error)
-                .signature(new ObjectKey(String.valueOf(System.currentTimeMillis())))
-                .fitCenter().into(profile_image);
-
-
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_qr, menu);
-
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        System.out.println("aaaaaa");
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        } else if (id == android.R.id.home) {
-            onBackPressed();
-            return true;
-        } else if (id == R.id.qr_button) {
-            SharedPreferences preferences = getSharedPreferences("infoRes", MODE_PRIVATE);
-            String QREncoded = preferences.getString("QRimage",null);
-            byte[] decodedByte = Base64.getDecoder().decode(QREncoded);
-            Bitmap bmp = BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length);
-
-            Intent zoomQRIntent = new Intent(getApplicationContext(), Qr_zoom.class);
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            bmp.compress(Bitmap.CompressFormat.PNG, 100, baos);
-            byte[] b = baos.toByteArray();
-            zoomQRIntent.putExtra("QRImage", b);
-            startActivity(zoomQRIntent);
-
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        Utils.gestisciMenu(item,this,findViewById(R.id.drawer_layout_food));
-        return true;
-    }
 }

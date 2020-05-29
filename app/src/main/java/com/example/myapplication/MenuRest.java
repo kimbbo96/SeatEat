@@ -47,7 +47,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class MenuRest extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+       {
     SharedPreferences preferences;
 
 
@@ -136,13 +136,7 @@ public class MenuRest extends AppCompatActivity
 //                                                .setAction("Action", null).show();
 //                                    }
 //                                });
-                                DrawerLayout drawer = findViewById(R.id.drawer_layout);
-                                NavigationView navigationView = findViewById(R.id.nav_view);
-                                ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                                        activity, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-                                drawer.addDrawerListener(toggle);
-                                toggle.syncState();
-                                navigationView.setNavigationItemSelectedListener((NavigationView.OnNavigationItemSelectedListener) activity);
+
                                 progressBarResList.setVisibility(View.GONE);
                                 fillList(activity, restaurants);
                             }catch (JSONException err){
@@ -167,7 +161,7 @@ public class MenuRest extends AppCompatActivity
 
         listView.setOnItemClickListener((adapterView, view, i, l) -> {
             System.out.println("hai clikkato "+i);
-            Intent intent = new Intent(activity, ResDetail.class);
+            Intent intent = new Intent(activity, FoodRest.class);
             intent.putExtra("Restaurant", restaurants.get(i)); // passo l'oggetto ristorante
             activity.startActivity(intent);
         });
@@ -183,42 +177,8 @@ public class MenuRest extends AppCompatActivity
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-
-        preferences = getSharedPreferences("loginref", MODE_PRIVATE);
-        TextView name_tab = findViewById(R.id.usr_name_tab);
-        name_tab.setText( preferences.getString("nome", null));
-
-        ImageView profile_image = findViewById(R.id.profile_image);
-        System.out.println(urlBase+preferences.getString("immagine",null));
-        RequestBuilder<Drawable> error = Glide.with(this).load(R.drawable.no_internet);
-        Glide.with(this).load(urlBase+"/"+preferences.getString("immagine",null)).error(error)
-                .signature(new ObjectKey(String.valueOf(System.currentTimeMillis())))
-                .fitCenter().into(profile_image);
 
 
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_rest, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        } else if (id == R.id.action_filter) {
-            return handleFilter();
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 
     private boolean handleFilter() {
         BottomSheetDialogFragment filtersDialog = new FiltersDialogFragment();
@@ -227,10 +187,5 @@ public class MenuRest extends AppCompatActivity
         return true;
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        Utils.gestisciMenu(item,this,findViewById(R.id.drawer_layout));
-        return true;
-    }
+
 }

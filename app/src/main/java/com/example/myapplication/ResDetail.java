@@ -55,7 +55,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class ResDetail extends AppCompatActivity  implements NavigationView.OnNavigationItemSelectedListener{
+public class ResDetail extends AppCompatActivity {
     private String path_base = "https://seateat-be.herokuapp.com";
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
@@ -69,8 +69,7 @@ public class ResDetail extends AppCompatActivity  implements NavigationView.OnNa
         Toolbar toolbar = findViewById(R.id.tool_bar_simple);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+
 
         final Restaurant rist = (Restaurant) getIntent().getSerializableExtra("Restaurant");
         System.out.println("RistID"+rist.getRESTAURANT_ID());
@@ -401,46 +400,9 @@ public class ResDetail extends AppCompatActivity  implements NavigationView.OnNa
 
 
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
 
-        preferences = getSharedPreferences("loginref", MODE_PRIVATE);
-        TextView name_tab = findViewById(R.id.usr_name_tab);
-        name_tab.setText( preferences.getString("nome", null));
 
-        ImageView profile_image = findViewById(R.id.profile_image);
-        System.out.println(urlBase+preferences.getString("immagine",null));
-        RequestBuilder<Drawable> error = Glide.with(this).load(R.drawable.no_internet);
-        Glide.with(this).load(urlBase+"/"+preferences.getString("immagine",null)).error(error)
-                .signature(new ObjectKey(String.valueOf(System.currentTimeMillis())))
-                .fitCenter().into(profile_image);
 
-        return true;
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        } else if (id == android.R.id.home) {
-            onBackPressed();
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        // Handle navigation view item clicks here.
-        Utils.gestisciMenu(item,this,findViewById(R.id.drawer_layout_res_detail));
-        return true;
-    }
 
 }
