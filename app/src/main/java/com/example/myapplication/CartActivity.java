@@ -72,9 +72,7 @@ public class CartActivity extends AppCompatActivity {
         TabLayout tabLayout = findViewById(R.id.tabLayoutCart);
         SimplePagerAdapter adapter = new SimplePagerAdapter(getSupportFragmentManager());
         CartTabYou cty = new CartTabYou(activity, restId);
-        CartTabAll cta = new CartTabAll(activity, restId);
         adapter.addFragment(cty, "I tuoi ordini");
-        adapter.addFragment(cta, "Gli ordini di tutti");
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
 

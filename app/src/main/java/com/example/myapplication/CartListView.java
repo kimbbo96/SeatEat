@@ -142,7 +142,6 @@ public class CartListView extends ArrayAdapter<String> {
 
             ViewGroup newParent = (ViewGroup) parent.getParent().getParent().getParent().getParent().getParent();
             totalTvYou = newParent.findViewById(R.id.tw_total_cart_you);
-            totalTvAll = newParent.findViewById(R.id.tw_total_cart_all);
         }
     }
 }

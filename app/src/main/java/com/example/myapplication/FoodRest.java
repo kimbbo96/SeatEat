@@ -155,6 +155,7 @@ public class FoodRest extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        cart.load();
         if (cart.getCartFoods().isEmpty()) {
             super.onBackPressed();
         } else {
