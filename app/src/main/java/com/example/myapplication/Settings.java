@@ -66,8 +66,8 @@ public class Settings extends AppCompatActivity  {
                 cart.clear();
                 cart.save();
 
-                Intent i = new Intent(Settings.this, Login.class);
-                startActivity(i);
+//                Intent i = new Intent(Settings.this, Login.class);
+//                startActivity(i);
                 finish();
             }
         });

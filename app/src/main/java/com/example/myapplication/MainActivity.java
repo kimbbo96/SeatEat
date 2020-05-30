@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.widget.Toast;
 
+import com.example.myapplication.utils.Cart;
 import com.example.myapplication.utils.Utils;
 
 import java.util.List;
@@ -81,6 +82,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Empty cart
+        Cart cart = new Cart(this);
+        cart.clear();
 
         // Fake login
         SharedPreferences preferences = getSharedPreferences("loginref", MODE_PRIVATE);

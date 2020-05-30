@@ -59,16 +59,12 @@ public class Cart implements Serializable {
         userId = preferences.getString("nome", "");
 
         Runnable command = () -> {
-//            System.out.println("tic tac " + System.identityHashCode(this));
-
             refresh();
             if (doRefresh[0]) {
                 // manda notifica all'interfaccia
                 Intent intent = new Intent("update_cart");
                 intent.putExtra("content", "new Cart");
                 LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
-
-//                System.out.println("REFRESH COMMAND");
             }
         };
 

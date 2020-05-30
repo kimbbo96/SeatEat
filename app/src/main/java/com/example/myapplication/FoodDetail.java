@@ -97,7 +97,6 @@ public class FoodDetail extends AppCompatActivity {
         addIB.setOnClickListener(view -> {
             counter[0] += 1;
             counterDetail.setText("x"+counter[0]);
-            // vh.cartButton.setText("Totale: " + cart.getTotal() + "€");
         });
 
         // remove from (sub)cart
@@ -133,10 +132,6 @@ public class FoodDetail extends AppCompatActivity {
             cart.save();
 
             finish();
-
-//            Intent intent = new Intent(ResDetail.this,FoodRest.class);
-//            intent.putExtra("Restaurant",rist); // passo l'oggetto ristornate
-//            startActivity(intent);
         });
     }
 

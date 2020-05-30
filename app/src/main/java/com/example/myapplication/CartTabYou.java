@@ -131,15 +131,15 @@ public class CartTabYou extends Fragment {
         System.out.println("foods ora-tu: " + foods);
         CartListView customListView = new CartListView(activity, foods, false, true);
 
-        ListView listViewOld = activity.findViewById(R.id.list_view_cart_old_you);
-        List<Cart.CartFood> foodsOld = cart.getOldCartFoods(ordNum, userId);
-        System.out.println("foods prima-tu: " + foodsOld);
-        CartListView customListViewOld = new CartListView(activity, foodsOld, true, true);
+//        ListView listViewOld = activity.findViewById(R.id.list_view_cart_old_you);
+//        List<Cart.CartFood> foodsOld = cart.getOldCartFoods(ordNum, userId);
+//        System.out.println("foods prima-tu: " + foodsOld);
+//        CartListView customListViewOld = new CartListView(activity, foodsOld, true, true);
 
         listView.setAdapter(customListView);
         justifyListViewHeight(listView);
-        listViewOld.setAdapter(customListViewOld);
-        justifyListViewHeight(listViewOld);
+//        listViewOld.setAdapter(customListViewOld);
+//        justifyListViewHeight(listViewOld);
 
         ProgressBar progressBarCart = activity.findViewById(R.id.progressBar_cart_you);
         progressBarCart.setVisibility(View.GONE);
