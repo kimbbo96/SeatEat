@@ -114,7 +114,7 @@ class FoodListView extends ArrayAdapter<String> {
 
         cart.load();
 
-        final int quantity = cart.getFoodQuantity(foodId[position], userId, "");
+        final int quantity = cart.getFoodQuantity(foodId[position], userId);
         System.out.println("quantity flw: " + quantity);
         viewHolder.counter.setText(quantity==0 ? "" : "x"+quantity);
 

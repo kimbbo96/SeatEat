@@ -358,10 +358,10 @@ public class Cart implements Serializable {
         }
     }
 
-    public int getFoodQuantity(String foodId, String userId, String note) {
+    public int getFoodQuantity(String foodId, String userId) {
         int quantity = 0;
         for (CartFood cf : cartFoods) {
-            if (cf.id.equals(foodId)) { //&& cf.user.equals(userId) && cf.note.equals(note)) {
+            if (cf.id.equals(foodId) && cf.user.equals(userId)) {
                 quantity += cf.quantity;
             }
         }
