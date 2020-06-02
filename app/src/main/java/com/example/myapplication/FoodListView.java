@@ -55,8 +55,9 @@ class FoodListView extends ArrayAdapter<String> {
         Double[] foodPrice = new Double[foods.length];
         String[] foodId = new String[foods.length];
 
+//        System.out.println("cibi foodlistview:");
         for (int i = 0; i < foods.length; i++) {
-            System.out.println(foods[i]);
+//            System.out.println(foods[i]);
 
             foodName[i] = foods[i].getFOOD_TITLE();
             foodDesc[i] = foods[i].getFOOD_SHORT_DESCR();
@@ -101,9 +102,7 @@ class FoodListView extends ArrayAdapter<String> {
         viewHolder.tvw1.setText(foodName[position]);
         viewHolder.tvw2.setText(foodDesc[position]);
         viewHolder.tvw3.setText(foodPrice[position] + "€");
-        viewHolder.counter.setText("");
 
-        /* for the image --- online */
         Glide.with(context)
                 .load(Uri.parse(path_base + "/resources/menus/" + restId + "/" + foodImage[position]))
                 .into(viewHolder.ivw);
@@ -115,13 +114,16 @@ class FoodListView extends ArrayAdapter<String> {
 
         cart.load();
 
-        final int quantity = 0;
+        final int quantity = cart.getFoodQuantity(foodId[position], userId, "");
+        System.out.println("quantity flw: " + quantity);
+        viewHolder.counter.setText(quantity==0 ? "" : "x"+quantity);
+
         int[] counter = {quantity};
 
         System.out.println("rest ids: " + restId + " - " + restIdPref);
 
         if (restId.equals(restIdPref)) {
-            // TODO manage cart (add)
+            // manage cart (add)
             addIB.setOnClickListener(view -> {
                 cart.load();
                 Food food = foods[position];
@@ -134,7 +136,7 @@ class FoodListView extends ArrayAdapter<String> {
                 vh.cartButton.setText("Totale: " + cart.getTotal() + "€");
             });
 
-            // TODO manage cart (remove)
+            // manage cart (remove)
             remIB.setOnClickListener(view -> {
                 cart.load();
                 cart.removeCartFood(foodId[position], userId, "");
@@ -184,7 +186,6 @@ class FoodListView extends ArrayAdapter<String> {
             removeButton = v.findViewById(R.id.removeFoodButton);
             counter = v.findViewById(R.id.foodCounter);
             ViewGroup newParent = (ViewGroup) parent.getParent().getParent().getParent().getParent().getParent();
-//            System.out.println("parent: " + newParent);
             cartButton = newParent.findViewById(R.id.fab_food);
         }
     }

@@ -87,7 +87,7 @@ public class CartListView extends ArrayAdapter<String> {
             viewHolder.addFCB.setVisibility(View.GONE);
             viewHolder.removeFCB.setVisibility(View.GONE);
         } else {
-            // TODO manage cart (add)
+            // manage cart (add)
             viewHolder.addFCB.setOnClickListener(view -> {
                 cart.load();
                 Cart.CartFood cartFood = cart.addCartFood(cf.getId(), cf.getName(), cf.getPrice(),
@@ -101,7 +101,7 @@ public class CartListView extends ArrayAdapter<String> {
                 viewHolder.totalTvAll.setText(new Formatter().format(Locale.ITALIAN, "Totale:   %.2f€", cart.getTotal()).toString());
             });
 
-            // TODO manage cart (remove)
+            // manage cart (remove)
             viewHolder.removeFCB.setOnClickListener(view -> {
                 cart.load();
                 Cart.CartFood cartFood = cart.removeCartFood(cf.getId(), userId, cf.getNote());

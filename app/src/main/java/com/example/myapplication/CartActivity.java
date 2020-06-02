@@ -85,7 +85,7 @@ public class CartActivity extends AppCompatActivity {
         if (isCapotavola) {
             fabCart.setOnClickListener(v -> {
                 System.out.println("hai clikkato 'invia ordine'");
-                new Thread( () -> cart.refresh());
+//                new Thread( () -> cart.refresh());
                 cart.newOrder();
                 int lasOrdNum = cart.getOrdNum();
                 System.out.println("CARRELLO AGGIORNATO: " + cart);
@@ -143,26 +143,26 @@ public class CartActivity extends AppCompatActivity {
             });
 
 
-            SharedPreferences finalPreferencesLogin = preferencesLogin;
-            fabCheckout.setOnClickListener(v -> {
-                System.out.println("hai clikkato 'checkout'");
-                cart.load();
-                double total = cart.getTotal();
-                double totalCheck = cart.getTotalCheckout();
-                if (total == totalCheck) {
-                    Intent intent = new Intent(getApplicationContext(), Checkout.class);
-                    startActivity(intent);
-                    finish();
-                } else {
-                    Utils.showDialog(activity, "Ordini non inviati",
-                            "Attenzione! Nel tuo carrello ci sono degli ordini che non sono ancora stati inviati in cucina, sei sicuro di voler andare al checkout?",
-                            "Conferma", (dialogInterface, i) -> {
-                                Intent intent = new Intent(getApplicationContext(), Checkout.class);
-                                startActivity(intent);
-                                finish();
-                            }, "Annulla", null);
-                }
-            });
+//            SharedPreferences finalPreferencesLogin = preferencesLogin;
+//            fabCheckout.setOnClickListener(v -> {
+//                System.out.println("hai clikkato 'checkout'");
+//                cart.load();
+//                double total = cart.getTotal();
+//                double totalCheck = cart.getTotalCheckout();
+//                if (total == totalCheck) {
+//                    Intent intent = new Intent(getApplicationContext(), Checkout.class);
+//                    startActivity(intent);
+//                    finish();
+//                } else {
+//                    Utils.showDialog(activity, "Ordini non inviati",
+//                            "Attenzione! Nel tuo carrello ci sono degli ordini che non sono ancora stati inviati in cucina, sei sicuro di voler andare al checkout?",
+//                            "Conferma", (dialogInterface, i) -> {
+//                                Intent intent = new Intent(getApplicationContext(), Checkout.class);
+//                                startActivity(intent);
+//                                finish();
+//                            }, "Annulla", null);
+//                }
+//            });
         } else {
             fabCart.setVisibility(View.GONE);
             fabCheckout.setVisibility(View.GONE);

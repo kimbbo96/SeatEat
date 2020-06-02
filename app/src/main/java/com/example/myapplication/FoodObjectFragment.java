@@ -67,4 +67,9 @@ public class FoodObjectFragment extends Fragment {
             startActivity(intent);
         });
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
 }

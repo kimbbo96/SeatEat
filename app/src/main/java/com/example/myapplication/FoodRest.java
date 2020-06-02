@@ -108,7 +108,7 @@ public class FoodRest extends AppCompatActivity {
                 if (response.isSuccessful()){
                     final String muresponse = response.body().string();
                     FoodRest.this.runOnUiThread(() -> {
-                        System.out.println(muresponse);
+                        System.out.println("muresponse: " + muresponse);
                         try {
                             JSONArray jsonArray = new JSONArray(muresponse);
                             for (int i = 0 ; i< jsonArray.length(); i++){ // for each food
@@ -161,12 +161,6 @@ public class FoodRest extends AppCompatActivity {
         } else {
             cartAlert(context);
         }
-//        DrawerLayout drawer = findViewById(R.id.drawer_layout_food);
-//        if (drawer.isDrawerOpen(GravityCompat.START)) {
-//            drawer.closeDrawer(GravityCompat.START);
-//        } else {
-//            super.onBackPressed();
-//        }
     }
 
     @Override

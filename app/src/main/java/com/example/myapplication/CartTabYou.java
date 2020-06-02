@@ -36,29 +36,29 @@ public class CartTabYou extends Fragment {
     private String restId;
     private boolean created = false;
 
-    private BroadcastReceiver receiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (intent != null && created) {
-                String content = intent.getStringExtra("content");
-                System.out.println(content + " YOU");
-            }
-        }
-    };
-
-    private BroadcastReceiver receiverOrdNum = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (intent != null && created) {
-                String content = intent.getStringExtra("content");
-                System.out.println("BroadcastReceiver: " + content);
-                if (content.equals("new NumOrd"))
-                    fillFragment();
-            } else {
-                System.out.println("BroadcastReceiver FALSE: intent = " + intent + ", created = " + created);
-            }
-        }
-    };
+//    private BroadcastReceiver receiver = new BroadcastReceiver() {
+//        @Override
+//        public void onReceive(Context context, Intent intent) {
+//            if (intent != null && created) {
+//                String content = intent.getStringExtra("content");
+//                System.out.println(content + " YOU");
+//            }
+//        }
+//    };
+//
+//    private BroadcastReceiver receiverOrdNum = new BroadcastReceiver() {
+//        @Override
+//        public void onReceive(Context context, Intent intent) {
+//            if (intent != null && created) {
+//                String content = intent.getStringExtra("content");
+//                System.out.println("BroadcastReceiver: " + content);
+//                if (content.equals("new NumOrd"))
+//                    fillFragment();
+//            } else {
+//                System.out.println("BroadcastReceiver FALSE: intent = " + intent + ", created = " + created);
+//            }
+//        }
+//    };
 
     public CartTabYou(CartActivity activity, String restId) {
         super();
@@ -72,9 +72,9 @@ public class CartTabYou extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        LocalBroadcastManager lbm = LocalBroadcastManager.getInstance(activity);
-        lbm.registerReceiver(receiver, new IntentFilter("add_user"));
-        lbm.registerReceiver(receiverOrdNum, new IntentFilter("new_ord_num"));
+//        LocalBroadcastManager lbm = LocalBroadcastManager.getInstance(activity);
+//        lbm.registerReceiver(receiver, new IntentFilter("add_user"));
+//        lbm.registerReceiver(receiverOrdNum, new IntentFilter("new_ord_num"));
     }
 
     @Override
@@ -131,30 +131,11 @@ public class CartTabYou extends Fragment {
         System.out.println("foods ora-tu: " + foods);
         CartListView customListView = new CartListView(activity, foods, false, true);
 
-//        ListView listViewOld = activity.findViewById(R.id.list_view_cart_old_you);
-//        List<Cart.CartFood> foodsOld = cart.getOldCartFoods(ordNum, userId);
-//        System.out.println("foods prima-tu: " + foodsOld);
-//        CartListView customListViewOld = new CartListView(activity, foodsOld, true, true);
-
         listView.setAdapter(customListView);
         justifyListViewHeight(listView);
-//        listViewOld.setAdapter(customListViewOld);
-//        justifyListViewHeight(listViewOld);
 
         ProgressBar progressBarCart = activity.findViewById(R.id.progressBar_cart_you);
         progressBarCart.setVisibility(View.GONE);
-
-//        SharedPreferences preferences = activity.getSharedPreferences("infoRes", MODE_PRIVATE);
-//        boolean isCapotavola = preferences.getBoolean("isCapotavola",false);
-//        FloatingActionButton fabCart = activity.findViewById(R.id.fab_cart_you);
-//        FloatingActionButton fabCheckout = activity.findViewById(R.id.fab_checkout_you);
-//        if (isCapotavola) {
-//            fabCart.setOnClickListener(activity.new FabCartClickListener(cart));
-//            fabCheckout.setOnClickListener(activity.new FabCheckoutClickListener());
-//        } else {
-//            fabCart.setEnabled(false);
-//            fabCheckout.setEnabled(false);
-//        }
 
         listView.setOnItemClickListener((adapterView, view, i, l) -> {
             Intent intent = new Intent(activity, FoodDetail.class);

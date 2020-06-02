@@ -80,5 +80,6 @@ public class CollectionFoodFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        System.out.println("resume CollectionFoodFragment");
     }
 }

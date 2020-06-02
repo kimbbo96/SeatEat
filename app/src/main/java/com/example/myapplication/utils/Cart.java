@@ -43,14 +43,12 @@ public class Cart implements Serializable {
     public static final long serialVersionUID = 42L;
     private transient Context context;
     private static int ordNum = 1;
-    private static ScheduledThreadPoolExecutor timer = null;
+//    private static ScheduledThreadPoolExecutor timer = null;
     private boolean fake = false;
     private boolean[] doRefresh = {false};
     private String userId;
     private List<CartFood> cartFoods = new ArrayList<>();
     private List<CartUser> cartUsers = new ArrayList<>();
-    private final String GET_URL = "https://seateat-be.herokuapp.com/api/getallcart";   // get autenticazione nell'header con qr nel body
-    private final String POST_URL = "https://seateat-be.herokuapp.com/api/pushcart";    // post autenticazione nell'header con cart nel body
 
     public Cart(@NonNull Context context) {
         this.context = context;
@@ -58,20 +56,19 @@ public class Cart implements Serializable {
         SharedPreferences preferences = context.getSharedPreferences("loginref", MODE_PRIVATE);
         userId = preferences.getString("nome", "");
 
-        Runnable command = () -> {
-            refresh();
-            if (doRefresh[0]) {
-                // manda notifica all'interfaccia
-                Intent intent = new Intent("update_cart");
-                intent.putExtra("content", "new Cart");
-                LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
-            }
-        };
+//        Runnable command = () -> {
+//            if (doRefresh[0]) {
+//                // manda notifica all'interfaccia
+//                Intent intent = new Intent("update_cart");
+//                intent.putExtra("content", "new Cart");
+//                LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+//            }
+//        };
 
-        if (timer == null || timer.isShutdown() || timer.isTerminated() || timer.isTerminating()) {
-            timer = new ScheduledThreadPoolExecutor(1);
-            timer.scheduleAtFixedRate(command, 2, 2, TimeUnit.SECONDS);
-        }
+//        if (timer == null || timer.isShutdown() || timer.isTerminated() || timer.isTerminating()) {
+//            timer = new ScheduledThreadPoolExecutor(1);
+//            timer.scheduleAtFixedRate(command, 2, 2, TimeUnit.SECONDS);
+//        }
     }
 
     public void save() {
@@ -111,157 +108,9 @@ public class Cart implements Serializable {
         }
     }
 
-    public void shutDown() {
-        timer.shutdown();
-    }
-
-    public void refresh() {
-//        System.out.println("REFRESHHH!");
-
-        load();
-//        System.out.println("REFRESH carrello locale: " + cartFoods);
-        List<CartFood> othersOfflineCartFoods = getOthersCartFoods(cartFoods, userId);
-        List<CartFood> myOfflineCartFoods = new ArrayList<>(getCartFoods(userId));
-        SharedPreferences preferencesUser = context.getSharedPreferences("loginref", MODE_PRIVATE);
-
-        // scarica l'ultima lista cartFoods dal server
-        final List<CartFood> tmpServerCartFoods = new ArrayList<>();
-
-        OkHttpClient client = new OkHttpClient();
-        MediaType JSON = MediaType.parse("application/json;charset=utf-8");
-        String token = preferencesUser.getString("nome", null) + ":" + preferencesUser.getString("password", null);
-        String basicBase64format = "Basic " + Base64.getEncoder().encodeToString(token.getBytes());
-
-        Request downloadReq = new Request.Builder()
-                .url(GET_URL)
-                .addHeader("Authorization", basicBase64format)
-                .build();
-
-        client.newCall(downloadReq).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                // FACCIO LA GET, per prendere il carrello degli altri
-
-                if (response.isSuccessful()) {
-//                    System.out.println("CART REQUEST get SUCCESSFUL " + response.message());
-//                    System.out.println("CART REQUEST get SUCCESSFUL " + response.isSuccessful());
-
-                    try {
-                        JSONObject responsebody = new JSONObject(response.body().string());
-//                        System.out.println("REFRESH carrello server (GET): " + responsebody.toString());
-
-                        JSONArray jsonCart = responsebody.getJSONArray("cart");
-                        for (int i = 0; i < jsonCart.length(); i++) {          // per ogni FoodCart nel carrello
-                            JSONObject jsonCartFood = jsonCart.getJSONObject(i);
-                            int numId = jsonCartFood.getInt("id");
-                            String id = String.valueOf(numId);
-                            String name = jsonCartFood.getString("name");
-                            String user = jsonCartFood.getString("user");
-                            String note = jsonCartFood.getString("note");
-                            String shortDescr = jsonCartFood.getString("short_descr");
-                            String longDescr = jsonCartFood.getString("long_descr");
-                            String image = jsonCartFood.getString("image");
-                            double price = jsonCartFood.getDouble("price");
-                            int quantity = jsonCartFood.getInt("quantity");
-                            int ordNum = jsonCartFood.getInt("ord_num");
-
-                            CartFood cf = new CartFood(id, name, price, user, quantity, note, ordNum, shortDescr, longDescr, image);
-                            tmpServerCartFoods.add(cf);
-//                            System.out.println("cartFood: " + cf);
-//                            System.out.println("tmpServerCartFoods: " + tmpServerCartFoods);
-                        }
-
-                        // lista del carrello aggiornata dal server
-//                        System.out.println("REFRESH carrello server (convertita): " + tmpServerCartFoods);
-                        List<CartFood> otherServerCartFoods = getOthersCartFoods(tmpServerCartFoods, userId);
-
-                        // se gli altri hanno aggiunto cose, aggiorno il mio carrello
-                        if (! othersOfflineCartFoods.equals(otherServerCartFoods)) {
-//                            System.out.println("new cart from server!");
-
-                            // aggiorna il carrello
-                            List<CartFood> newCartFoods = new ArrayList<>(myOfflineCartFoods);
-                            newCartFoods.addAll(otherServerCartFoods);
-                            setCartFoods(newCartFoods);
-                            save();
-
-//                            System.out.println("REFRESH carrello aggiornato: " + cartFoods);
-
-                            doRefresh[0] = true;
-                            System.out.println("REFRESH RESULT = " + Arrays.toString(doRefresh));
-                        } else {
-                            doRefresh[0] = false;
-//                            System.out.println("REFRESH RESULT = " + Arrays.toString(doRefresh));
-                        }
-
-                        // se io ho aggiunto cose al carrello, invio la nuova lista di piatti al server (POST)
-                        List<CartFood> myServerCartFoods = getMyCartFoods(tmpServerCartFoods, userId);
-
-                        if (! myOfflineCartFoods.equals(myServerCartFoods)) {
-
-                            JSONObject dataUp = new JSONObject();
-                            JSONArray jsonCartFoods = new JSONArray();
-                            try {
-//                                for (CartFood cf : cartFoods) {
-                                for (CartFood cf : myOfflineCartFoods) {
-                                    JSONObject jsonCartFood = new JSONObject();
-
-                                    int numId = Integer.valueOf(cf.id);
-                                    jsonCartFood.put("id", numId);
-                                    jsonCartFood.put("name", cf.name);
-                                    jsonCartFood.put("user", cf.user);
-                                    jsonCartFood.put("note", cf.note);
-                                    jsonCartFood.put("short_descr", cf.shortDescr);
-                                    jsonCartFood.put("long_descr", cf.longDescr);
-                                    jsonCartFood.put("image", cf.image);
-                                    jsonCartFood.put("price", cf.price);
-                                    jsonCartFood.put("quantity", cf.quantity);
-                                    jsonCartFood.put("ord_num", cf.ordNum);
-
-                                    jsonCartFoods.put(jsonCartFood);
-                                }
-                                dataUp.put("cart", jsonCartFoods);
-                            } catch (JSONException e) {
-                                Log.d("OKHTTP3", "JSON exception");
-                                e.printStackTrace();
-                            }
-
-                            RequestBody bodyUp = RequestBody.create(JSON, dataUp.toString());
-
-                            Request uploadReq = new Request.Builder()
-                                    .url(POST_URL)
-                                    .post(bodyUp)
-                                    .addHeader("Authorization", basicBase64format)
-                                    .build();
-                            try {
-                                Response responseUP = client.newCall(uploadReq).execute();
-
-                                if (responseUP.isSuccessful()) {
-//                                    System.out.println("CART REQUEST post SUCCESSFUL" + responseUP.message());
-//                                    System.out.println("CART REQUEST post SUCCESSFUL" + responseUP.isSuccessful());
-                                } else {
-                                    System.out.println("CART REQUEST post UNSUCCESSFUL" + responseUP.message());
-                                    System.out.println("CART REQUEST post UNSUCCESSFUL" + responseUP.isSuccessful());
-                                }
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                } else {
-                    System.out.println("CART REQUEST get UNSUCCESSFUL" + response.message());
-                    System.out.println("CART REQUEST get UNSUCCESSFUL" + response.isSuccessful());
-                }
-            }
-        });
-    }
+//    public void shutDown() {
+//        timer.shutdown();
+//    }
 
     /**
      * Clear the content of the cart, but doesn't write it on persistent storage.
@@ -270,7 +119,7 @@ public class Cart implements Serializable {
         ordNum = 1;
         cartUsers.clear();
         cartFoods.clear();
-        timer.shutdown();
+//        timer.shutdown();
         save();
     }
 
@@ -507,6 +356,16 @@ public class Cart implements Serializable {
                 cu.setShare(share);
             }
         }
+    }
+
+    public int getFoodQuantity(String foodId, String userId, String note) {
+        int quantity = 0;
+        for (CartFood cf : cartFoods) {
+            if (cf.id.equals(foodId)) { //&& cf.user.equals(userId) && cf.note.equals(note)) {
+                quantity += cf.quantity;
+            }
+        }
+        return quantity;
     }
 
     @Override

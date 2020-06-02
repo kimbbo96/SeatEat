@@ -126,7 +126,7 @@ public class FireBaseService extends FirebaseMessagingService {
 
             case "triggercolletta": {
                 System.out.println("TRIGGER COLLETTA");
-                cart.shutDown();
+//                cart.shutDown();
 
                 Intent intent = new Intent(context, Coll.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
