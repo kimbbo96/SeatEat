@@ -18,6 +18,8 @@ import android.widget.Toast;
 import com.example.myapplication.utils.Cart;
 import com.example.myapplication.utils.Utils;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.List;
 import java.util.Random;
 
@@ -83,9 +85,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Empty cart
-        Cart cart = new Cart(this);
-        cart.clear();
+
 
         // Fake login
         SharedPreferences preferences = getSharedPreferences("loginref", MODE_PRIVATE);
@@ -95,6 +95,9 @@ public class MainActivity extends AppCompatActivity {
         editor.putString("nome", (nome));
         editor.putBoolean("savelogin", true);
         editor.commit();
+
+
+
 
         // Get location or location permission
         lm = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);

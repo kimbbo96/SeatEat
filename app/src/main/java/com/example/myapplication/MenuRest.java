@@ -1,6 +1,7 @@
 package com.example.myapplication;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
@@ -9,6 +10,7 @@ import android.os.Bundle;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.signature.ObjectKey;
+import com.example.myapplication.utils.Cart;
 import com.example.myapplication.utils.Utils;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -37,6 +39,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -115,6 +119,58 @@ public class MenuRest extends AppCompatActivity {
                 }
             }
         });
+
+        SharedPreferences preferences = getSharedPreferences("infoRes", MODE_PRIVATE);
+        String ResID = preferences.getString("ID","");
+        if (!ResID.equals("")){
+
+            Cart cart = new Cart(this);
+
+            Instant now = Instant.now();
+            Instant start = cart.getTimestamp();
+
+            Duration timeElapsed = Duration.between(start, now);
+            if (timeElapsed.toHours() >= 3) { // if the last meal was >= 3 hours ago
+                cart.clear(); // clean cart
+
+            }
+            else if(!cart.getCartFoods().isEmpty()){
+
+                CharSequence message = "Sei attualmente associato ad un ristorante, vuoi proseguire con gli ordini?.";
+                String posButtonText = "Termina ordinazione";
+                DialogInterface.OnClickListener posButtonListener = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        System.out.println("ADDIO CARRELLOOOO!!!");
+                        cart.clear();
+                        SharedPreferences preferences = getSharedPreferences("infoRes", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.putString("ID", "");
+                        editor.commit();
+                    }
+                };
+                String negButtonText = "Prosegui ordinazione";
+                DialogInterface.OnClickListener negButtonListener = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                        Intent intent = new Intent(activity, FoodRest.class);
+                        intent.putExtra("Restaurant", restaurants.get(Integer.parseInt(ResID)-1)); // passo l'oggetto ristorante
+                        activity.startActivity(intent);
+
+                    }
+                };
+
+                Utils.showDialog(activity, "Attenzione!", message, posButtonText, posButtonListener, negButtonText, negButtonListener);
+            }
+
+
+        }
+
+
+
+
+
     }
 
     static void fillList(Activity activity, List<Restaurant> restaurants) {

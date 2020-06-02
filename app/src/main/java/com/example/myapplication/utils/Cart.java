@@ -25,24 +25,17 @@ import java.util.Base64;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
-
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.Headers;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
 
 import static android.content.Context.MODE_PRIVATE;
+import java.time.Duration;
+import java.time.Instant;
 
 public class Cart implements Serializable {
     public static final long serialVersionUID = 42L;
     private transient Context context;
     private static int ordNum = 1;
+
+    private  Instant timestamp = null;
 //    private static ScheduledThreadPoolExecutor timer = null;
     private boolean fake = false;
     private boolean[] doRefresh = {false};
@@ -56,19 +49,9 @@ public class Cart implements Serializable {
         SharedPreferences preferences = context.getSharedPreferences("loginref", MODE_PRIVATE);
         userId = preferences.getString("nome", "");
 
-//        Runnable command = () -> {
-//            if (doRefresh[0]) {
-//                // manda notifica all'interfaccia
-//                Intent intent = new Intent("update_cart");
-//                intent.putExtra("content", "new Cart");
-//                LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
-//            }
-//        };
 
-//        if (timer == null || timer.isShutdown() || timer.isTerminated() || timer.isTerminating()) {
-//            timer = new ScheduledThreadPoolExecutor(1);
-//            timer.scheduleAtFixedRate(command, 2, 2, TimeUnit.SECONDS);
-//        }
+        Instant start = Instant.now(); // set initial timestamp
+        setTimestamp(start);
     }
 
     public void save() {
@@ -128,6 +111,15 @@ public class Cart implements Serializable {
      */
     public void newOrder() {
         ordNum = ordNum + 1;
+    }
+
+
+    public  Instant getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Instant timestamp) {
+        this.timestamp = timestamp;
     }
 
     public double getTotal() {

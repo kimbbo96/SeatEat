@@ -186,7 +186,10 @@ public class FoodRest extends AppCompatActivity {
             public void onClick(DialogInterface dialogInterface, int i) {
                 System.out.println("ADDIO CARRELLOOOO!!!");
                 cart.clear();
-                cart.save();
+                SharedPreferences preferences = getSharedPreferences("infoRes", MODE_PRIVATE);
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putString("ID", "");
+                editor.commit();
                 FoodRest.super.onBackPressed();
             }
         };
