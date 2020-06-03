@@ -1,16 +1,9 @@
 package com.example.myapplication.utils;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -20,15 +13,12 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Base64;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
+import java.time.Instant;
 
 import static android.content.Context.MODE_PRIVATE;
-import java.time.Duration;
-import java.time.Instant;
 
 public class Cart implements Serializable {
     public static final long serialVersionUID = 42L;
@@ -91,10 +81,6 @@ public class Cart implements Serializable {
         }
     }
 
-//    public void shutDown() {
-//        timer.shutdown();
-//    }
-
     /**
      * Clear the content of the cart, but doesn't write it on persistent storage.
      */
@@ -102,7 +88,6 @@ public class Cart implements Serializable {
         ordNum = 1;
         cartUsers.clear();
         cartFoods.clear();
-//        timer.shutdown();
         save();
     }
 

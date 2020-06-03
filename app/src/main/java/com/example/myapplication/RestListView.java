@@ -108,7 +108,6 @@ public class RestListView extends ArrayAdapter<String> {
         viewHolder.tvw1.setText(restName[position]);
         viewHolder.tvw2.setText(restDesc[position]);
         viewHolder.tvw3.setText(new Formatter().format(Locale.ITALIAN, "%.1f km", restDist[position]/1000f).toString());
-        viewHolder.rb.setRating(restRate[position]);
 
         return r;
     }
@@ -116,7 +115,6 @@ public class RestListView extends ArrayAdapter<String> {
         TextView tvw1;
         TextView tvw2;
         TextView tvw3;
-        RatingBar rb;
         ImageView ivw;
 
         ViewHolder(View v){
@@ -124,11 +122,6 @@ public class RestListView extends ArrayAdapter<String> {
             tvw2 = v.findViewById(R.id.resDes);
             tvw3 = v.findViewById(R.id.resDist);
             ivw = v.findViewById(R.id.imageView2);
-            rb =  v.findViewById(R.id.ratingBar);
-            rb.setNumStars(5);
-            System.out.println((rb.getMax()));
-            rb.setMax(4);
-
         }
     }
 }

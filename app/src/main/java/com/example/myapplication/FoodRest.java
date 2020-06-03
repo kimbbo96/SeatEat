@@ -181,25 +181,17 @@ public class FoodRest extends AppCompatActivity {
     private void cartAlert(Context context) {
         CharSequence message = "Cliccando su 'Termina ordinazione', la tua lista di ordini sarà cancellata.";
         String posButtonText = "Termina ordinazione";
-        DialogInterface.OnClickListener posButtonListener = new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                System.out.println("ADDIO CARRELLOOOO!!!");
-                cart.clear();
-                SharedPreferences preferences = getSharedPreferences("infoRes", MODE_PRIVATE);
-                SharedPreferences.Editor editor = preferences.edit();
-                editor.putString("ID", "");
-                editor.commit();
-                FoodRest.super.onBackPressed();
-            }
+        DialogInterface.OnClickListener posButtonListener = (dialogInterface, i) -> {
+            System.out.println("ADDIO CARRELLOOOO!!!");
+            cart.clear();
+            SharedPreferences preferences = getSharedPreferences("infoRes", MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putString("ID", "");
+            editor.commit();
+            FoodRest.super.onBackPressed();
         };
         String negButtonText = "Prosegui ordinazione";
-        DialogInterface.OnClickListener negButtonListener = new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-            }
-        };
+        DialogInterface.OnClickListener negButtonListener = (dialogInterface, i) -> dialogInterface.dismiss();
 
         Utils.showDialog(context, "Attenzione!", message, posButtonText, posButtonListener, negButtonText, negButtonListener);
     }

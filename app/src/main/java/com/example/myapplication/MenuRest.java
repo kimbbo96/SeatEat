@@ -132,45 +132,29 @@ public class MenuRest extends AppCompatActivity {
             Duration timeElapsed = Duration.between(start, now);
             if (timeElapsed.toHours() >= 3) { // if the last meal was >= 3 hours ago
                 cart.clear(); // clean cart
-
             }
             else if(!cart.getCartFoods().isEmpty()){
 
-                CharSequence message = "Sei attualmente associato ad un ristorante, vuoi proseguire con gli ordini?.";
+                CharSequence message = "Sei ancora associato ad un ristorante, vuoi proseguire con gli ordini?";
                 String posButtonText = "Termina ordinazione";
-                DialogInterface.OnClickListener posButtonListener = new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        System.out.println("ADDIO CARRELLOOOO!!!");
-                        cart.clear();
-                        SharedPreferences preferences = getSharedPreferences("infoRes", MODE_PRIVATE);
-                        SharedPreferences.Editor editor = preferences.edit();
-                        editor.putString("ID", "");
-                        editor.commit();
-                    }
+                DialogInterface.OnClickListener posButtonListener = (dialogInterface, i) -> {
+                    System.out.println("ADDIO CARRELLOOOO!!!");
+                    cart.clear();
+                    SharedPreferences preferences1 = getSharedPreferences("infoRes", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = preferences1.edit();
+                    editor.putString("ID", "");
+                    editor.commit();
                 };
                 String negButtonText = "Prosegui ordinazione";
-                DialogInterface.OnClickListener negButtonListener = new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
+                DialogInterface.OnClickListener negButtonListener = (dialogInterface, i) -> {
 
-                        Intent intent = new Intent(activity, FoodRest.class);
-                        intent.putExtra("Restaurant", restaurants.get(Integer.parseInt(ResID)-1)); // passo l'oggetto ristorante
-                        activity.startActivity(intent);
-
-                    }
+                    Intent intent = new Intent(activity, FoodRest.class);
+                    intent.putExtra("Restaurant", restaurants.get(Integer.parseInt(ResID)-1)); // passo l'oggetto ristorante
+                    activity.startActivity(intent);
                 };
-
                 Utils.showDialog(activity, "Attenzione!", message, posButtonText, posButtonListener, negButtonText, negButtonListener);
             }
-
-
         }
-
-
-
-
-
     }
 
     static void fillList(Activity activity, List<Restaurant> restaurants) {
@@ -179,7 +163,7 @@ public class MenuRest extends AppCompatActivity {
 
         RestListView customListView = new RestListView(activity, restaurants.toArray(new Restaurant[0]));
 
-        System.out.println("aaaaaaaaaaas"+customListView+ listView);
+//        System.out.println("aaaaaaaaaaas"+customListView+ listView);
         listView.setAdapter(customListView);
 
         listView.setOnItemClickListener((adapterView, view, i, l) -> {
@@ -202,6 +186,28 @@ public class MenuRest extends AppCompatActivity {
         } else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_rest, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_filter) {
+            return handleFilter();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     private boolean handleFilter() {

@@ -63,9 +63,6 @@ public class FoodDetail extends AppCompatActivity {
         TextView foodPriceDetail = findViewById(R.id.foodPriceDetail);
         foodPriceDetail.setText(food.getFOOD_PRICE() + "€");
 
-        EditText notesField = findViewById(R.id.foodNotesDetail);
-        notesField.setText(note);
-
         Activity activity = this;
         String imgName = food.getFOOD_IMAGE();
         ImageView copertina = findViewById(R.id.copertinaFoodDetail);
@@ -116,8 +113,8 @@ public class FoodDetail extends AppCompatActivity {
 
         Button button = findViewById(R.id.aggiungiButtonDetail);
         button.setOnClickListener(v -> {
-            String notes = notesField.getText().toString();
-            System.out.println("hai clikkato AGGIUNGI " + food.getFOOD_TITLE() + "(id " + food.getFOOD_ID() + ")\nNotes: '" + notes + "'");
+
+            System.out.println("hai clikkato AGGIUNGI " + food.getFOOD_TITLE() + "(id " + food.getFOOD_ID() + ")");
 
             cart.load();
             if (mode.equals("edit")) {
@@ -127,7 +124,7 @@ public class FoodDetail extends AppCompatActivity {
             }
             for (int i = 0; i < counter[0]; i++) {
                 cart.addCartFood(food.getFOOD_ID(), food.getFOOD_TITLE(), food.getFOOD_PRICE(),
-                        userId, notes, food.getFOOD_SHORT_DESCR(), food.getFOOD_LONG_DESCR(), food.getFOOD_IMAGE());
+                        userId, "", food.getFOOD_SHORT_DESCR(), food.getFOOD_LONG_DESCR(), food.getFOOD_IMAGE());
             }
             cart.save();
 

@@ -152,40 +152,6 @@
                 app:layout_constraintTop_toTopOf="parent"
                 android:textColor="@color/transparentBlack60" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:layout_marginStart="32dp"
-                android:layout_marginEnd="32dp"
-                android:layout_gravity="start"
-                android:text="Note:"
-                android:textSize="24sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:textColor="@color/textColorPrimary" />
-
-
-            <EditText
-                android:id="@+id/foodNotesDetail"
-                android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="24dp"
-                android:layout_marginStart="32dp"
-                android:layout_marginEnd="32dp"
-                android:autofillHints="notes"
-                android:ems="10"
-                android:fadeScrollbars="false"
-                android:gravity="start|top"
-                android:hint="Allergie o richieste particolari?"
-                android:inputType="textMultiLine"
-                android:nestedScrollingEnabled="true"
-                android:textColor="@color/transparentBlack60"
-                android:textColorHint="@color/transparentBlack40"
-                android:textColorHighlight="@color/colorAccent"
-                android:theme="@style/EditText"/>
-
         </LinearLayout>
     </ScrollView>
 

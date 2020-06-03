@@ -44,19 +44,9 @@ public class FiltersDialogFragment extends BottomSheetDialogFragment {
         ArrayAdapter<String> arrayAdapterDistance = new ArrayAdapter<>(context, android.R.layout.simple_list_item_single_choice, dataListDistance);
         filterDistanceView.setAdapter(arrayAdapterDistance);
 
-//        filterDistanceView.setAdapter(new ArrayAdapter<String>(context, android.R.layout.simple_list_item_single_choice, dataListDistance) {
-//            @Override
-//            public View getView(int position, View convertView, ViewGroup parent) {
-//                View view = super.getView(position, convertView, parent);
-//                TextView text = view.findViewById(android.R.id.text1);
-//                text.setTextColor(Color.BLACK);
-//                return view;
-//            }
-//        });
-
         filterDistanceView.setOnItemClickListener((adapterView, view, index, l) -> {
             Object clickItemObj = adapterView.getAdapter().getItem(index);
-            Toast.makeText(context, "You clicked " + clickItemObj.toString(), Toast.LENGTH_SHORT).show();
+//            Toast.makeText(context, "You clicked " + clickItemObj.toString(), Toast.LENGTH_SHORT).show();
         });
 
         ListView filterTypologyView = filterDialogueView.findViewById(R.id.filter_typology);
@@ -65,13 +55,13 @@ public class FiltersDialogFragment extends BottomSheetDialogFragment {
         filterTypologyView.setAdapter(arrayAdapterTypology);
         filterTypologyView.setOnItemClickListener((adapterView, view, index, l) -> {
             Object clickItemObj = adapterView.getAdapter().getItem(index);
-            Toast.makeText(context, "You clicked " + clickItemObj.toString(), Toast.LENGTH_SHORT).show();
+//            Toast.makeText(context, "You clicked " + clickItemObj.toString(), Toast.LENGTH_SHORT).show();
         });
 
         FloatingActionButton fab = filterDialogueView.findViewById(R.id.filter_ok);
         fab.setOnClickListener(view -> {
-            Snackbar.make(view, "Filtriamo cose", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show();
+//            Snackbar.make(view, "Filtriamo cose", Snackbar.LENGTH_LONG)
+//                    .setAction("Action", null).show();
 
             List<Restaurant> newRests = filterRestaurants(MenuRest.restaurants, filterDistanceView, filterTypologyView);
             MenuRest.fillList(this.getActivity(), newRests);
