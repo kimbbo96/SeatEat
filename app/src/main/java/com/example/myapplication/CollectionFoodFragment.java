@@ -32,7 +32,6 @@ public class CollectionFoodFragment extends Fragment {
     private FoodCollectionPagerAdapter demoCollectionPagerAdapter;
     private ViewPager viewPager;
     private View view;
-    private Cart cart;
     private Map<String, ArrayList<String>> foods = new TreeMap<>();
     private String restID;
     private String userID;
@@ -41,8 +40,6 @@ public class CollectionFoodFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        cart = new Cart(getContext());
     }
 
     @Nullable

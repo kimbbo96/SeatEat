@@ -30,6 +30,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.myapplication.db_obj.Food;
 import com.example.myapplication.db_obj.Restaurant;
@@ -65,6 +66,9 @@ public class FoodRest extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         cart = new Cart(context);
+        cart.load();
+        Toast.makeText(context, "cart info: " + cart.getCartFoods().size() + " - " + cart.getTotal(), Toast.LENGTH_LONG).show(); // todo debug
+
         setContentView(R.layout.activity_food_rest);
 
         SharedPreferences preferencesLogin = this.getSharedPreferences("loginref", MODE_PRIVATE);
@@ -80,7 +84,6 @@ public class FoodRest extends AppCompatActivity {
 
         ExtendedFloatingActionButton fab = findViewById(R.id.fab_food);
         if (idRest.equals(idRestPref)) {
-            cart.load();
             fab.setText("Totale: " + cart.getTotal() + "€");
             fab.setOnClickListener(view -> {
                 System.out.println("hai clikkato il carrello");

@@ -62,7 +62,6 @@ public class MenuRest extends AppCompatActivity {
         setContentView(R.layout.activity_menu_rest);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-//        FloatingActionButton fab = findViewById(R.id.fab);
         ProgressBar progressBarResList = findViewById(R.id.progressBarResList);
 
         OkHttpClient cl = new OkHttpClient(); // inizio la procedura di get
@@ -122,9 +121,14 @@ public class MenuRest extends AppCompatActivity {
 
         SharedPreferences preferences = getSharedPreferences("infoRes", MODE_PRIVATE);
         String ResID = preferences.getString("ID","");
+        System.out.println("ResID: " + ResID);
         if (!ResID.equals("")){
-
+            System.out.println("siamo dentro!");
             Cart cart = new Cart(this);
+            cart.load();
+            System.out.println("cart size: " + cart.getCartFoods().size());
+            System.out.println("cart total: " + cart.getTotal());
+            Toast.makeText(activity, "cart info: " + cart.getCartFoods().size() + " - " + cart.getTotal(), Toast.LENGTH_LONG).show(); // todo debug
 
             Instant now = Instant.now();
             Instant start = cart.getTimestamp();
@@ -132,27 +136,32 @@ public class MenuRest extends AppCompatActivity {
             Duration timeElapsed = Duration.between(start, now);
             if (timeElapsed.toHours() >= 3) { // if the last meal was >= 3 hours ago
                 cart.clear(); // clean cart
+                System.out.println("sad 1");
             }
-            else if(!cart.getCartFoods().isEmpty()){
+            else {
+                System.out.println("sad 2");
+                if (!cart.getCartFoods().isEmpty()) {
+                    System.out.println("BLA BLA BLA");
 
-                CharSequence message = "Sei ancora associato ad un ristorante, vuoi proseguire con gli ordini?";
-                String posButtonText = "Termina ordinazione";
-                DialogInterface.OnClickListener posButtonListener = (dialogInterface, i) -> {
-                    System.out.println("ADDIO CARRELLOOOO!!!");
-                    cart.clear();
-                    SharedPreferences preferences1 = getSharedPreferences("infoRes", MODE_PRIVATE);
-                    SharedPreferences.Editor editor = preferences1.edit();
-                    editor.putString("ID", "");
-                    editor.commit();
-                };
-                String negButtonText = "Prosegui ordinazione";
-                DialogInterface.OnClickListener negButtonListener = (dialogInterface, i) -> {
+                    CharSequence message = "Sei ancora associato ad un ristorante, vuoi proseguire con gli ordini?";
+                    String posButtonText = "Termina ordinazione";
+                    DialogInterface.OnClickListener posButtonListener = (dialogInterface, i) -> {
+                        System.out.println("ADDIO CARRELLOOOO!!!");
+                        cart.clear();
+                        SharedPreferences preferences1 = getSharedPreferences("infoRes", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = preferences1.edit();
+                        editor.putString("ID", "");
+                        editor.commit();
+                    };
+                    String negButtonText = "Prosegui ordinazione";
+                    DialogInterface.OnClickListener negButtonListener = (dialogInterface, i) -> {
 
-                    Intent intent = new Intent(activity, FoodRest.class);
-                    intent.putExtra("Restaurant", restaurants.get(Integer.parseInt(ResID)-1)); // passo l'oggetto ristorante
-                    activity.startActivity(intent);
-                };
-                Utils.showDialog(activity, "Attenzione!", message, posButtonText, posButtonListener, negButtonText, negButtonListener);
+                        Intent intent = new Intent(activity, FoodRest.class);
+                        intent.putExtra("Restaurant", restaurants.get(Integer.parseInt(ResID)-1)); // passo l'oggetto ristorante
+                        activity.startActivity(intent);
+                    };
+                    Utils.showDialog(activity, "Attenzione!", message, posButtonText, posButtonListener, negButtonText, negButtonListener);
+                }
             }
         }
     }

@@ -2,6 +2,7 @@ package com.example.myapplication.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -46,20 +47,20 @@ public class Cart implements Serializable {
 
     public void save() {
         try {
-            FileOutputStream fos = context.openFileOutput("SeatEat_Cart", Context.MODE_PRIVATE);
+            FileOutputStream fos = context.openFileOutput("SitEat_Cart", Context.MODE_PRIVATE);
             ObjectOutputStream os = new ObjectOutputStream(fos);
             os.writeObject(this);
             os.close();
             fos.close();
         } catch (IOException ex) {
             ex.printStackTrace();
-            System.out.println("SeatEat_Cart cannot be created or saved");
+            System.out.println("SitEat_Cart cannot be created or saved");
         }
     }
 
     public void load() {
         try {
-            FileInputStream fis = context.openFileInput("SeatEat_Cart");
+            FileInputStream fis = context.openFileInput("SitEat_Cart");
             ObjectInputStream is = new ObjectInputStream(fis);
             Cart oldCart = (Cart) is.readObject();
             this.cartFoods = oldCart.getCartFoods();
@@ -74,7 +75,7 @@ public class Cart implements Serializable {
             System.out.println("Creating new cart");
         } catch (IOException ex) {
             ex.printStackTrace();
-            System.out.println("SeatEat_Cart cannot be created or saved");
+            System.out.println("SitEat_Cart cannot be created or saved");
         } catch (ClassNotFoundException ex) {
             ex.printStackTrace();
             System.out.println("Cart class not found");
@@ -89,6 +90,8 @@ public class Cart implements Serializable {
         cartUsers.clear();
         cartFoods.clear();
         save();
+        System.out.println("CLEAR CART!!!!");
+        Toast.makeText(context, "clear cart", Toast.LENGTH_LONG).show(); // todo debug
     }
 
     /**

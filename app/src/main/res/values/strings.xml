@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SeatEat</string>
+    <string name="app_name">SitEat</string>
     <string name="title_activity_restaurant_list">restaurant_list</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_hamburger_menu">hamburger_menu</string>

@@ -44,8 +44,10 @@ public class CartListView extends ArrayAdapter<String> {
         this.context = context;
         this.foods = foods;
         this.old = old;
-        this.cart = new Cart(context);
         this.showButtons = showButtons;
+
+        this.cart = new Cart(context);
+        cart.load();
 
         SharedPreferences preferences = context.getSharedPreferences("loginref", MODE_PRIVATE);
         this.userId = preferences.getString("nome", "");

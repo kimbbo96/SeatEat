@@ -36,30 +36,6 @@ public class CartTabYou extends Fragment {
     private String restId;
     private boolean created = false;
 
-//    private BroadcastReceiver receiver = new BroadcastReceiver() {
-//        @Override
-//        public void onReceive(Context context, Intent intent) {
-//            if (intent != null && created) {
-//                String content = intent.getStringExtra("content");
-//                System.out.println(content + " YOU");
-//            }
-//        }
-//    };
-//
-//    private BroadcastReceiver receiverOrdNum = new BroadcastReceiver() {
-//        @Override
-//        public void onReceive(Context context, Intent intent) {
-//            if (intent != null && created) {
-//                String content = intent.getStringExtra("content");
-//                System.out.println("BroadcastReceiver: " + content);
-//                if (content.equals("new NumOrd"))
-//                    fillFragment();
-//            } else {
-//                System.out.println("BroadcastReceiver FALSE: intent = " + intent + ", created = " + created);
-//            }
-//        }
-//    };
-
     public CartTabYou(CartActivity activity, String restId) {
         super();
         this.activity = activity;
@@ -71,10 +47,6 @@ public class CartTabYou extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-//        LocalBroadcastManager lbm = LocalBroadcastManager.getInstance(activity);
-//        lbm.registerReceiver(receiver, new IntentFilter("add_user"));
-//        lbm.registerReceiver(receiverOrdNum, new IntentFilter("new_ord_num"));
     }
 
     @Override
