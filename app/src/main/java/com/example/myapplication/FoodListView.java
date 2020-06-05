@@ -122,7 +122,7 @@ class FoodListView extends ArrayAdapter<String> {
 
         System.out.println("rest ids: " + restId + " - " + restIdPref);
 
-        if (restId.equals(restIdPref)) {
+        if (isEnabled(position)) {
             // manage cart (add)
             addIB.setOnClickListener(view -> {
                 cart.load();
@@ -164,7 +164,8 @@ class FoodListView extends ArrayAdapter<String> {
 
     @Override
     public boolean isEnabled(int position) {
-        return restId.equals(restIdPref);
+        // return restId.equals(restIdPref);
+        return true;
     }
 
     class  ViewHolder{

@@ -83,7 +83,8 @@ public class FoodRest extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         ExtendedFloatingActionButton fab = findViewById(R.id.fab_food);
-        if (idRest.equals(idRestPref)) {
+//        if (idRest.equals(idRestPref)) {
+        if (true) {
             fab.setText("Totale: " + cart.getTotal() + "€");
             fab.setOnClickListener(view -> {
                 System.out.println("hai clikkato il carrello");
