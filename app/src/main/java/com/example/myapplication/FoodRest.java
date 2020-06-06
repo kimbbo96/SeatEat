@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 
 import com.example.myapplication.utils.Cart;
@@ -67,8 +68,7 @@ public class FoodRest extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.tool_bar_simple);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        //getSupportActionBar().setIcon(R.drawable.negativo2);
-
+        getWindow().setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark, this.getTheme()));
 
         ExtendedFloatingActionButton fab = findViewById(R.id.fab_food);
 //        if (idRest.equals(idRestPref)) {

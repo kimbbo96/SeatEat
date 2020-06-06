@@ -69,6 +69,7 @@ public class ResDetail extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.tool_bar_simple);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getWindow().setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark, this.getTheme()));
 
 
         final Restaurant rist = (Restaurant) getIntent().getSerializableExtra("Restaurant");

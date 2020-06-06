@@ -4,11 +4,21 @@
     android:id="@+id/tool_bar_simple"
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
-    android:background="#F49C63"
+    android:background="@color/colorPrimary"
     android:elevation="8dp"
-    app:popupTheme="@style/PopupOverlay"
-    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+    android:theme="@style/PopupOverlay"
+    app:popupTheme="@style/PopupOverlay">
 
     <!--    android:text="@string/app_name"-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:layout_width="85dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_negativo_solotesto2" />
+
+    </RelativeLayout>
 
 </androidx.appcompat.widget.Toolbar>

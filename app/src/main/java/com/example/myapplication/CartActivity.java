@@ -58,6 +58,7 @@ public class CartActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.tool_bar_simple);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getWindow().setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark, this.getTheme()));
 
         SharedPreferences preferencesRest = this.getSharedPreferences("infoRes", MODE_PRIVATE);
         String idRestPref = preferencesRest.getString("ID","");
