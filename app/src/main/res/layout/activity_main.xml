@@ -4,24 +4,37 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorAccent"
+    android:background="@color/white"
     tools:context=".MainActivity">
+
+    <TextView
+        android:layout_width="100dp"
+        android:layout_height="43dp"
+        android:layout_marginStart="155dp"
+        android:layout_marginTop="634dp"
+        android:text="Skillati"
+        android:textColor="@color/colorAccent"
+        android:textSize="32dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:gravity="center"
         android:orientation="vertical"
-        android:gravity="center">
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp">
 
         <ImageView
             android:id="@+id/profile_image"
-            android:layout_width="1026dp"
-            android:layout_height="510dp"
-            android:layout_marginStart="105dp"
-            android:layout_marginTop="121dp"
-            android:layout_marginEnd="105dp"
-            android:layout_marginBottom="410dp"
-            app:srcCompat="@drawable/logo33" />
+            android:layout_width="wrap_content"
+            android:layout_height="340dp"
+
+            android:layout_gravity="center_horizontal"
+
+            app:srcCompat="@drawable/logo_trasparente" />
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
