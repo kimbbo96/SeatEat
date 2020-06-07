@@ -64,7 +64,6 @@ public class FoodRest extends AppCompatActivity {
         final Restaurant rist = (Restaurant) getIntent().getSerializableExtra("Restaurant");
         String idRest = rist == null ? idRestPref : rist.getRESTAURANT_ID();
 
-        //Toolbar toolbar = findViewById(R.id.toolbar);
         Toolbar toolbar = findViewById(R.id.tool_bar_simple);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

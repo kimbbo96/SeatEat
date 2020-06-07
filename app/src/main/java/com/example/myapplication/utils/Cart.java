@@ -275,6 +275,7 @@ public class Cart implements Serializable {
                 cf.decrementQuantity();
                 if (cf.quantity == 0) {
                     itr.remove();
+                    return null;
                 }
                 cartFood = cf;
             }

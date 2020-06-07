@@ -89,48 +89,47 @@ public class FoodDetail extends AppCompatActivity {
         int[] counter = {quantity};
         TextView counterDetail = findViewById(R.id.counterDetail);
         counterDetail.setText(String.valueOf(quantity));
+        counterDetail.setVisibility(View.GONE);
 
         // add to (sub)cart
         ImageButton addIB = findViewById(R.id.addFoodButtonDetail);
-        addIB.setOnClickListener(view -> {
-            counter[0] += 1;
-            counterDetail.setText("x"+counter[0]);
-        });
+        addIB.setVisibility(View.GONE);
+//        addIB.setOnClickListener(view -> {
+//            counter[0] += 1;
+//            counterDetail.setText("x"+counter[0]);
+//        });
 
         // remove from (sub)cart
         ImageButton remIB = findViewById(R.id.removeFoodButtonDetail);
-        remIB.setOnClickListener(view -> {
-
-            counter[0] -= 1;
-
-            if (counter[0] <= 0) {
-                counterDetail.setText("");
-                counter[0] = 0;
-            }
-            else {
-                counterDetail.setText("x"+counter[0]);
-            }
-        });
+        remIB.setVisibility(View.GONE);
+//        remIB.setOnClickListener(view -> {
+//            counter[0] -= 1;
+//            if (counter[0] <= 0) {
+//                counterDetail.setText("");
+//                counter[0] = 0;
+//            }
+//            else {
+//                counterDetail.setText("x"+counter[0]);
+//            }
+//        });
 
         Button button = findViewById(R.id.aggiungiButtonDetail);
-        button.setOnClickListener(v -> {
-
-            System.out.println("hai clikkato AGGIUNGI " + food.getFOOD_TITLE() + "(id " + food.getFOOD_ID() + ")");
-
-            cart.load();
-            if (mode.equals("edit")) {
-                for (int i = 0; i < counter[0]; i++) {
-                    cart.removeCartFood(food.getFOOD_ID(), userId, note);
-                }
-            }
-            for (int i = 0; i < counter[0]; i++) {
-                cart.addCartFood(food.getFOOD_ID(), food.getFOOD_TITLE(), food.getFOOD_PRICE(),
-                        userId, "", food.getFOOD_SHORT_DESCR(), food.getFOOD_LONG_DESCR(), food.getFOOD_IMAGE());
-            }
-            cart.save();
-
-            finish();
-        });
+        button.setVisibility(View.GONE);
+//        button.setOnClickListener(v -> {
+//            System.out.println("hai clikkato AGGIUNGI " + food.getFOOD_TITLE() + "(id " + food.getFOOD_ID() + ")");
+//            cart.load();
+//            if (mode.equals("edit")) {
+//                for (int i = 0; i < counter[0]; i++) {
+//                    cart.removeCartFood(food.getFOOD_ID(), userId, note);
+//                }
+//            }
+//            for (int i = 0; i < counter[0]; i++) {
+//                cart.addCartFood(food.getFOOD_ID(), food.getFOOD_TITLE(), food.getFOOD_PRICE(),
+//                        userId, "", food.getFOOD_SHORT_DESCR(), food.getFOOD_LONG_DESCR(), food.getFOOD_IMAGE());
+//            }
+//            cart.save();
+//            finish();
+//        });
     }
 
     @Override

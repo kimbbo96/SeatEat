@@ -22,6 +22,8 @@ import java.util.List;
 // Instances of this class are fragments representing a single
 // object in our collection.
 public class FoodObjectFragment extends Fragment {
+    FoodListView customListView;
+
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -56,7 +58,7 @@ public class FoodObjectFragment extends Fragment {
         }
 
         ListView listView = view.findViewById(R.id.list_view_food);
-        FoodListView customListView = new FoodListView(getActivity(), foods.toArray(new Food[0]), restID);
+        customListView = new FoodListView(getActivity(), foods.toArray(new Food[0]), restID);
         listView.setAdapter(customListView);
         listView.setOnItemClickListener((adapterView, v, i, l) -> {
             System.out.println("hai clikkato "+i);
@@ -71,5 +73,6 @@ public class FoodObjectFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        customListView.notifyDataSetChanged();
     }
 }

@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
@@ -14,14 +15,17 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
 import com.example.myapplication.utils.Cart;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.tabs.TabLayout;
 
 import java.util.Formatter;
 import java.util.List;
@@ -66,15 +70,13 @@ public class CartListView extends ArrayAdapter<String> {
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View r = convertView;
         ViewHolder viewHolder;
-        if (r == null)
-        {
+        if (r == null) {
             LayoutInflater layoutInflater = context.getLayoutInflater();
             r = layoutInflater.inflate(R.layout.activity_cart_scrolling,
                     parent,false);
             viewHolder = new ViewHolder(r, parent);
             r.setTag(viewHolder);
-        }
-        else {
+        } else {
             viewHolder = (ViewHolder) r.getTag();
         }
 
@@ -100,7 +102,6 @@ public class CartListView extends ArrayAdapter<String> {
                         Locale.ITALIAN, "x %d   %.2f€",
                         cartFood.getQuantity(), cartFood.getPrice()).toString());
                 viewHolder.totalTvYou.setText(new Formatter().format(Locale.ITALIAN, "Il tuo totale:   %.2f€", cart.getTotal(userId)).toString());
-                viewHolder.totalTvAll.setText(new Formatter().format(Locale.ITALIAN, "Totale:   %.2f€", cart.getTotal()).toString());
             });
 
             // manage cart (remove)
@@ -108,13 +109,19 @@ public class CartListView extends ArrayAdapter<String> {
                 cart.load();
                 Cart.CartFood cartFood = cart.removeCartFood(cf.getId(), userId, cf.getNote());
                 cart.save();
+                viewHolder.totalTvYou.setText(new Formatter().format(Locale.ITALIAN, "Il tuo totale:   %.2f€", cart.getTotal(userId)).toString());
+                System.out.println("removed food from cart: " + cartFood);
                 if (cartFood != null) {
-                    System.out.println("removed food from cart: " + cartFood);
-                    viewHolder.totalTvYou.setText(new Formatter().format(Locale.ITALIAN, "Il tuo totale:   %.2f€", cart.getTotal(userId)).toString());
-                    viewHolder.totalTvAll.setText(new Formatter().format(Locale.ITALIAN, "Totale:   %.2f€", cart.getTotal()).toString());
                     viewHolder.fcPrice.setText(new Formatter().format(
                             Locale.ITALIAN, "x %d   %.2f€",
                             cartFood.getQuantity(), cartFood.getPrice()).toString());
+                } else {
+                    System.out.println("removed");
+                    this.foods = cart.getCartFoods();
+                    if (foods.isEmpty()) {
+                        context.onBackPressed();
+                    }
+                    this.notifyDataSetChanged();
                 }
             });
         }
@@ -133,7 +140,6 @@ public class CartListView extends ArrayAdapter<String> {
         ImageButton addFCB;
         ImageButton removeFCB;
         TextView totalTvYou;
-        TextView totalTvAll;
 
         ViewHolder(View v, ViewGroup parent){
             fcName = v.findViewById(R.id.foodCartName);
@@ -145,5 +151,10 @@ public class CartListView extends ArrayAdapter<String> {
             ViewGroup newParent = (ViewGroup) parent.getParent().getParent().getParent().getParent().getParent();
             totalTvYou = newParent.findViewById(R.id.tw_total_cart_you);
         }
+    }
+
+    @Override
+    public int getCount() {
+        return foods.size();
     }
 }
